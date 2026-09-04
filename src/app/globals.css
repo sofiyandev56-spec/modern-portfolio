@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-base: #09090b;
+  --color-bg-surface: #121216;
+  --color-bg-elevated: #18181b;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.18);
+  --color-text-primary: #f4f4f5;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-accent-purple: #a855f7;
+  --color-accent-magenta: #d946ef;
+}
+
+:root {
+  --bg: #09090b;
+  --surface: #121216;
+  --surface-elevated: #18181b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --accent-purple: #a855f7;
+  --accent-magenta: #d946ef;
+  color-scheme: dark;
+}
+
+/* ── Base Reset & Setup ── */
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: #f4f4f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Custom Typography ── */
+.font-display {
+  font-family: var(--font-syne), -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.font-sans {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--accent-purple);
+  color: #ffffff;
+}
+
+/* ── Modern Creative-Tech Glass & Pill Utilities ── */
+.glass-card {
+  background: rgba(18, 18, 22, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 16px 40px -15px rgba(0, 0, 0, 0.8), 0 0 30px -10px rgba(168, 85, 247, 0.15);
+}
+
+.pill-btn {
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill-btn-primary {
+  background: #ffffff;
+  color: #09090b;
+  padding: 0.875rem 1.75rem;
+  box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.25);
+}
+
+.pill-btn-primary:hover {
+  background: #e4e4e7;
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px -5px rgba(168, 85, 247, 0.4);
+}
+
+.pill-btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.875rem 1.75rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.pill-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.pill-btn-accent {
+  background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+  color: #ffffff;
+  padding: 0.875rem 1.75rem;
+  box-shadow: 0 4px 20px -5px rgba(168, 85, 247, 0.4);
+}
+
+.pill-btn-accent:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px -4px rgba(217, 70, 239, 0.5);
+}
+
+/* ── Subtle Infinite Marquee ── */
+@keyframes marquee-left {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 32s linear infinite;
+}
+
+.animate-marquee-left:hover {
+  animation-play-state: paused;
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
