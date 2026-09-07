@@ -166,7 +166,7 @@ export function Hero() {
             {/* Massive Bold Greeting */}
             <motion.h1
               variants={itemVariants}
-              className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white leading-[0.95] mb-6"
+              className="font-display text-[clamp(2.5rem,11.5vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white leading-[0.95] mb-6"
             >
               HI, I&apos;M <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">

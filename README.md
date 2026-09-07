@@ -4,7 +4,7 @@ My personal portfolio site. I am a B.Tech Computer Science (AI & ML) Hons. stude
 specializing in Generative AI with IBM, and this is where I keep what I have actually
 built.
 
-**Live site:** _not deployed yet_
+**Live site:** _not deployed yet_ — see [Deploying](#deploying) below.
 
 ## What's in it
 
@@ -34,6 +34,18 @@ Then open <http://localhost:3000>.
 npm run lint    # eslint
 npm run build   # production build
 ```
+
+## Deploying
+
+The site is a standard Next.js app and deploys to Vercel with no configuration:
+
+1. Go to <https://vercel.com/new> and sign in with GitHub.
+2. Import `sofiyandev56-spec/modern-portfolio`.
+3. Leave every build setting at its default and press **Deploy**.
+
+Vercel detects its own production URL, so Open Graph link previews work
+immediately. If you later add a custom domain, set `NEXT_PUBLIC_SITE_URL` to it
+in the project's environment variables (see `.env.example`).
 
 ## Project layout
 

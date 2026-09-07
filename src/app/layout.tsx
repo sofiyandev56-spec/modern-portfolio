@@ -17,6 +17,14 @@ const inter = Inter({
   weight: ["300", "400", "500", "600"],
 });
 
+// Set NEXT_PUBLIC_SITE_URL once the site is deployed. On Vercel the production
+// URL is picked up automatically, so link previews work without extra config.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const viewport: Viewport = {
   themeColor: "#09090b",
   width: "device-width",
@@ -24,6 +32,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
   description:
     "Portfolio of Sofiyan Shaikh, a B.Tech Computer Science (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",

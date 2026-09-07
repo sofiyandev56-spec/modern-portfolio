@@ -80,7 +80,7 @@ export function Services() {
               className="py-10 md:py-14 px-4 sm:px-8 rounded-2xl transition-colors duration-300 hover:bg-white/[0.03] flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16 group cursor-pointer"
             >
               {/* Number and Title */}
-              <div className="flex items-baseline gap-6 sm:gap-8 lg:w-5/12">
+              <div className="flex items-baseline gap-6 sm:gap-8 lg:w-5/12 min-w-0">
                 <motion.span
                   variants={{
                     hover: { x: 6, color: "#c084fc" },
@@ -90,8 +90,8 @@ export function Services() {
                 >
                   {item.number}
                 </motion.span>
-                <div>
-                  <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors">
+                <div className="min-w-0">
+                  <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors break-words">
                     {item.title}
                   </h3>
                 </div>

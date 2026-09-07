@@ -146,7 +146,7 @@ export function About() {
             <TiltProfileCard>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-[#121216] shadow-2xl group">
                 <Image
-                  src="/images/profile-about.png"
+                  src="/images/profile-about.jpg"
                   alt="Sofiyan Shaikh"
                   fill
                   priority
