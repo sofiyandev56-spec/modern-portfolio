@@ -28,7 +28,7 @@ export const projects: Project[] = [
     facts: [
       { label: "Role", value: "Team Project" },
       { label: "Stack", value: "TanStack + Supabase" },
-      { label: "Status", value: "In Development" },
+      { label: "Status", value: "Deployed" },
     ],
     technologies: [
       "TypeScript",
