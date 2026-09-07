@@ -26,7 +26,7 @@ export const projects: Project[] = [
     impact:
       "Parents book a slot and submit intake details from their phone instead of calling the clinic. On the other side, the doctor gets a queue of upcoming appointments, an immunization checklist to sign off on, and walk-in handling with tiered consultation fees.",
     facts: [
-      { label: "Role", value: "Solo Build" },
+      { label: "Role", value: "Team Project" },
       { label: "Stack", value: "TanStack + Supabase" },
       { label: "Status", value: "In Development" },
     ],

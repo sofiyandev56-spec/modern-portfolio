@@ -262,7 +262,7 @@ export function Projects() {
                               {project.repoPrivate && (
                                 <span className="inline-flex items-center gap-2 py-2.5 px-4 rounded-full border border-white/10 bg-white/[0.02] text-xs font-medium text-zinc-400">
                                   <Lock size={13} />
-                                  <span>Source private — available on request</span>
+                                  <span>Private repository</span>
                                 </span>
                               )}
                             </div>
