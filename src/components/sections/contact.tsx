@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, Check, Copy, Mail, Send } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Download, Mail, Send } from "lucide-react";
 
 export function Contact() {
   const emailAddress = "sofiyandev56@gmail.com";
@@ -141,6 +141,16 @@ export function Contact() {
                     <Mail size={13} />
                     <span>{emailAddress}</span>
                     <ArrowUpRight size={13} />
+                  </a>
+
+                  <a
+                    href="/sofiyan-shaikh-cv.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="pill-btn pill-btn-secondary text-xs py-2.5 px-4"
+                  >
+                    <Download size={13} />
+                    <span>CV</span>
                   </a>
 
                   <button

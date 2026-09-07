@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import dynamic from "next/dynamic";
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Download } from "lucide-react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 // Dynamically load the Three.js 3D computational core
@@ -202,6 +202,16 @@ export function Hero() {
                 <span>Contact Me</span>
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </MagneticPillButton>
+
+              <a
+                href="/sofiyan-shaikh-cv.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="pill-btn pill-btn-secondary group"
+              >
+                <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
+                <span>Download CV</span>
+              </a>
             </motion.div>
 
           </motion.div>
