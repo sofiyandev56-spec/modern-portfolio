@@ -22,18 +22,18 @@ const ComputationalCore = dynamic(
 );
 
 const techStack = [
-  "PyTorch",
-  "OpenCV",
-  "TensorRT",
-  "ESP32 & Jetson",
-  "Next.js",
-  "FastAPI",
-  "Hugging Face",
   "Python",
-  "CUDA",
-  "ONNX",
-  "MediaPipe",
-  "ROS2",
+  "C",
+  "C++",
+  "MySQL",
+  "HTML",
+  "Git & GitHub",
+  "Prompt Engineering",
+  "Generative AI",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Supabase",
 ];
 
 // Magnetic Pull Pill Button with Mount Scale-Up & Shimmer Overlay
@@ -160,7 +160,7 @@ export function Hero() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-300 mb-6"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-fuchsia-400" />
-              <span>AI/ML & Edge Systems Engineer</span>
+              <span>B.Tech CSE (AI &amp; ML) Student</span>
             </motion.div>
 
             {/* Massive Bold Greeting */}
@@ -179,7 +179,7 @@ export function Hero() {
               variants={itemVariants}
               className="text-base sm:text-lg md:text-xl text-zinc-400 font-normal leading-relaxed max-w-xl mb-10"
             >
-              Passionate about high-speed computer vision, generative architectures, and deploying optimized models to real-world embedded silicon.
+              B.Tech CSE (AI &amp; ML) Hons. student specializing in Generative AI with IBM. I learn by building — writing C, C++ and Python for the fundamentals, and shipping real web applications on top of them.
             </motion.p>
 
             {/* Action Buttons with Magnetic Pull */}
@@ -225,7 +225,7 @@ export function Hero() {
       <div className="w-full mt-20 pt-8 border-t border-white/5 overflow-hidden z-10 select-none">
         <div className="max-w-6xl mx-auto px-6 mb-3 text-center">
           <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">
-            Core Technologies & Toolchain
+            Languages, Tools &amp; Currently Learning
           </span>
         </div>
 

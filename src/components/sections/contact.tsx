@@ -22,13 +22,15 @@ export function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
-    
-    // Simulate instantaneous submission feedback
+
+    // Hand the message off to the visitor's own mail client so it actually reaches me.
+    const subject = `Portfolio enquiry from ${formData.name}`;
+    const body = `${formData.message}\n\n—\n${formData.name}\n${formData.email}`;
+    window.location.href = `mailto:${emailAddress}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
     setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: "", email: "", message: "" });
-    }, 4000);
   };
 
   return (
@@ -53,7 +55,7 @@ export function Contact() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-zinc-400 font-normal leading-relaxed max-w-xl mx-auto">
-            Have a challenging AI/ML problem, research concept, or embedded edge deployment you want to bring to life? Let&apos;s engineer something impactful.
+            Open to internships, junior developer roles, and student projects — or just a conversation about AI and building things. The form below opens your mail app with the message ready to send.
           </p>
         </div>
 
@@ -65,9 +67,9 @@ export function Contact() {
               <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
                 <Check size={28} />
               </div>
-              <h3 className="font-display text-2xl font-bold text-white">Message Transmitted</h3>
+              <h3 className="font-display text-2xl font-bold text-white">Your Email App Is Open</h3>
               <p className="text-sm text-zinc-400 max-w-md">
-                Thank you for reaching out, {formData.name || "there"}. I will review your inquiry and respond shortly.
+                Thanks {formData.name || "there"} — I have drafted the message in your mail app. Hit send there and it will land in my inbox. If nothing opened, you can email me directly at {emailAddress}.
               </p>
             </div>
           ) : (
@@ -113,7 +115,7 @@ export function Contact() {
                 <textarea
                   required
                   rows={5}
-                  placeholder="Tell me about your project, timeline, or engineering goals..."
+                  placeholder="Tell me about the role, the project, or whatever you'd like to talk about..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full p-4 md:p-5 rounded-xl bg-zinc-900/50 border border-white/10 text-white placeholder-zinc-600 focus:outline-none focus:border-purple-500 transition-colors text-sm resize-none min-h-[160px]"
@@ -126,7 +128,7 @@ export function Contact() {
                   type="submit"
                   className="pill-btn pill-btn-primary w-full sm:w-auto justify-center group py-3 px-8"
                 >
-                  <span>Send Message</span>
+                  <span>Compose Email</span>
                   <Send size={15} className="group-hover:translate-x-0.5 transition-transform" />
                 </button>
 

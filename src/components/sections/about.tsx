@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Cpu, Eye, Zap } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, Code2, Database, Bike, Trophy, Activity } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 // 3D Tilt Profile Card Component
@@ -58,11 +58,11 @@ function TiltProfileCard({ children }: { children: React.ReactNode }) {
 export function About() {
   const domains = [
     {
-      icon: Eye,
-      title: "Spatial Perception",
-      tag: "VISION",
+      icon: BrainCircuit,
+      title: "Generative AI",
+      tag: "SPECIALIZATION",
       description:
-        "High-framerate facial landmark regression and ocular geometry for real-time spatial monitoring.",
+        "My honours track, taken with IBM. Learning how foundation models are built, prompted and applied — and using them daily as a build partner.",
       floatingAnimation: {
         y: [0, -12, 0],
         rotate: [-1, 1, -1],
@@ -74,11 +74,11 @@ export function About() {
       },
     },
     {
-      icon: Zap,
-      title: "Sub-20ms Inference",
-      tag: "LATENCY",
+      icon: Code2,
+      title: "Core Programming",
+      tag: "FOUNDATIONS",
       description:
-        "Quantized INT8/FP16 models optimized for deterministic execution on resource-constrained compute.",
+        "C, C++ and Python — the fundamentals I keep sharpening through data structures, algorithms and consistent problem solving.",
       floatingAnimation: {
         y: [0, 10, 0],
         rotate: [1, -1.5, 1],
@@ -91,11 +91,11 @@ export function About() {
       },
     },
     {
-      icon: Cpu,
-      title: "Constrained Silicon",
-      tag: "HARDWARE",
+      icon: Database,
+      title: "Databases & The Web",
+      tag: "BUILDING",
       description:
-        "Zero-cloud autonomous deployment on ESP32 and NVIDIA Jetson platforms with direct sensor integration.",
+        "MySQL for structured data, HTML and modern JavaScript frameworks for the interface — put together in the projects below.",
       floatingAnimation: {
         y: [0, -8, 0],
         rotate: [-0.5, 1, -0.5],
@@ -107,6 +107,12 @@ export function About() {
         },
       },
     },
+  ];
+
+  const interests = [
+    { icon: Trophy, label: "Cricket" },
+    { icon: Bike, label: "Cycling" },
+    { icon: Activity, label: "Football" },
   ];
 
   return (
@@ -122,13 +128,13 @@ export function About() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
-            <span>Identity & Engineering Philosophy</span>
+            <span>Who I Am &amp; How I Learn</span>
           </div>
           <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white mb-6">
             ABOUT ME.
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 font-normal leading-relaxed">
-            I engineer intelligent systems that bridge mathematical algorithms to physical silicon. With a focus on real-time computer vision, low-latency edge inference, and generative neural architectures, I build production-grade models that operate reliably without cloud dependency.
+            I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and two applications I built end to end rather than only read about.
           </p>
         </div>
 
@@ -151,7 +157,7 @@ export function About() {
                 <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
                   <div>
                     <div className="text-xs text-zinc-400 font-medium">Sofiyan Shaikh</div>
-                    <div className="text-sm font-semibold text-white">AI/ML & Edge Engineer</div>
+                    <div className="text-sm font-semibold text-white">B.Tech CSE (AI &amp; ML) Student</div>
                   </div>
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
@@ -190,6 +196,27 @@ export function About() {
             })}
           </div>
 
+        </div>
+
+        {/* Away From The Keyboard */}
+        <div className="flex flex-col items-center gap-4 mb-16">
+          <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">
+            Away From The Keyboard
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {interests.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm font-medium text-zinc-300 hover:text-white hover:border-white/20 transition-colors"
+                >
+                  <Icon size={15} className="text-purple-400" />
+                  <span>{item.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Bottom Call to Action */}

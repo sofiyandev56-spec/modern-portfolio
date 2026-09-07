@@ -7,31 +7,31 @@ import { motion } from "framer-motion";
 const services = [
   {
     number: "01",
-    title: "COMPUTER VISION & EDGE AI",
+    title: "GENERATIVE AI",
     description:
-      "Real-time spatial tracking, driver drowsiness detection, facial landmark regression, and sub-20ms embedded camera pipelines.",
-    tags: ["OpenCV", "MediaPipe", "ESP32-CAM", "Edge Inference"],
+      "My honours specialization, studied with IBM. Understanding how foundation models work, and writing the prompts and workflows that get useful output from them.",
+    tags: ["Generative AI", "Prompt Engineering", "IBM Track"],
   },
   {
     number: "02",
-    title: "MACHINE LEARNING & DEEP LEARNING",
+    title: "CORE PROGRAMMING",
     description:
-      "Custom neural network training, model quantization (INT8/FP16), weight pruning, and high-throughput inference optimization.",
-    tags: ["PyTorch", "TensorRT", "CUDA", "Model Pruning"],
+      "C, C++ and Python as the foundation — data structures, algorithms, and the kind of consistent practice that turns syntax into problem solving.",
+    tags: ["C", "C++", "Python", "Problem Solving"],
   },
   {
     number: "03",
-    title: "GENERATIVE AI & LLMS",
+    title: "DATABASES",
     description:
-      "High-recall RAG pipelines, fine-tuned foundational models, autonomous multi-agent systems, and vector embedding workflows.",
-    tags: ["LangChain", "Vector DBs", "Fine-Tuning", "Agent Workflows"],
+      "Designing and querying relational schemas with MySQL, and connecting them to real applications instead of leaving them on paper.",
+    tags: ["MySQL", "SQL", "Schema Design"],
   },
   {
     number: "04",
-    title: "FULL-STACK & HARDWARE INTEGRATION",
+    title: "BUILDING FOR THE WEB",
     description:
-      "High-throughput web architectures, sensor telemetry pipelines, and end-to-end edge-to-cloud deployments.",
-    tags: ["Next.js", "FastAPI", "MQTT", "NVIDIA Jetson"],
+      "Taking an idea to a working, deployed application — using AI tooling as a build partner while staying responsible for how the code fits together.",
+    tags: ["HTML", "React", "Git & GitHub", "AI-Assisted Builds"],
   },
 ];
 
@@ -47,10 +47,10 @@ export function Services() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 pb-8 border-b border-white/10 gap-8">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
-              <span>Core Disciplines</span>
+              <span>What I Study &amp; Build</span>
             </div>
             <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white">
-              SERVICES & <br />
+              SKILLS & <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
                 CAPABILITIES.
               </span>
@@ -58,7 +58,7 @@ export function Services() {
           </div>
           <div className="max-w-md">
             <p className="text-base md:text-lg text-zinc-400 leading-relaxed">
-              Specialized engineering domains combining mathematical model design, low-latency edge deployment, and production-grade software.
+              The four areas my degree and my side projects actually cover right now — the foundations I am building on, not a service menu.
             </p>
           </div>
         </div>

@@ -24,34 +24,34 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "SOFIYAN SHAIKH — AI/ML & Edge Systems Engineer",
+  title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
   description:
-    "Personal portfolio of Sofiyan Shaikh — AI/ML & Edge Systems Engineer passionate about high-speed computer vision, generative architectures, and embedded silicon.",
+    "Portfolio of Sofiyan Shaikh, a B.Tech Computer Science (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
   keywords: [
     "Sofiyan Shaikh",
-    "AI/ML Engineer",
-    "Computer Vision",
-    "Edge AI",
+    "B.Tech CSE AI ML",
     "Generative AI",
-    "Embedded Systems",
-    "SmartDrive",
+    "Python Developer",
+    "Student Portfolio",
+    "Prompt Engineering",
+    "MySQL",
     "Portfolio",
   ],
   authors: [{ name: "Sofiyan Shaikh", url: "https://github.com/sofiyandev56-spec" }],
   creator: "Sofiyan Shaikh",
   openGraph: {
-    title: "SOFIYAN SHAIKH — AI/ML & Edge Systems Engineer",
+    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
     description:
-      "AI/ML & Edge Systems Engineer passionate about high-speed computer vision, generative architectures, and embedded silicon.",
+      "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
     type: "website",
     locale: "en_US",
     siteName: "Sofiyan Shaikh Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SOFIYAN SHAIKH — AI/ML & Edge Systems Engineer",
+    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
     description:
-      "AI/ML & Edge Systems Engineer passionate about high-speed computer vision, generative architectures, and embedded silicon.",
+      "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
   },
   robots: {
     index: true,
