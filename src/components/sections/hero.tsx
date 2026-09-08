@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import dynamic from "next/dynamic";
 import { ArrowDownRight, ArrowUpRight, Download } from "lucide-react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { CVLink } from "@/components/cv-link";
 
 // Dynamically load the Three.js 3D computational core
 const ComputationalCore = dynamic(
@@ -203,15 +204,10 @@ export function Hero() {
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </MagneticPillButton>
 
-              <a
-                href="/sofiyan-shaikh-cv.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="pill-btn pill-btn-secondary group"
-              >
+              <CVLink location="hero" className="pill-btn pill-btn-secondary group">
                 <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
                 <span>Download CV</span>
-              </a>
+              </CVLink>
             </motion.div>
 
           </motion.div>

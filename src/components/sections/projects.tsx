@@ -135,6 +135,8 @@ export function Projects() {
                   onClick={() => toggleProject(project.id)}
                   className="w-full p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 text-left cursor-pointer group"
                   aria-expanded={isExpanded}
+                  aria-controls={`${project.id}-panel`}
+                  id={`${project.id}-trigger`}
                 >
                   <div className="flex items-center gap-6 sm:gap-8">
                     {/* Index Number */}
@@ -169,7 +171,7 @@ export function Projects() {
                           : "border-white/10 bg-white/[0.04] text-white group-hover:border-white/20"
                       }`}
                     >
-                      <ChevronDown size={18} />
+                      <ChevronDown size={18} aria-hidden="true" />
                     </div>
                   </div>
                 </button>
@@ -184,6 +186,9 @@ export function Projects() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
                       className="overflow-hidden border-t border-white/10"
+                      id={`${project.id}-panel`}
+                      role="region"
+                      aria-labelledby={`${project.id}-trigger`}
                     >
                       <div className="p-5 sm:p-8 md:p-12">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-16 items-center">
@@ -272,6 +277,7 @@ export function Projects() {
                           {/* Right: Visual Mockup Container (col-span-7) */}
                           <div className="lg:col-span-7">
                             <motion.div
+                              aria-hidden="true"
                               initial={{ scale: 0.96, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1], delay: 0.08 }}

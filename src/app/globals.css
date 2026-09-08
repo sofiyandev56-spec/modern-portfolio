@@ -58,6 +58,37 @@ section[id] {
   scroll-margin-top: 6rem;
 }
 
+/* ── Accessibility ── */
+
+/* A visible focus ring on keyboard navigation only, so the design is unchanged
+   for mouse users but the page is actually traversable with a keyboard. */
+:focus-visible {
+  outline: 2px solid #c084fc;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Off-screen until focused, then the first thing a keyboard user can activate. */
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #09090b;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 /* Touch feedback: drop the grey iOS tap flash, keep an explicit active state. */
 a,
 button,

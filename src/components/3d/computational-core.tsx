@@ -4,6 +4,11 @@ import React, { Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { COARSE_OR_NARROW, useMediaQuery } from "@/lib/use-media-query";
 import {
+  CanvasErrorBoundary,
+  CanvasFallback,
+  isWebGLAvailable,
+} from "@/components/3d/canvas-fallback";
+import {
   useGLTF,
   useAnimations,
   Center,
@@ -110,9 +115,21 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
   // maps and a high-performance context, so scale the scene down on touch
   // devices. Decided once on mount: Canvas reads gl/dpr at creation time.
   const isMobile = useMediaQuery(COARSE_OR_NARROW);
+  // This component is only ever rendered on the client (dynamic, ssr: false),
+  // so the probe can run during the first render without a hydration mismatch.
+  const [webGL] = React.useState(isWebGLAvailable);
+
+  if (!webGL) {
+    return (
+      <div className={`relative w-full h-full select-none ${className}`}>
+        <CanvasFallback />
+      </div>
+    );
+  }
 
   return (
     <div className={`relative w-full h-full select-none ${className}`}>
+      <CanvasErrorBoundary>
       <Canvas
         camera={{ position: [0, 0, 4.2], fov: 45 }}
         dpr={isMobile ? [1, 1.25] : [1, 1.5]}
@@ -175,6 +192,7 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
           <ModelScene />
         </Suspense>
       </Canvas>
+      </CanvasErrorBoundary>
     </div>
   );
 }

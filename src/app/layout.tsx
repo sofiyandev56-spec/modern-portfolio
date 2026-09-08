@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Syne, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { PERSON_SCHEMA, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const syne = Syne({
@@ -16,14 +18,6 @@ const inter = Inter({
   variable: "--font-inter",
   weight: ["300", "400", "500", "600"],
 });
-
-// Set NEXT_PUBLIC_SITE_URL once the site is deployed. On Vercel the production
-// URL is picked up automatically, so link previews work without extra config.
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
 
 export const viewport: Viewport = {
   themeColor: "#09090b",
@@ -82,7 +76,18 @@ export default function RootLayout({
       <body
         className="bg-[#09090b] text-[#f4f4f5] antialiased selection:bg-[#a855f7] selection:text-white font-sans"
       >
+        {/* Keyboard users land here first and can jump past the navbar. */}
+        <a href="#hero" className="skip-link">
+          Skip to content
+        </a>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <script
+          type="application/ld+json"
+          // Tells search engines who this page is about, so a search for the
+          // name can connect it to the GitHub and LinkedIn profiles.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_SCHEMA) }}
+        />
+        <Analytics />
       </body>
     </html>
   );
