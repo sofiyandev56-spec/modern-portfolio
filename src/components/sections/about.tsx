@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { ArrowUpRight, BrainCircuit, Code2, Database, Bike, Trophy, Activity } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { COARSE_OR_NARROW, REDUCED_MOTION, useMediaQuery } from "@/lib/use-media-query";
 
 // 3D Tilt Profile Card Component
 function TiltProfileCard({ children }: { children: React.ReactNode }) {
@@ -56,6 +57,12 @@ function TiltProfileCard({ children }: { children: React.ReactNode }) {
 }
 
 export function About() {
+  // Phones and reduced-motion users get static cards: the looping drift costs
+  // battery and makes the stacked mobile layout look unsettled.
+  const isTouchOrNarrow = useMediaQuery(COARSE_OR_NARROW);
+  const prefersReducedMotion = useMediaQuery(REDUCED_MOTION);
+  const animate = !isTouchOrNarrow && !prefersReducedMotion;
+
   const domains = [
     {
       icon: BrainCircuit,
@@ -118,7 +125,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative w-full min-h-screen flex flex-col justify-center py-32 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
     >
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-radial from-purple-900/15 via-fuchsia-900/5 to-transparent blur-3xl pointer-events-none" />
@@ -126,11 +133,11 @@ export function About() {
       <div className="relative max-w-6xl mx-auto px-6 md:px-12">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 md:mb-24">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
             <span>Who I Am &amp; How I Learn</span>
           </div>
-          <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white mb-6">
+          <h2 className="font-display text-[clamp(2.25rem,10vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white mb-6">
             ABOUT ME.
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 font-normal leading-relaxed">
@@ -139,7 +146,7 @@ export function About() {
         </div>
 
         {/* Centerpiece Layout: 3D Tilt Portrait & Floating Glass Domain Badges */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center max-w-5xl mx-auto mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center max-w-5xl mx-auto mb-12 sm:mb-20">
           
           {/* Left: 3D Tilt Portrait Glass Card */}
           <div className="lg:col-span-5 flex justify-center">
@@ -172,14 +179,14 @@ export function About() {
               return (
                 <motion.div
                   key={idx}
-                  animate={item.floatingAnimation}
-                  className="glass-card p-6 md:p-7 flex items-start gap-5 group"
+                  animate={animate ? item.floatingAnimation : undefined}
+                  className="glass-card p-5 sm:p-6 md:p-7 flex items-start gap-4 sm:gap-5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-300 group-hover:text-purple-400 group-hover:border-purple-500/30 transition-colors shrink-0">
                     <Icon size={22} />
                   </div>
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                       <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
                         {item.title}
                       </h3>
@@ -199,7 +206,7 @@ export function About() {
         </div>
 
         {/* Away From The Keyboard */}
-        <div className="flex flex-col items-center gap-4 mb-16">
+        <div className="flex flex-col items-center gap-4 mb-10 sm:mb-16">
           <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">
             Away From The Keyboard
           </span>

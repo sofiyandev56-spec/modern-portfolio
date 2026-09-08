@@ -39,17 +39,17 @@ export function Services() {
   return (
     <section
       id="services"
-      className="relative w-full min-h-screen flex flex-col justify-center py-32 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full my-auto">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 pb-8 border-b border-white/10 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 md:mb-24 pb-6 sm:pb-8 border-b border-white/10 gap-6 sm:gap-8">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
               <span>What I Study &amp; Build</span>
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white">
+            <h2 className="font-display text-[clamp(1.5rem,7.2vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white">
               SKILLS & <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
                 CAPABILITIES.
@@ -77,10 +77,10 @@ export function Services() {
                 ease: [0.16, 1, 0.3, 1],
               }}
               whileHover="hover"
-              className="py-10 md:py-14 px-4 sm:px-8 rounded-2xl transition-colors duration-300 hover:bg-white/[0.03] flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16 group cursor-pointer"
+              className="py-7 sm:py-10 md:py-14 px-0 sm:px-8 rounded-2xl transition-colors duration-300 hover:bg-white/[0.03] flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16 group cursor-pointer"
             >
               {/* Number and Title */}
-              <div className="flex items-baseline gap-6 sm:gap-8 lg:w-5/12 min-w-0">
+              <div className="flex items-baseline gap-3 sm:gap-8 lg:w-5/12 min-w-0">
                 <motion.span
                   variants={{
                     hover: { x: 6, color: "#c084fc" },
@@ -91,7 +91,7 @@ export function Services() {
                   {item.number}
                 </motion.span>
                 <div className="min-w-0">
-                  <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors break-words">
+                  <h3 className="font-display text-[clamp(1rem,4.8vw,1.25rem)] sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors">
                     {item.title}
                   </h3>
                 </div>

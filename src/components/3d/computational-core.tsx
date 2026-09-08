@@ -2,6 +2,7 @@
 
 import React, { Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { COARSE_OR_NARROW, useMediaQuery } from "@/lib/use-media-query";
 import {
   useGLTF,
   useAnimations,
@@ -105,15 +106,20 @@ function ModelScene() {
 
 // ── Main Computational Core Component ──
 export function ComputationalCore({ className = "" }: { className?: string }) {
+  // Phone GPUs pay real battery and frame-rate cost for antialiasing, shadow
+  // maps and a high-performance context, so scale the scene down on touch
+  // devices. Decided once on mount: Canvas reads gl/dpr at creation time.
+  const isMobile = useMediaQuery(COARSE_OR_NARROW);
+
   return (
     <div className={`relative w-full h-full select-none ${className}`}>
       <Canvas
         camera={{ position: [0, 0, 4.2], fov: 45 }}
-        dpr={[1, 1.5]}
+        dpr={isMobile ? [1, 1.25] : [1, 1.5]}
         gl={{
-          antialias: true,
+          antialias: !isMobile,
           alpha: true,
-          powerPreference: "high-performance",
+          powerPreference: isMobile ? "default" : "high-performance",
         }}
         className="w-full h-full"
       >
@@ -126,7 +132,7 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
           position={[4, 6, 5]}
           intensity={2.0}
           color="#ffffff"
-          castShadow
+          castShadow={!isMobile}
         />
 
         {/* Soft Front Fill Light */}
@@ -153,14 +159,16 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
         />
 
         {/* Ground Soft Contact Shadow with Tint */}
-        <ContactShadows
-          position={[0, -1.6, 0]}
-          opacity={0.5}
-          scale={7}
-          blur={2.5}
-          far={4}
-          color="#7928ca"
-        />
+        {!isMobile && (
+          <ContactShadows
+            position={[0, -1.6, 0]}
+            opacity={0.5}
+            scale={7}
+            blur={2.5}
+            far={4}
+            color="#7928ca"
+          />
+        )}
 
         {/* ── Suspended 3D Model ── */}
         <Suspense fallback={<CanvasLoader />}>

@@ -30,7 +30,7 @@ export function Projects() {
             </div>
 
             {/* Middle Content */}
-            <div className="my-auto py-5 grid grid-cols-2 gap-4">
+            <div className="my-auto py-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 space-y-2">
                 <div className="text-[11px] text-zinc-400 uppercase tracking-wider font-medium">Appointments</div>
                 <div className="text-sm font-semibold text-white">Slot Scheduling</div>
@@ -90,17 +90,17 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative w-full min-h-screen flex flex-col justify-center py-32 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full my-auto">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 pb-8 border-b border-white/10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 md:mb-24 pb-6 sm:pb-8 border-b border-white/10 gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-4">
               <span>Selected Work</span>
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white">
+            <h2 className="font-display text-[clamp(1.5rem,7.2vw,2.25rem)] sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white">
               FEATURED <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
                 PROJECTS.
@@ -115,7 +115,7 @@ export function Projects() {
         </div>
 
         {/* Expandable Project Accordion */}
-        <div className="space-y-6 md:space-y-8">
+        <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {projects.map((project) => {
             const isExpanded = expandedId === project.id;
 
@@ -133,7 +133,7 @@ export function Projects() {
                 {/* Collapsed Header Bar */}
                 <button
                   onClick={() => toggleProject(project.id)}
-                  className="w-full p-6 md:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-left cursor-pointer group"
+                  className="w-full p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 text-left cursor-pointer group"
                   aria-expanded={isExpanded}
                 >
                   <div className="flex items-center gap-6 sm:gap-8">
@@ -185,8 +185,8 @@ export function Projects() {
                       transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
                       className="overflow-hidden border-t border-white/10"
                     >
-                      <div className="p-8 md:p-12">
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                      <div className="p-5 sm:p-8 md:p-12">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-16 items-center">
                           
                           {/* Left: Overview, Impact, & Tech Pills (col-span-5) */}
                           <div className="lg:col-span-5 space-y-6">
@@ -209,7 +209,7 @@ export function Projects() {
                             </div>
 
                             {/* At a Glance */}
-                            <div className="grid grid-cols-3 gap-3 pt-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                               {project.facts.map((f, fIdx) => (
                                 <div key={fIdx} className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
                                   <div className="text-[10px] text-zinc-500 uppercase">{f.label}</div>
@@ -275,7 +275,7 @@ export function Projects() {
                               initial={{ scale: 0.96, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1], delay: 0.08 }}
-                              className="rounded-xl border border-white/10 overflow-hidden aspect-video bg-zinc-900/60 p-6 sm:p-8 backdrop-blur-sm flex flex-col justify-between"
+                              className="rounded-xl border border-white/10 overflow-hidden aspect-[4/3] sm:aspect-video bg-zinc-900/60 p-4 sm:p-6 md:p-8 backdrop-blur-sm flex flex-col justify-between"
                             >
                               {renderVisualMockup(project.visualType)}
                             </motion.div>

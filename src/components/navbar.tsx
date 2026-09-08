@@ -66,7 +66,7 @@ export function Navbar() {
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, "#hero")}
-            className="flex items-center gap-2.5 font-display text-base font-extrabold tracking-tight text-white hover:text-[#d946ef] transition-colors"
+            className="flex items-center gap-2.5 min-h-11 font-display text-base font-extrabold tracking-tight text-white hover:text-[#d946ef] transition-colors"
           >
             <span>SOFIYAN</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#a855f7]" />
@@ -109,7 +109,7 @@ export function Navbar() {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}

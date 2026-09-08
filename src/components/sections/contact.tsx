@@ -36,7 +36,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full min-h-screen flex flex-col justify-center py-32 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
     >
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-radial from-purple-900/15 via-fuchsia-900/5 to-transparent blur-3xl pointer-events-none" />
@@ -48,7 +48,7 @@ export function Contact() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-4">
             <span>Get In Touch</span>
           </div>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white mb-6">
+          <h2 className="font-display text-[clamp(1.5rem,7.2vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white mb-6">
             LET&apos;S BUILD <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
               TOGETHER.
@@ -156,7 +156,7 @@ export function Contact() {
                   <button
                     type="button"
                     onClick={copyEmail}
-                    className="w-10 h-10 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all cursor-pointer"
+                    className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition-all cursor-pointer"
                     title="Copy Email"
                   >
                     {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}

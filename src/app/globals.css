@@ -42,10 +42,46 @@ html {
 
 body {
   background-color: var(--bg);
-  min-height: 100vh;
+  /* dvh tracks the shrinking iOS Safari / Chrome Android address bar; 100vh does
+     not, which leaves a gap or clips content as the bar hides. */
+  min-height: 100dvh;
   overflow-x: hidden;
   position: relative;
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Stop iOS from silently inflating type in landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Anchor links must clear the fixed navbar, or headings land underneath it. */
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* Touch feedback: drop the grey iOS tap flash, keep an explicit active state. */
+a,
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .pill-btn:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Honour the OS "reduce motion" setting: stop the marquee and the drifting
+   cards, which otherwise loop forever and cost battery on phones. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── Custom Typography ── */

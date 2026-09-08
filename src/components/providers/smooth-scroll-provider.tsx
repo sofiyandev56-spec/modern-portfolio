@@ -18,7 +18,14 @@ export function SmoothScrollProvider({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (!prefersReducedMotion) {
+    // Lenis only smooths wheel input, which touch devices never produce, but it
+    // still runs a requestAnimationFrame loop every frame for the life of the
+    // page. On a phone that is pure battery cost, and its 1.2s animated anchor
+    // scroll is slower than the native jump. Native scrolling plus the
+    // scroll-margin-top in globals.css gives the same result for free.
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
+    if (!prefersReducedMotion && !isTouch) {
       const lenis = new Lenis({
         lerp: 0.08,
         wheelMultiplier: 0.9,
@@ -88,13 +95,15 @@ export function SmoothScrollProvider({
 
   return (
     <>
-      {/* Dynamic Ambient Spotlight Overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none z-30 transition-opacity duration-700"
-        style={{
-          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(168, 85, 247, 0.07), transparent 75%)`,
-        }}
-      />
+      {/* Dynamic Ambient Spotlight Overlay (pointer devices only) */}
+      {mousePos.x > -1000 && (
+        <div
+          className="fixed inset-0 pointer-events-none z-30 transition-opacity duration-700"
+          style={{
+            background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(168, 85, 247, 0.07), transparent 75%)`,
+          }}
+        />
+      )}
       {children}
     </>
   );

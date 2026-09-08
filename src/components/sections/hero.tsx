@@ -137,7 +137,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] w-full flex flex-col justify-between pt-36 sm:pt-40 md:pt-44 pb-16 md:pb-24 overflow-hidden bg-[#09090b]"
+      className="relative min-h-[92dvh] w-full flex flex-col justify-between pt-32 sm:pt-40 md:pt-44 pb-12 sm:pb-16 md:pb-24 overflow-hidden bg-[#09090b]"
     >
       {/* Soft Ambient Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-radial from-purple-600/15 via-fuchsia-600/5 to-transparent blur-3xl pointer-events-none z-0" />
