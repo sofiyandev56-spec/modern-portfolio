@@ -17,7 +17,12 @@ export const THEME_COLOR: Record<Theme, string> = {
 /**
  * Runs in <head> before hydration. Kept tiny and dependency-free: it must not
  * throw when storage is blocked (private mode, strict privacy settings).
+ *
+ * It also marks <html class="js">. globals.css uses that class to give the
+ * scroll-reveal text its hidden start state before the first paint, so the
+ * reveal animations never flash the text on and off, while a browser without
+ * JavaScript keeps everything visible.
  */
-export const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
+export const THEME_INIT_SCRIPT = `(function(){document.documentElement.classList.add("js");try{var t=localStorage.getItem(${JSON.stringify(
   STORAGE_KEY
 )});if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();`;

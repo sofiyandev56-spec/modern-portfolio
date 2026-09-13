@@ -1,75 +1,41 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { COARSE_OR_NARROW, useMediaQuery } from "@/lib/use-media-query";
-import { useTheme } from "@/lib/theme";
-import {
-  CanvasErrorBoundary,
-  CanvasFallback,
-  isWebGLAvailable,
-} from "@/components/3d/canvas-fallback";
-import {
-  useGLTF,
-  useAnimations,
-  Center,
-  Html,
-  ContactShadows,
-} from "@react-three/drei";
 import * as THREE from "three";
+import { COARSE_OR_NARROW, REDUCED_MOTION, useMediaQuery } from "@/lib/use-media-query";
+import { useTheme } from "@/lib/theme";
+import { CanvasErrorBoundary } from "@/components/3d/canvas-fallback";
+import {
+  Bust,
+  CanvasLoader,
+  CAMERA_FOV,
+  GroundShadow,
+  HERO_CAMERA_Z,
+  StudioLights,
+} from "@/components/3d/scene-contents";
 
-// ── Fallback Loader Component ──
-function CanvasLoader() {
-  return (
-    <Html center>
-      <div className="flex flex-col items-center justify-center gap-3 select-none pointer-events-none">
-        <div className="relative flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full border-2 border-accent-line border-t-accent animate-spin" />
-          <div className="absolute w-6 h-6 rounded-full bg-accent-soft blur-sm animate-pulse" />
-        </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-fg-muted">
-          Streaming 3D Core...
-        </span>
-      </div>
-    </Html>
-  );
-}
+/**
+ * The bust rendered inline inside the hero slot.
+ *
+ * This is the phone, tablet and reduced-motion presentation: the canvas is a
+ * normal block in the hero grid, scrolls away with it, and stops rendering as
+ * soon as it leaves the viewport. Desktop pointer devices use ScrollScene
+ * instead, which draws the same model on a fixed canvas and choreographs it
+ * through the page.
+ */
 
-// ── Custom Model Renderer with Parallax & Idle Motion ──
-function ModelScene() {
+// ── Idle motion: breathing float plus weighted cursor parallax ──
+function ModelScene({ animate }: { animate: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
-  const { scene, animations } = useGLTF("/models/3daily-model.glb");
-  const { actions } = useAnimations(animations, groupRef);
+  const time = useRef(0);
 
-  // Play idle skeletal/morph animation if present in GLB
-  useEffect(() => {
-    if (animations && animations.length > 0 && actions) {
-      const firstAnim = Object.values(actions)[0];
-      firstAnim?.reset().fadeIn(0.6).play();
-    }
-  }, [actions, animations]);
-
-  // Adjust material shading slightly to respond richly to studio lights
-  useEffect(() => {
-    scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        if (mesh.material && (mesh.material as THREE.MeshStandardMaterial).isMeshStandardMaterial) {
-          const mat = mesh.material as THREE.MeshStandardMaterial;
-          mat.envMapIntensity = 1.2;
-          mat.roughness = Math.min(mat.roughness, 0.7);
-        }
-      }
-    });
-  }, [scene]);
-
-  // Weighted cursor tracking and organic floating motion
-  useFrame((state) => {
-    if (!groupRef.current) return;
-    const { pointer, clock } = state;
-    const t = clock.getElapsedTime();
+  useFrame((state, delta) => {
+    if (!groupRef.current || !animate) return;
+    const { pointer } = state;
+    // Accumulate our own clock: the shared one resets when the loop is paused.
+    time.current += delta;
+    const t = time.current;
 
     // Subtle sinusoidal breathing / levitation
     const floatY = Math.sin(t * 1.6) * 0.06;
@@ -78,135 +44,64 @@ function ModelScene() {
     const targetRotX = -pointer.y * 0.22;
     const targetRotY = pointer.x * 0.35;
 
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(
-      groupRef.current.rotation.x,
-      targetRotX,
-      0.06
-    );
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
-      groupRef.current.rotation.y,
-      targetRotY,
-      0.06
-    );
-    groupRef.current.position.y = THREE.MathUtils.lerp(
-      groupRef.current.position.y,
-      floatY,
-      0.06
-    );
+    const g = groupRef.current;
+    g.rotation.x = THREE.MathUtils.damp(g.rotation.x, targetRotX, 4, delta);
+    g.rotation.y = THREE.MathUtils.damp(g.rotation.y, targetRotY, 4, delta);
+    g.position.y = THREE.MathUtils.damp(g.position.y, floatY, 4, delta);
   });
 
-  return (
-    <group ref={groupRef}>
-      <Center>
-        {/* Normalized scale (4.6 fits centerpiece container heroically without clipping) */}
-        <primitive
-          object={scene}
-          scale={4.6}
-          rotation={[0, -Math.PI / 2, 0]}
-          dispose={null}
-        />
-      </Center>
-    </group>
-  );
+  return <Bust ref={groupRef} />;
 }
 
 // ── Main Computational Core Component ──
 export function ComputationalCore({ className = "" }: { className?: string }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   // Phone GPUs pay real battery and frame-rate cost for antialiasing, shadow
   // maps and a high-performance context, so scale the scene down on touch
   // devices. Decided once on mount: Canvas reads gl/dpr at creation time.
   const isMobile = useMediaQuery(COARSE_OR_NARROW);
-  // On paper-white the neon rim lights and the purple contact shadow read as
-  // noise, and the dark model needs more fill to separate from the page. The
-  // scene is not rebuilt on switch — only these light props change.
+  const reduceMotion = useMediaQuery(REDUCED_MOTION);
   const isLight = useTheme() === "light";
-  const light = isLight
-    ? { ambient: 1.15, fill: 1.25, rimA: 2.6, rimB: 1.6, shadowOpacity: 0.28, shadowColor: "#4c1d95" }
-    : { ambient: 0.8, fill: 1.0, rimA: 4.5, rimB: 3.2, shadowOpacity: 0.5, shadowColor: "#7928ca" };
-  // This component is only ever rendered on the client (dynamic, ssr: false),
-  // so the probe can run during the first render without a hydration mismatch.
-  const [webGL] = React.useState(isWebGLAvailable);
 
-  if (!webGL) {
-    return (
-      <div className={`relative w-full h-full select-none ${className}`}>
-        <CanvasFallback />
-      </div>
+  // Only spend frames while the canvas is actually on screen.
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "80px" }
     );
-  }
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Reduced motion: render on demand, so the model is drawn once and then
+  // only when the theme changes the lights.
+  const frameloop = !inView ? "never" : reduceMotion ? "demand" : "always";
 
   return (
-    <div className={`relative w-full h-full select-none ${className}`}>
+    <div ref={wrapperRef} className={`relative w-full h-full select-none ${className}`}>
       <CanvasErrorBoundary>
-      <Canvas
-        // 4.55 (was 4.2) keeps the base of the bust and its contact shadow inside
-        // the canvas; on a light background the clipped edge was visible.
-        camera={{ position: [0, 0, 4.55], fov: 45 }}
-        dpr={isMobile ? [1, 1.25] : [1, 1.5]}
-        gl={{
-          antialias: !isMobile,
-          alpha: true,
-          powerPreference: isMobile ? "default" : "high-performance",
-        }}
-        className="w-full h-full"
-      >
-        {/* ── Studio-Grade Lighting Setup ── */}
-        {/* Ambient Fill */}
-        <ambientLight intensity={light.ambient} />
+        <Canvas
+          camera={{ position: [0, 0, HERO_CAMERA_Z], fov: CAMERA_FOV }}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
+          frameloop={frameloop}
+          gl={{
+            antialias: !isMobile,
+            alpha: true,
+            powerPreference: isMobile ? "default" : "high-performance",
+          }}
+          className="w-full h-full"
+        >
+          <StudioLights isLight={isLight} isMobile={isMobile} />
 
-        {/* Warm White Directional Key Light */}
-        <directionalLight
-          position={[4, 6, 5]}
-          intensity={2.0}
-          color="#ffffff"
-          castShadow={!isMobile}
-        />
-
-        {/* Soft Front Fill Light */}
-        <directionalLight
-          position={[-2, 1, 4]}
-          intensity={light.fill}
-          color="#f4f4f5"
-        />
-
-        {/* Rim Light 1: Violet/Magenta Edge Glow */}
-        <pointLight
-          position={[-4, 2, -2.5]}
-          intensity={light.rimA}
-          color="#c084fc"
-          distance={14}
-        />
-
-        {/* Rim Light 2: Subtle Cyan/White Accent Glow */}
-        <pointLight
-          position={[4, -1, -2.5]}
-          intensity={light.rimB}
-          color="#38bdf8"
-          distance={14}
-        />
-
-        {/* Ground Soft Contact Shadow with Tint */}
-        {!isMobile && (
-          <ContactShadows
-            position={[0, -1.6, 0]}
-            opacity={light.shadowOpacity}
-            scale={7}
-            blur={2.5}
-            far={4}
-            color={light.shadowColor}
-          />
-        )}
-
-        {/* ── Suspended 3D Model ── */}
-        <Suspense fallback={<CanvasLoader />}>
-          <ModelScene />
-        </Suspense>
-      </Canvas>
+          <Suspense fallback={<CanvasLoader />}>
+            <ModelScene animate={!reduceMotion} />
+            {!isMobile && <GroundShadow isLight={isLight} />}
+          </Suspense>
+        </Canvas>
       </CanvasErrorBoundary>
     </div>
   );
 }
-
-// Preload the custom model for instantaneous asset availability
-useGLTF.preload("/models/3daily-model.glb");
-

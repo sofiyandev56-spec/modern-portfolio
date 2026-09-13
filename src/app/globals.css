@@ -218,6 +218,24 @@
 /* For the rare decorative case that tokens cannot express. */
 @custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
+/* ── Motion breakpoints ──
+   These mirror the media queries in src/lib/use-media-query.ts so the CSS
+   layout and the GSAP behaviour always agree on which experience a viewport
+   gets. Change them together.
+
+   hscroll: the pinned horizontal projects scrub (HORIZONTAL_PROJECTS_QUERY).
+   scene:   the fixed, scroll-choreographed 3D scene (FIXED_SCENE_QUERY). */
+@custom-variant hscroll {
+  @media (min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    @slot;
+  }
+}
+@custom-variant scene {
+  @media (min-width: 48rem) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    @slot;
+  }
+}
+
 /* Theme switch: a brief cross-fade on colour properties only, added by
    src/lib/theme.ts for the duration of the change and skipped under
    prefers-reduced-motion. */
@@ -242,7 +260,9 @@ html.theme-switching *::after {
 }
 
 html {
-  scroll-behavior: smooth;
+  /* No CSS scroll-behavior: in-page navigation is animated by Lenis (or a
+     native smooth scrollTo on touch) from smooth-scroll-provider.tsx, and a
+     CSS smooth rule would fight Lenis's per-frame scroll writes. */
   background-color: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
@@ -261,6 +281,20 @@ body {
   /* Stop iOS from silently inflating type in landscape. */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+/* Lenis: the documented reset for the wrapper it drives. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /* Anchor links must clear the fixed navbar, or headings land underneath it. */
@@ -416,20 +450,52 @@ button,
   box-shadow: 0 6px 25px -4px var(--glow-strong);
 }
 
-/* ── Subtle Infinite Marquee ── */
-@keyframes marquee-left {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+/* ── Scroll choreography ──
+
+   Masked line reveals. Each line is a clipping box and the text inside it
+   starts below the box, then slides up when the section enters. The hidden
+   start state is CSS so the very first paint already has it — a GSAP-only
+   start state would flash the text visible for a frame before hydration.
+   It only applies once the pre-hydration script has marked <html class="js">
+   (see theme-constants.ts): without JavaScript the text simply shows, and
+   under reduced motion nothing is ever hidden. */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  /* Room for descenders and the comma in "HI, I'M" that the tight display
+     leading would otherwise clip. The negative margin gives the space back. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 
-.animate-marquee-left {
-  display: flex;
-  width: max-content;
-  animation: marquee-left 32s linear infinite;
+.reveal-inner {
+  display: block;
 }
 
-.animate-marquee-left:hover {
-  animation-play-state: paused;
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal-inner {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  html.js .reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+}
+
+/* Skill cards stack as they arrive: each one sticks near the top of the
+   viewport, and the one beneath scales down, dims and softens under it. The
+   per-card top offset comes from the inline --stack-index. */
+.stack-card {
+  position: sticky;
+  top: calc(6.5rem + var(--stack-index, 0) * 1.25rem);
+  transform-origin: center top;
+}
+
+/* Project panels inside the pinned horizontal track. Their media gets a
+   counter-parallax on desktop; everywhere else they stack and scroll. */
+.project-track {
+  --panel-width: min(84vw, 1180px);
 }
 
 /* ── Custom Scrollbar ── */

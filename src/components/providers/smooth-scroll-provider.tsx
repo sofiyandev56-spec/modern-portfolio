@@ -1,80 +1,90 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Lenis from "lenis";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { scrollToTarget, setLenisInstance, updateScrollVelocity } from "@/lib/lenis";
 
+/**
+ * Scroll physics for the whole page.
+ *
+ * Lenis smooths wheel input with a fixed-duration exponential ease, and it is
+ * driven from GSAP's ticker rather than its own requestAnimationFrame loop, so
+ * the scroll position, every ScrollTrigger scrub and the 3D scene's damping
+ * all advance on the same clock. Lenis reports each frame's scroll to
+ * ScrollTrigger directly, and lag smoothing is off so a dropped frame never
+ * lets the two drift apart.
+ *
+ * Touch devices and users who prefer reduced motion scroll natively: Lenis
+ * only smooths wheel events, and a permanent rAF loop is a pure battery cost
+ * on a phone. ScrollTrigger listens to native scroll on its own, so the
+ * scroll-driven sections still work there.
+ */
 export function SmoothScrollProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const lenisRef = useRef<Lenis | null>(null);
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-
-    // Lenis only smooths wheel input, which touch devices never produce, but it
-    // still runs a requestAnimationFrame loop every frame for the life of the
-    // page. On a phone that is pure battery cost, and its 1.2s animated anchor
-    // scroll is slower than the native jump. Native scrolling plus the
-    // scroll-margin-top in globals.css gives the same result for free.
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    const smooth = !prefersReducedMotion && !isTouch;
 
-    if (!prefersReducedMotion && !isTouch) {
-      const lenis = new Lenis({
-        lerp: 0.08,
-        wheelMultiplier: 0.9,
+    let lenis: Lenis | null = null;
+    let tick: ((time: number) => void) | null = null;
+
+    if (smooth) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
       });
 
-      lenisRef.current = lenis;
-      (window as unknown as { __lenis: Lenis | null }).__lenis = lenis;
+      // Lenis -> ScrollTrigger: every smoothed frame is a scroll update.
+      lenis.on("scroll", ScrollTrigger.update);
 
-      // Smooth RAF loop
-      let rafId: number;
-      function raf(time: number) {
-        lenis.raf(time);
-        rafId = requestAnimationFrame(raf);
-      }
-      rafId = requestAnimationFrame(raf);
-
-      // Handle anchor links smoothly
-      const handleAnchorClick = (e: MouseEvent) => {
-        const target = (e.target as HTMLElement)?.closest("a");
-        if (!target) return;
-        const href = target.getAttribute("href");
-        if (href && href.startsWith("#") && href.length > 1) {
-          const element = document.querySelector(href);
-          if (element) {
-            e.preventDefault();
-            lenis.scrollTo(element as HTMLElement, {
-              offset: 0,
-              duration: 1.2,
-            });
-          }
-        }
+      // GSAP ticker -> Lenis: one clock for scroll, scrubs and the 3D scene.
+      // The ticker reports seconds; Lenis expects milliseconds.
+      tick = (time: number) => {
+        lenis!.raf(time * 1000);
+        updateScrollVelocity(lenis!.velocity ?? 0);
       };
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
 
-      document.addEventListener("click", handleAnchorClick);
-
-      return () => {
-        cancelAnimationFrame(rafId);
-        document.removeEventListener("click", handleAnchorClick);
-        (window as unknown as { __lenis: Lenis | null }).__lenis = null;
-        lenis.destroy();
-        lenisRef.current = null;
-      };
+      setLenisInstance(lenis);
     }
+
+    // In-page anchors go through the same physics as everything else. Handled
+    // here for every device so the CSS scroll-behavior rule is not needed —
+    // that rule would fight Lenis's per-frame scroll writes.
+    const handleAnchorClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return;
+      const anchor = (e.target as HTMLElement)?.closest("a");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#") || href.length < 2) return;
+      const element = document.querySelector(href);
+      if (!element) return;
+      e.preventDefault();
+      scrollToTarget(element);
+    };
+    document.addEventListener("click", handleAnchorClick);
+
+    return () => {
+      document.removeEventListener("click", handleAnchorClick);
+      if (tick) gsap.ticker.remove(tick);
+      setLenisInstance(null);
+      lenis?.destroy();
+    };
   }, []);
 
   // Ambient mouse-following spotlight tracker
   useEffect(() => {
-    if (typeof window === "undefined") return;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
     if (isTouch) return;
 

@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/navbar";
+import { ScrollSceneClient } from "@/components/3d/scroll-scene-client";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
@@ -10,7 +11,8 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="relative min-h-dvh bg-canvas">
+      <ScrollSceneClient />
+      <main className="relative min-h-dvh bg-transparent">
         {/* HERO SECTION */}
         <Hero />
 

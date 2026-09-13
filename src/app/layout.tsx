@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Syne, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { FilmGrain } from "@/components/ui/film-grain";
 import { PERSON_SCHEMA, siteUrl } from "@/lib/site";
 import { THEME_INIT_SCRIPT } from "@/lib/theme-constants";
 import "./globals.css";
@@ -72,15 +74,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${syne.variable} ${inter.variable}`}
-      // data-theme is set by THEME_INIT_SCRIPT before hydration, so the
-      // attribute the client sees may differ from the server markup by design.
+      // data-theme and the "js" class are set by THEME_INIT_SCRIPT before
+      // hydration, so the attributes the client sees differ from the server
+      // markup by design.
       suppressHydrationWarning
     >
       <head>
-        {/* Applies the saved theme before first paint — see src/lib/theme.ts */}
+        {/* Applies the saved theme and the js marker before first paint — see src/lib/theme-constants.ts */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="bg-canvas text-fg antialiased font-sans">
+        <CustomCursor />
+        <FilmGrain />
         {/* Keyboard users land here first and can jump past the navbar. */}
         <a href="#hero" className="skip-link">
           Skip to content

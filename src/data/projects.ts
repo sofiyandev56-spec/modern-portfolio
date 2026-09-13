@@ -121,6 +121,15 @@ export const projects: Project[] = [
     ],
     demo: "https://client-joy-book.lovable.app",
     repoPrivate: true,
+    images: [
+      {
+        src: "/images/happynest/dashboard.webp",
+        alt: "HappyNest clinic dashboard: appointment timeline, patient queue, and immunization checklist",
+        width: 1600,
+        height: 900,
+        label: "Dashboard",
+      },
+    ],
     visualType: "happynest",
   },
   {
@@ -147,6 +156,15 @@ export const projects: Project[] = [
       "Framer Motion",
       "Tailwind CSS",
       "GSAP",
+    ],
+    images: [
+      {
+        src: "/images/portfolio/showcase.webp",
+        alt: "Modern Portfolio interactive 3D WebGL experience, custom shaders and kinetic motion design",
+        width: 1600,
+        height: 900,
+        label: "Showcase",
+      },
     ],
     github: "https://github.com/sofiyandev56-spec/modern-portfolio",
     visualType: "portfolio",

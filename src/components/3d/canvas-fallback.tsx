@@ -28,6 +28,10 @@ export function CanvasFallback() {
 
 interface BoundaryProps {
   children: React.ReactNode;
+  /** What to show instead. Defaults to the static graphic. */
+  fallback?: React.ReactNode;
+  /** Lets an owner elsewhere in the page react, e.g. the hero slot. */
+  onError?: () => void;
 }
 
 interface BoundaryState {
@@ -51,10 +55,13 @@ export class CanvasErrorBoundary extends React.Component<
 
   componentDidCatch(error: unknown) {
     console.warn("3D scene failed, showing static fallback:", error);
+    this.props.onError?.();
   }
 
   render() {
-    if (this.state.failed) return <CanvasFallback />;
+    if (this.state.failed) {
+      return this.props.fallback === undefined ? <CanvasFallback /> : this.props.fallback;
+    }
     return this.props.children;
   }
 }

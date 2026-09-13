@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ArrowUpRight, BrainCircuit, Code2, Database, Bike, Trophy, Activity } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { COARSE_OR_NARROW, REDUCED_MOTION, useMediaQuery } from "@/lib/use-media-query";
+import { RevealItem, RevealText } from "@/components/motion/reveal";
+import { VelocitySkew } from "@/components/motion/velocity-skew";
 
 // 3D Tilt Profile Card Component
 function TiltProfileCard({ children }: { children: React.ReactNode }) {
@@ -125,31 +127,45 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-canvas border-t border-line-faint overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 border-t border-line-faint overflow-hidden"
     >
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-radial from-ambient-3 via-ambient-2 to-transparent blur-3xl pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-12">
         
-        {/* Section Header */}
+        {/* Section Header — the bust sweeps in behind this on desktop */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-secondary mb-6">
-            <span>Who I Am &amp; How I Learn</span>
-          </div>
-          <h2 className="font-display text-[clamp(2.25rem,10vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-fg mb-6">
-            ABOUT ME.
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-fg-soft font-normal leading-relaxed">
+          <RevealItem className="mb-6">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-secondary">
+              Who I Am &amp; How I Learn
+            </span>
+          </RevealItem>
+          <VelocitySkew max={2}>
+            <RevealText
+              as="h2"
+              className="font-display text-[clamp(2.25rem,10vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-fg mb-6"
+              lines={["ABOUT", "ME."]}
+            />
+          </VelocitySkew>
+          {/* A soft scrim keeps the paragraph legible over the model. */}
+          <RevealItem
+            as="p"
+            delay={0.15}
+            className="relative text-base sm:text-lg md:text-xl text-fg-soft font-normal leading-relaxed scene:[text-shadow:0_0_24px_var(--bg),0_0_8px_var(--bg)]"
+          >
             I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and three applications I have shipped — two with a team, including a Smart India Hackathon prototype, and one solo.
-          </p>
+          </RevealItem>
         </div>
 
         {/* Centerpiece Layout: 3D Tilt Portrait & Floating Glass Domain Badges */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center max-w-5xl mx-auto mb-12 sm:mb-20">
+        <div
+          data-scene-anchor="about-grid"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center max-w-5xl mx-auto mb-12 sm:mb-20"
+        >
           
           {/* Left: 3D Tilt Portrait Glass Card */}
-          <div className="lg:col-span-5 flex justify-center">
+          <RevealItem className="lg:col-span-5 flex justify-center">
             <TiltProfileCard>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-line bg-surface shadow-2xl group">
                 <Image
@@ -171,15 +187,16 @@ export function About() {
                 </div>
               </div>
             </TiltProfileCard>
-          </div>
+          </RevealItem>
 
           {/* Right: 3 Floating Domain Cards with Asynchronous Sinusoidal Drift */}
           <div className="lg:col-span-7 flex flex-col gap-5">
             {domains.map((item, idx) => {
               const Icon = item.icon;
               return (
+                <RevealItem key={idx} delay={0.1 + idx * 0.1}>
+                <VelocitySkew max={1.5}>
                 <motion.div
-                  key={idx}
                   animate={animate ? item.floatingAnimation : undefined}
                   className="glass-card p-5 sm:p-6 md:p-7 flex items-start gap-4 sm:gap-5 group"
                 >
@@ -200,6 +217,8 @@ export function About() {
                     </p>
                   </div>
                 </motion.div>
+                </VelocitySkew>
+                </RevealItem>
               );
             })}
           </div>
@@ -207,7 +226,7 @@ export function About() {
         </div>
 
         {/* Away From The Keyboard */}
-        <div className="flex flex-col items-center gap-4 mb-10 sm:mb-16">
+        <RevealItem className="flex flex-col items-center gap-4 mb-10 sm:mb-16">
           <span className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">
             Away From The Keyboard
           </span>
@@ -225,10 +244,10 @@ export function About() {
               );
             })}
           </div>
-        </div>
+        </RevealItem>
 
         {/* Bottom Call to Action */}
-        <div className="flex justify-center items-center gap-4">
+        <RevealItem delay={0.1} className="flex justify-center items-center gap-4">
           <a
             href="#contact"
             className="pill-btn pill-btn-primary group"
@@ -244,7 +263,7 @@ export function About() {
           >
             <span>GitHub Profile</span>
           </a>
-        </div>
+        </RevealItem>
 
       </div>
     </section>
