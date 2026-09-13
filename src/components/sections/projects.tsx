@@ -1,10 +1,86 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, ChevronDown, ExternalLink, Lock, CalendarCheck, Boxes } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ExternalLink, Lock, CalendarCheck, Boxes, Trophy } from "lucide-react";
 import { GitHubIcon } from "@/components/icons";
 import { projects, type Project } from "@/data/projects";
+
+/**
+ * Real screenshots of a running product. The main frame can be switched when a
+ * project supplies more than one image; the optional highlight strip beneath it
+ * stays fixed so the project's key figure is always in view.
+ */
+function ScreenshotPanel({ project }: { project: Project }) {
+  const images = project.images ?? [];
+  const [active, setActive] = useState(0);
+  const current = images[active] ?? images[0];
+  if (!current) return null;
+
+  return (
+    <div className="space-y-3 sm:space-y-4">
+      <div className="rounded-xl border border-white/10 overflow-hidden bg-zinc-900/60">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={current.src}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <Image
+              src={current.src}
+              alt={current.alt}
+              width={current.width}
+              height={current.height}
+              sizes="(max-width: 1024px) 100vw, 640px"
+              className="w-full h-auto block"
+              priority={false}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label={`${project.title} screenshots`}>
+          {images.map((img, i) => (
+            <button
+              key={img.src}
+              type="button"
+              role="tab"
+              aria-selected={i === active}
+              onClick={() => setActive(i)}
+              className={`text-xs px-3 py-1.5 pointer-coarse:min-h-11 pointer-coarse:px-4 rounded-full border transition-colors cursor-pointer ${
+                i === active
+                  ? "border-purple-500/60 bg-purple-500/10 text-purple-200"
+                  : "border-white/10 bg-white/[0.03] text-zinc-400 hover:text-white hover:border-white/20"
+              }`}
+            >
+              {img.label ?? `Screen ${i + 1}`}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {project.highlight && (
+        <figure className="rounded-xl border border-white/10 overflow-hidden bg-zinc-900/60">
+          <Image
+            src={project.highlight.src}
+            alt={project.highlight.alt}
+            width={project.highlight.width}
+            height={project.highlight.height}
+            sizes="(max-width: 1024px) 100vw, 640px"
+            className="w-full h-auto block"
+          />
+          <figcaption className="px-4 py-3 text-xs sm:text-[13px] leading-relaxed text-zinc-400 border-t border-white/10">
+            {project.highlight.caption}
+          </figcaption>
+        </figure>
+      )}
+    </div>
+  );
+}
 
 export function Projects() {
   const [expandedId, setExpandedId] = useState<string>(projects[0].id);
@@ -15,6 +91,9 @@ export function Projects() {
 
   const renderVisualMockup = (type: Project["visualType"]) => {
     switch (type) {
+      case "skilltrace":
+        // SkillTrace ships real screenshots, so this branch is never reached.
+        return null;
       case "happynest":
         return (
           <div className="w-full h-full flex flex-col justify-between">
@@ -87,6 +166,76 @@ export function Projects() {
     }
   };
 
+  // Facts, stack and links. For projects with real screenshots this sits under
+  // the images so the two columns balance and the call to action comes last.
+  const renderMeta = (project: Project) => (
+    <>
+      {/* At a Glance */}
+      <div
+        className={`grid grid-cols-1 gap-3 pt-2 ${
+          project.facts.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"
+        }`}
+      >
+        {project.facts.map((f, fIdx) => (
+          <div key={fIdx} className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="text-[10px] text-zinc-500 uppercase">{f.label}</div>
+            <div className="text-sm font-bold text-white mt-1">{f.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Technologies */}
+      <div className="pt-2">
+        <div className="flex flex-wrap gap-2">
+          {project.technologies.map((t, tIdx) => (
+            <span
+              key={tIdx}
+              className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-zinc-300"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="pt-2 flex flex-wrap items-center gap-4">
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noreferrer"
+            className="pill-btn pill-btn-primary py-2.5 px-5 text-xs font-semibold group"
+          >
+            <GitHubIcon size={15} />
+            <span>GitHub Repo</span>
+            <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        )}
+
+        {project.demo && (
+          <a
+            href={project.demo}
+            target="_blank"
+            rel="noreferrer"
+            className="pill-btn pill-btn-secondary py-2.5 px-5 text-xs font-semibold group"
+          >
+            <ExternalLink size={14} />
+            <span>Live Demo</span>
+          </a>
+        )}
+
+        {project.repoPrivate && (
+          <span className="inline-flex items-center gap-2 py-2.5 px-4 rounded-full border border-white/10 bg-white/[0.02] text-xs font-medium text-zinc-400">
+            <Lock size={13} />
+            <span>Private repository</span>
+          </span>
+        )}
+      </div>
+
+    </>
+  );
+
   return (
     <section
       id="projects"
@@ -109,7 +258,7 @@ export function Projects() {
           </div>
           <div className="max-w-md">
             <p className="text-base sm:text-lg text-zinc-400 leading-relaxed">
-              Two things I have actually built end to end — a clinic booking application and the site you are on right now.
+              Three things I have actually shipped — a hackathon prototype for tracking government skilling outcomes, a clinic booking application, and the site you are on right now.
             </p>
           </div>
         </div>
@@ -118,6 +267,7 @@ export function Projects() {
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {projects.map((project) => {
             const isExpanded = expandedId === project.id;
+            const hasImages = !!project.images?.length;
 
             return (
               <motion.div
@@ -145,7 +295,13 @@ export function Projects() {
                     </span>
 
                     {/* Title & Category */}
-                    <div>
+                    <div className="min-w-0">
+                      {project.hackathon && (
+                        <span className="inline-flex items-center gap-1.5 mb-2 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-purple-200">
+                          <Trophy size={11} aria-hidden="true" />
+                          {project.hackathon}
+                        </span>
+                      )}
                       <h3 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors">
                         {project.title}
                       </h3>
@@ -191,7 +347,7 @@ export function Projects() {
                       aria-labelledby={`${project.id}-trigger`}
                     >
                       <div className="p-5 sm:p-8 md:p-12">
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-16 items-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-16 items-start">
                           
                           {/* Left: Overview, Impact, & Tech Pills (col-span-5) */}
                           <div className="lg:col-span-5 space-y-6">
@@ -213,78 +369,47 @@ export function Projects() {
                               </p>
                             </div>
 
-                            {/* At a Glance */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                              {project.facts.map((f, fIdx) => (
-                                <div key={fIdx} className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                                  <div className="text-[10px] text-zinc-500 uppercase">{f.label}</div>
-                                  <div className="text-sm font-bold text-white mt-1">{f.value}</div>
+                            {project.features && project.features.length > 0 && (
+                              <div>
+                                <div className="text-xs uppercase tracking-widest text-zinc-500 font-medium mb-2">
+                                  Key Features
                                 </div>
-                              ))}
-                            </div>
-
-                            {/* Technologies */}
-                            <div className="pt-2">
-                              <div className="flex flex-wrap gap-2">
-                                {project.technologies.map((t, tIdx) => (
-                                  <span
-                                    key={tIdx}
-                                    className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-zinc-300"
-                                  >
-                                    {t}
-                                  </span>
-                                ))}
+                                <ul className="space-y-2">
+                                  {project.features.map((f, fIdx) => (
+                                    <li key={fIdx} className="flex items-start gap-2.5 text-sm text-zinc-300 leading-relaxed">
+                                      <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" aria-hidden="true" />
+                                      <span>{f}</span>
+                                    </li>
+                                  ))}
+                                </ul>
                               </div>
-                            </div>
+                            )}
 
-                            {/* Action Buttons */}
-                            <div className="pt-2 flex flex-wrap items-center gap-4">
-                              {project.github && (
-                                <a
-                                  href={project.github}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="pill-btn pill-btn-primary py-2.5 px-5 text-xs font-semibold group"
-                                >
-                                  <GitHubIcon size={15} />
-                                  <span>GitHub Repo</span>
-                                  <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                </a>
-                              )}
-
-                              {project.demo && (
-                                <a
-                                  href={project.demo}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="pill-btn pill-btn-secondary py-2.5 px-5 text-xs font-semibold group"
-                                >
-                                  <ExternalLink size={14} />
-                                  <span>Live Demo</span>
-                                </a>
-                              )}
-
-                              {project.repoPrivate && (
-                                <span className="inline-flex items-center gap-2 py-2.5 px-4 rounded-full border border-white/10 bg-white/[0.02] text-xs font-medium text-zinc-400">
-                                  <Lock size={13} />
-                                  <span>Private repository</span>
-                                </span>
-                              )}
-                            </div>
-
+                            {!hasImages && renderMeta(project)}
                           </div>
 
-                          {/* Right: Visual Mockup Container (col-span-7) */}
-                          <div className="lg:col-span-7">
-                            <motion.div
-                              aria-hidden="true"
-                              initial={{ scale: 0.96, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1], delay: 0.08 }}
-                              className="rounded-xl border border-white/10 overflow-hidden aspect-[4/3] sm:aspect-video bg-zinc-900/60 p-4 sm:p-6 md:p-8 backdrop-blur-sm flex flex-col justify-between"
-                            >
-                              {renderVisualMockup(project.visualType)}
-                            </motion.div>
+                          {/* Right: real screenshots when available, otherwise a decorative mockup (col-span-7) */}
+                          <div className="lg:col-span-7 lg:self-start">
+                            {project.images && project.images.length > 0 ? (
+                              <motion.div
+                                initial={{ scale: 0.98, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1], delay: 0.08 }}
+                              >
+                                <ScreenshotPanel project={project} />
+                                <div className="mt-6 space-y-6">{renderMeta(project)}</div>
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                aria-hidden="true"
+                                initial={{ scale: 0.96, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1], delay: 0.08 }}
+                                className="rounded-xl border border-white/10 overflow-hidden aspect-[4/3] sm:aspect-video bg-zinc-900/60 p-4 sm:p-6 md:p-8 backdrop-blur-sm flex flex-col justify-between"
+                              >
+                                {renderVisualMockup(project.visualType)}
+                              </motion.div>
+                            )}
                           </div>
 
                         </div>

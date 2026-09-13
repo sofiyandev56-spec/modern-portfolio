@@ -141,7 +141,7 @@ export function About() {
             ABOUT ME.
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 font-normal leading-relaxed">
-            I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and two applications I built end to end rather than only read about.
+            I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and three applications I have shipped — two with a team, including a Smart India Hackathon prototype, and one solo.
           </p>
         </div>
 

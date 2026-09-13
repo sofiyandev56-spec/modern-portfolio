@@ -82,7 +82,7 @@ export function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-200 rounded-full ${
+                  className={`relative px-4 py-1.5 pointer-coarse:min-h-11 pointer-coarse:inline-flex pointer-coarse:items-center text-xs font-medium tracking-wide transition-all duration-200 rounded-full ${
                     isCurrent
                       ? "text-white bg-white/15 shadow-sm"
                       : "text-zinc-400 hover:text-white hover:bg-white/5"
