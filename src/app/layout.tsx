@@ -3,6 +3,7 @@ import { Syne, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PERSON_SCHEMA, siteUrl } from "@/lib/site";
+import { THEME_INIT_SCRIPT } from "@/lib/theme-constants";
 import "./globals.css";
 
 const syne = Syne({
@@ -70,12 +71,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${inter.variable} dark`}
+      className={`${syne.variable} ${inter.variable}`}
+      // data-theme is set by THEME_INIT_SCRIPT before hydration, so the
+      // attribute the client sees may differ from the server markup by design.
       suppressHydrationWarning
     >
-      <body
-        className="bg-[#09090b] text-[#f4f4f5] antialiased selection:bg-[#a855f7] selection:text-white font-sans"
-      >
+      <head>
+        {/* Applies the saved theme before first paint — see src/lib/theme.ts */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="bg-canvas text-fg antialiased font-sans">
         {/* Keyboard users land here first and can jump past the navbar. */}
         <a href="#hero" className="skip-link">
           Skip to content

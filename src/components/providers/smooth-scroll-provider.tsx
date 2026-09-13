@@ -100,7 +100,7 @@ export function SmoothScrollProvider({
         <div
           className="fixed inset-0 pointer-events-none z-30 transition-opacity duration-700"
           style={{
-            background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(168, 85, 247, 0.07), transparent 75%)`,
+            background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, var(--ambient-1), transparent 75%)`,
           }}
         />
       )}

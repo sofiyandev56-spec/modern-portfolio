@@ -1,27 +1,237 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg-base: #09090b;
-  --color-bg-surface: #121216;
-  --color-bg-elevated: #18181b;
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.18);
-  --color-text-primary: #f4f4f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
-  --color-accent-purple: #a855f7;
-  --color-accent-magenta: #d946ef;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME SYSTEM
+
+   Every theme-dependent colour is a semantic CSS variable defined here and
+   nowhere else. Dark is the default and lives on :root; light overrides live
+   under [data-theme="light"]. Components never reference raw colours — they
+   use the Tailwind utilities generated from @theme inline below (bg-canvas,
+   text-fg, border-line, bg-fill, text-accent, ...).
+
+   Switching: src/lib/theme.ts sets data-theme on <html>, persists the choice
+   to localStorage, and a pre-hydration script in layout.tsx applies the saved
+   value before first paint so there is no flash of the wrong theme.
+
+   Adding a component: use the semantic utilities. If something genuinely needs
+   a different treatment per theme that tokens cannot express (rare — decorative
+   glows), use the `light:` variant declared below.
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
+  color-scheme: dark;
+
+  /* Surfaces */
   --bg: #09090b;
   --surface: #121216;
-  --surface-elevated: #18181b;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.18);
-  --accent-purple: #a855f7;
-  --accent-magenta: #d946ef;
-  color-scheme: dark;
+  --surface-elevated: #111115;
+  --overlay: rgba(9, 9, 11, 0.95);
+  --nav: rgba(9, 9, 11, 0.8);
+
+  /* Text */
+  --fg: #f4f4f5;
+  --fg-soft: #d4d4d8;
+  --fg-secondary: #a1a1aa;
+  --fg-muted: #85858f; /* was zinc-500; lifted so 11–12px labels clear 4.5:1 */
+
+  /* Lines */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --line-faint: rgba(255, 255, 255, 0.05);
+
+  /* Translucent fills (the "white/[0.04]" family) */
+  --fill-faint: rgba(255, 255, 255, 0.02);
+  --fill: rgba(255, 255, 255, 0.04);
+  --fill-hover: rgba(255, 255, 255, 0.08);
+  --fill-active: rgba(255, 255, 255, 0.15);
+
+  /* Brand accents. Hue is constant across themes; the *text* shade changes so
+     it stays readable on each background. */
+  --accent: #a855f7;
+  --accent-2: #d946ef;
+  --accent-text: #d8b4fe;
+  --accent-text-strong: #c084fc;
+  --accent-soft: rgba(168, 85, 247, 0.1);
+  --accent-line: rgba(168, 85, 247, 0.3);
+  --accent-line-strong: rgba(168, 85, 247, 0.6);
+  --on-accent: #ffffff;
+
+  /* Status accents used in project cards */
+  --success: #34d399;
+  --success-soft: rgba(16, 185, 129, 0.1);
+  --success-line: rgba(16, 185, 129, 0.2);
+  --info: #22d3ee;
+  --info-soft: rgba(6, 182, 212, 0.1);
+  --info-line: rgba(6, 182, 212, 0.2);
+
+  /* Buttons */
+  --btn-primary-bg: #ffffff;
+  --btn-primary-bg-hover: #e4e4e7;
+  --btn-primary-fg: #09090b;
+  --btn-primary-glow: rgba(255, 255, 255, 0.25);
+
+  /* Display-heading gradient */
+  --heading-from: #ffffff;
+  --heading-via: #e4e4e7;
+  --heading-to: #a1a1aa;
+
+  /* Depth */
+  --shadow: rgba(0, 0, 0, 0.8);
+  --shadow-soft: rgba(0, 0, 0, 0.6);
+  --glow: rgba(168, 85, 247, 0.15);
+  --glow-strong: rgba(168, 85, 247, 0.4);
+
+  /* Glass */
+  --glass-bg: rgba(18, 18, 22, 0.65);
+  --glass-line: rgba(255, 255, 255, 0.08);
+  --glass-line-hover: rgba(255, 255, 255, 0.18);
+
+  /* Decorative ambient glows (hero / section backgrounds) */
+  --ambient-1: rgba(147, 51, 234, 0.15);
+  --ambient-2: rgba(37, 99, 235, 0.1);
+  --ambient-3: rgba(88, 28, 135, 0.15);
+
+  /* Chrome */
+  --scrollbar-track: #09090b;
+  --scrollbar-thumb: #27272a;
+  --scrollbar-thumb-hover: #3f3f46;
+}
+
+/* Light: an editorial, high-contrast treatment of the same identity — cool
+   off-white paper, near-black type, borders you can actually see, and the
+   brand purple kept but deepened wherever it is used as text. */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f3f3f5;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --overlay: rgba(243, 243, 245, 0.96);
+  --nav: rgba(255, 255, 255, 0.82);
+
+  --fg: #0b0b0e;
+  --fg-soft: #2e2e36;
+  --fg-secondary: #4b4b57;
+  --fg-muted: #6b6b76;
+
+  --line: rgba(11, 11, 14, 0.1);
+  --line-strong: rgba(11, 11, 14, 0.24);
+  --line-faint: rgba(11, 11, 14, 0.06);
+
+  --fill-faint: rgba(11, 11, 14, 0.025);
+  --fill: rgba(11, 11, 14, 0.04);
+  --fill-hover: rgba(11, 11, 14, 0.07);
+  --fill-active: rgba(11, 11, 14, 0.11);
+
+  --accent: #9333ea;
+  --accent-2: #c026d3;
+  --accent-text: #7e22ce;
+  --accent-text-strong: #6b21a8;
+  --accent-soft: rgba(147, 51, 234, 0.09);
+  --accent-line: rgba(147, 51, 234, 0.35);
+  --accent-line-strong: rgba(147, 51, 234, 0.6);
+  --on-accent: #ffffff;
+
+  --success: #047857;
+  --success-soft: rgba(5, 150, 105, 0.1);
+  --success-line: rgba(5, 150, 105, 0.3);
+  --info: #0e7490;
+  --info-soft: rgba(8, 145, 178, 0.1);
+  --info-line: rgba(8, 145, 178, 0.3);
+
+  --btn-primary-bg: #0b0b0e;
+  --btn-primary-bg-hover: #27272a;
+  --btn-primary-fg: #ffffff;
+  --btn-primary-glow: rgba(11, 11, 14, 0.18);
+
+  --heading-from: #0b0b0e;
+  --heading-via: #27272a;
+  --heading-to: #52525b;
+
+  --shadow: rgba(11, 11, 14, 0.16);
+  --shadow-soft: rgba(11, 11, 14, 0.1);
+  --glow: rgba(147, 51, 234, 0.12);
+  --glow-strong: rgba(147, 51, 234, 0.28);
+
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-line: rgba(11, 11, 14, 0.1);
+  --glass-line-hover: rgba(11, 11, 14, 0.24);
+
+  --ambient-1: rgba(147, 51, 234, 0.1);
+  --ambient-2: rgba(37, 99, 235, 0.07);
+  --ambient-3: rgba(147, 51, 234, 0.08);
+
+  --scrollbar-track: #f3f3f5;
+  --scrollbar-thumb: #c9c9d1;
+  --scrollbar-thumb-hover: #a8a8b3;
+}
+
+/* Expose the tokens to Tailwind so components can write bg-canvas, text-fg,
+   border-line, etc. `inline` makes the utilities reference the variables
+   directly, which is what lets a single attribute flip the whole page. */
+@theme inline {
+  --color-canvas: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--surface-elevated);
+  --color-overlay: var(--overlay);
+  --color-nav: var(--nav);
+
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-muted: var(--fg-muted);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-faint: var(--line-faint);
+
+  --color-fill-faint: var(--fill-faint);
+  --color-fill: var(--fill);
+  --color-fill-hover: var(--fill-hover);
+  --color-fill-active: var(--fill-active);
+
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-text: var(--accent-text);
+  --color-accent-text-strong: var(--accent-text-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-accent-line-strong: var(--accent-line-strong);
+  --color-on-accent: var(--on-accent);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-line: var(--success-line);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-line: var(--info-line);
+
+  --color-heading-from: var(--heading-from);
+  --color-heading-via: var(--heading-via);
+  --color-heading-to: var(--heading-to);
+
+  --color-ambient-1: var(--ambient-1);
+  --color-ambient-2: var(--ambient-2);
+  --color-ambient-3: var(--ambient-3);
+}
+
+/* For the rare decorative case that tokens cannot express. */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* Theme switch: a brief cross-fade on colour properties only, added by
+   src/lib/theme.ts for the duration of the change and skipped under
+   prefers-reduced-motion. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    fill 0.28s ease,
+    stroke 0.28s ease !important;
 }
 
 /* ── Base Reset & Setup ── */
@@ -34,7 +244,7 @@
 html {
   scroll-behavior: smooth;
   background-color: var(--bg);
-  color: #f4f4f5;
+  color: var(--fg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -63,7 +273,7 @@ section[id] {
 /* A visible focus ring on keyboard navigation only, so the design is unchanged
    for mouse users but the page is actually traversable with a keyboard. */
 :focus-visible {
-  outline: 2px solid #c084fc;
+  outline: 2px solid var(--accent-text-strong);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -76,8 +286,8 @@ section[id] {
   z-index: 100;
   padding: 0.75rem 1.25rem;
   border-radius: 9999px;
-  background: #ffffff;
-  color: #09090b;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   font-size: 0.875rem;
   font-weight: 600;
   transform: translateY(-200%);
@@ -132,14 +342,14 @@ button,
 
 /* ── Selection ── */
 ::selection {
-  background: var(--accent-purple);
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* ── Modern Creative-Tech Glass & Pill Utilities ── */
 .glass-card {
-  background: rgba(18, 18, 22, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-line);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
@@ -147,8 +357,8 @@ button,
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 16px 40px -15px rgba(0, 0, 0, 0.8), 0 0 30px -10px rgba(168, 85, 247, 0.15);
+  border-color: var(--glass-line-hover);
+  box-shadow: 0 16px 40px -15px var(--shadow), 0 0 30px -10px var(--glow);
 }
 
 .pill-btn {
@@ -166,44 +376,44 @@ button,
 }
 
 .pill-btn-primary {
-  background: #ffffff;
-  color: #09090b;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   padding: 0.875rem 1.75rem;
-  box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 20px -5px var(--btn-primary-glow);
 }
 
 .pill-btn-primary:hover {
-  background: #e4e4e7;
+  background: var(--btn-primary-bg-hover);
   transform: translateY(-1px);
-  box-shadow: 0 0 30px -5px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 30px -5px var(--glow-strong);
 }
 
 .pill-btn-secondary {
-  background: rgba(255, 255, 255, 0.04);
-  color: #f4f4f5;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--fill);
+  color: var(--fg);
+  border: 1px solid var(--line);
   padding: 0.875rem 1.75rem;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 .pill-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--fill-hover);
+  border-color: var(--line-strong);
   transform: translateY(-1px);
 }
 
 .pill-btn-accent {
-  background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: var(--on-accent);
   padding: 0.875rem 1.75rem;
-  box-shadow: 0 4px 20px -5px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4px 20px -5px var(--glow-strong);
 }
 
 .pill-btn-accent:hover {
   opacity: 0.95;
   transform: translateY(-1px);
-  box-shadow: 0 6px 25px -4px rgba(217, 70, 239, 0.5);
+  box-shadow: 0 6px 25px -4px var(--glow-strong);
 }
 
 /* ── Subtle Infinite Marquee ── */
@@ -228,14 +438,14 @@ button,
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--scrollbar-thumb-hover);
 }

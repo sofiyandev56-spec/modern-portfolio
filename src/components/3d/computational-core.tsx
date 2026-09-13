@@ -3,6 +3,7 @@
 import React, { Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { COARSE_OR_NARROW, useMediaQuery } from "@/lib/use-media-query";
+import { useTheme } from "@/lib/theme";
 import {
   CanvasErrorBoundary,
   CanvasFallback,
@@ -23,10 +24,10 @@ function CanvasLoader() {
     <Html center>
       <div className="flex flex-col items-center justify-center gap-3 select-none pointer-events-none">
         <div className="relative flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full border-2 border-purple-500/20 border-t-purple-400 animate-spin" />
-          <div className="absolute w-6 h-6 rounded-full bg-purple-500/20 blur-sm animate-pulse" />
+          <div className="w-12 h-12 rounded-full border-2 border-accent-line border-t-accent animate-spin" />
+          <div className="absolute w-6 h-6 rounded-full bg-accent-soft blur-sm animate-pulse" />
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-fg-muted">
           Streaming 3D Core...
         </span>
       </div>
@@ -115,6 +116,13 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
   // maps and a high-performance context, so scale the scene down on touch
   // devices. Decided once on mount: Canvas reads gl/dpr at creation time.
   const isMobile = useMediaQuery(COARSE_OR_NARROW);
+  // On paper-white the neon rim lights and the purple contact shadow read as
+  // noise, and the dark model needs more fill to separate from the page. The
+  // scene is not rebuilt on switch — only these light props change.
+  const isLight = useTheme() === "light";
+  const light = isLight
+    ? { ambient: 1.15, fill: 1.25, rimA: 2.6, rimB: 1.6, shadowOpacity: 0.28, shadowColor: "#4c1d95" }
+    : { ambient: 0.8, fill: 1.0, rimA: 4.5, rimB: 3.2, shadowOpacity: 0.5, shadowColor: "#7928ca" };
   // This component is only ever rendered on the client (dynamic, ssr: false),
   // so the probe can run during the first render without a hydration mismatch.
   const [webGL] = React.useState(isWebGLAvailable);
@@ -131,7 +139,9 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
     <div className={`relative w-full h-full select-none ${className}`}>
       <CanvasErrorBoundary>
       <Canvas
-        camera={{ position: [0, 0, 4.2], fov: 45 }}
+        // 4.55 (was 4.2) keeps the base of the bust and its contact shadow inside
+        // the canvas; on a light background the clipped edge was visible.
+        camera={{ position: [0, 0, 4.55], fov: 45 }}
         dpr={isMobile ? [1, 1.25] : [1, 1.5]}
         gl={{
           antialias: !isMobile,
@@ -142,7 +152,7 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
       >
         {/* ── Studio-Grade Lighting Setup ── */}
         {/* Ambient Fill */}
-        <ambientLight intensity={0.8} />
+        <ambientLight intensity={light.ambient} />
 
         {/* Warm White Directional Key Light */}
         <directionalLight
@@ -155,14 +165,14 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
         {/* Soft Front Fill Light */}
         <directionalLight
           position={[-2, 1, 4]}
-          intensity={1.0}
+          intensity={light.fill}
           color="#f4f4f5"
         />
 
         {/* Rim Light 1: Violet/Magenta Edge Glow */}
         <pointLight
           position={[-4, 2, -2.5]}
-          intensity={4.5}
+          intensity={light.rimA}
           color="#c084fc"
           distance={14}
         />
@@ -170,7 +180,7 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
         {/* Rim Light 2: Subtle Cyan/White Accent Glow */}
         <pointLight
           position={[4, -1, -2.5]}
-          intensity={3.2}
+          intensity={light.rimB}
           color="#38bdf8"
           distance={14}
         />
@@ -179,11 +189,11 @@ export function ComputationalCore({ className = "" }: { className?: string }) {
         {!isMobile && (
           <ContactShadows
             position={[0, -1.6, 0]}
-            opacity={0.5}
+            opacity={light.shadowOpacity}
             scale={7}
             blur={2.5}
             far={4}
-            color="#7928ca"
+            color={light.shadowColor}
           />
         )}
 

@@ -138,11 +138,11 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[92dvh] w-full flex flex-col justify-between pt-32 sm:pt-40 md:pt-44 pb-12 sm:pb-16 md:pb-24 overflow-hidden bg-[#09090b]"
+      className="relative min-h-[92dvh] w-full flex flex-col justify-between pt-32 sm:pt-40 md:pt-44 pb-12 sm:pb-16 md:pb-24 overflow-hidden bg-canvas"
     >
       {/* Soft Ambient Glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-radial from-purple-600/15 via-fuchsia-600/5 to-transparent blur-3xl pointer-events-none z-0" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[450px] h-[450px] bg-radial from-blue-600/10 via-purple-600/5 to-transparent blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-radial from-ambient-1 via-ambient-2 to-transparent blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[450px] h-[450px] bg-radial from-ambient-2 via-ambient-1 to-transparent blur-3xl pointer-events-none z-0" />
 
       {/* Main Hero Container */}
       <div className="relative max-w-6xl mx-auto w-full px-6 md:px-12 flex-1 flex flex-col justify-start pt-12 sm:pt-16 md:pt-0 md:justify-center z-10">
@@ -158,7 +158,7 @@ export function Hero() {
             {/* Domain Tag */}
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-300 mb-6"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-soft mb-6"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-fuchsia-400" />
               <span>B.Tech CSE (AI &amp; ML) Student</span>
@@ -167,10 +167,10 @@ export function Hero() {
             {/* Massive Bold Greeting */}
             <motion.h1
               variants={itemVariants}
-              className="font-display text-[clamp(2.5rem,11.5vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white leading-[0.95] mb-6"
+              className="font-display text-[clamp(2.5rem,11.5vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-fg leading-[0.95] mb-6"
             >
               HI, I&apos;M <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-heading-from via-heading-via to-heading-to">
                 SOFIYAN.
               </span>
             </motion.h1>
@@ -178,7 +178,7 @@ export function Hero() {
             {/* Clear, Human-Readable Subheading */}
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg md:text-xl text-zinc-400 font-normal leading-relaxed max-w-xl mb-10"
+              className="text-base sm:text-lg md:text-xl text-fg-secondary font-normal leading-relaxed max-w-xl mb-10"
             >
               B.Tech CSE (AI &amp; ML) Hons. student specializing in Generative AI with IBM. I learn by building — writing C, C++ and Python for the fundamentals, and shipping real web applications on top of them.
             </motion.p>
@@ -228,9 +228,9 @@ export function Hero() {
       </div>
 
       {/* Clean Monochrome Tech Stack Marquee */}
-      <div className="w-full mt-20 pt-8 border-t border-white/5 overflow-hidden z-10 select-none">
+      <div className="w-full mt-20 pt-8 border-t border-line-faint overflow-hidden z-10 select-none">
         <div className="max-w-6xl mx-auto px-6 mb-3 text-center">
-          <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">
+          <span className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">
             Languages, Tools &amp; Currently Learning
           </span>
         </div>
@@ -240,10 +240,10 @@ export function Hero() {
             {[...techStack, ...techStack, ...techStack].map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-8 text-xs sm:text-sm font-medium tracking-wide text-zinc-400 hover:text-white transition-colors whitespace-nowrap"
+                className="flex items-center gap-8 text-xs sm:text-sm font-medium tracking-wide text-fg-secondary hover:text-fg transition-colors whitespace-nowrap"
               >
                 <span>{item}</span>
-                <span className="text-zinc-700">•</span>
+                <span className="text-line-strong">•</span>
               </div>
             ))}
           </div>

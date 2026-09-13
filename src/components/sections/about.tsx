@@ -125,22 +125,22 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-canvas border-t border-line-faint overflow-hidden"
     >
       {/* Background Soft Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-radial from-purple-900/15 via-fuchsia-900/5 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-radial from-ambient-3 via-ambient-2 to-transparent blur-3xl pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto px-6 md:px-12">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-secondary mb-6">
             <span>Who I Am &amp; How I Learn</span>
           </div>
-          <h2 className="font-display text-[clamp(2.25rem,10vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white mb-6">
+          <h2 className="font-display text-[clamp(2.25rem,10vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-fg mb-6">
             ABOUT ME.
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-zinc-300 font-normal leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-fg-soft font-normal leading-relaxed">
             I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and three applications I have shipped — two with a team, including a Smart India Hackathon prototype, and one solo.
           </p>
         </div>
@@ -151,7 +151,7 @@ export function About() {
           {/* Left: 3D Tilt Portrait Glass Card */}
           <div className="lg:col-span-5 flex justify-center">
             <TiltProfileCard>
-              <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-[#121216] shadow-2xl group">
+              <div className="relative w-full h-full rounded-3xl overflow-hidden border border-line bg-surface shadow-2xl group">
                 <Image
                   src="/images/profile-about.jpg"
                   alt="Sofiyan Shaikh"
@@ -161,9 +161,10 @@ export function About() {
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                {/* Sits over the photo's dark gradient in both themes, so its colours stay constant. */}
                 <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-zinc-400 font-medium">Sofiyan Shaikh</div>
+                    <div className="text-xs text-zinc-300 font-medium">Sofiyan Shaikh</div>
                     <div className="text-sm font-semibold text-white">B.Tech CSE (AI &amp; ML) Student</div>
                   </div>
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -182,19 +183,19 @@ export function About() {
                   animate={animate ? item.floatingAnimation : undefined}
                   className="glass-card p-5 sm:p-6 md:p-7 flex items-start gap-4 sm:gap-5 group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-300 group-hover:text-purple-400 group-hover:border-purple-500/30 transition-colors shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-fill border border-line flex items-center justify-center text-fg-soft group-hover:text-accent-text-strong group-hover:border-accent-line transition-colors shrink-0">
                     <Icon size={22} />
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
+                      <h3 className="text-base sm:text-lg font-bold text-fg group-hover:text-accent-text transition-colors">
                         {item.title}
                       </h3>
-                      <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/5 text-zinc-400 border border-white/10">
+                      <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-fill text-fg-secondary border border-line">
                         {item.tag}
                       </span>
                     </div>
-                    <p className="text-sm text-zinc-400 leading-relaxed">
+                    <p className="text-sm text-fg-secondary leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -207,7 +208,7 @@ export function About() {
 
         {/* Away From The Keyboard */}
         <div className="flex flex-col items-center gap-4 mb-10 sm:mb-16">
-          <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">
+          <span className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">
             Away From The Keyboard
           </span>
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -216,9 +217,9 @@ export function About() {
               return (
                 <div
                   key={item.label}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-sm font-medium text-zinc-300 hover:text-white hover:border-white/20 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fill border border-line text-sm font-medium text-fg-soft hover:text-fg hover:border-line-strong transition-colors"
                 >
-                  <Icon size={15} className="text-purple-400" />
+                  <Icon size={15} className="text-accent-text-strong" />
                   <span>{item.label}</span>
                 </div>
               );

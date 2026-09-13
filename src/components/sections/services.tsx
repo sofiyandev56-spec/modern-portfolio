@@ -39,32 +39,32 @@ export function Services() {
   return (
     <section
       id="services"
-      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-[#09090b] border-t border-white/5 overflow-hidden"
+      className="relative w-full md:min-h-screen flex flex-col justify-center py-20 sm:py-24 md:py-40 lg:py-48 bg-canvas border-t border-line-faint overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full my-auto">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 md:mb-24 pb-6 sm:pb-8 border-b border-white/10 gap-6 sm:gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 md:mb-24 pb-6 sm:pb-8 border-b border-line gap-6 sm:gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium tracking-wide text-zinc-400 mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-secondary mb-6">
               <span>What I Study &amp; Build</span>
             </div>
-            <h2 className="font-display text-[clamp(1.5rem,7.2vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white">
+            <h2 className="font-display text-[clamp(1.5rem,7.2vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-fg">
               SKILLS & <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-heading-from via-heading-via to-heading-to">
                 CAPABILITIES.
               </span>
             </h2>
           </div>
           <div className="max-w-md">
-            <p className="text-base md:text-lg text-zinc-400 leading-relaxed">
+            <p className="text-base md:text-lg text-fg-secondary leading-relaxed">
               The four areas my degree and my side projects actually cover right now — the foundations I am building on, not a service menu.
             </p>
           </div>
         </div>
 
         {/* Clean Numbered List with Scroll Reveal and Spring Hover */}
-        <div className="divide-y divide-white/10 border-b border-white/10">
+        <div className="divide-y divide-white/10 border-b border-line">
           {services.map((item, idx) => (
             <motion.div
               key={item.number}
@@ -77,21 +77,19 @@ export function Services() {
                 ease: [0.16, 1, 0.3, 1],
               }}
               whileHover="hover"
-              className="py-7 sm:py-10 md:py-14 px-0 sm:px-8 rounded-2xl transition-colors duration-300 hover:bg-white/[0.03] flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16 group cursor-pointer"
+              className="py-7 sm:py-10 md:py-14 px-0 sm:px-8 rounded-2xl transition-colors duration-300 hover:bg-fill flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16 group cursor-pointer"
             >
               {/* Number and Title */}
               <div className="flex items-baseline gap-3 sm:gap-8 lg:w-5/12 min-w-0 lg:min-w-min">
                 <motion.span
-                  variants={{
-                    hover: { x: 6, color: "#c084fc" },
-                  }}
+                  variants={{ hover: { x: 6 } }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="font-mono text-sm sm:text-base font-bold text-zinc-500 transition-colors"
+                  className="font-mono text-sm sm:text-base font-bold text-fg-muted group-hover:text-accent-text-strong transition-colors"
                 >
                   {item.number}
                 </motion.span>
                 <div className="min-w-0 lg:min-w-min">
-                  <h3 className="font-display text-[clamp(1rem,4.8vw,1.25rem)] sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white group-hover:text-purple-300 transition-colors">
+                  <h3 className="font-display text-[clamp(1rem,4.8vw,1.25rem)] sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-fg group-hover:text-accent-text transition-colors">
                     {item.title}
                   </h3>
                 </div>
@@ -99,7 +97,7 @@ export function Services() {
 
               {/* Description */}
               <div className="lg:w-4/12">
-                <p className="text-base md:text-lg leading-relaxed text-zinc-400 max-w-xl">
+                <p className="text-base md:text-lg leading-relaxed text-fg-secondary max-w-xl">
                   {item.description}
                 </p>
               </div>
@@ -110,7 +108,7 @@ export function Services() {
                   {item.tags.map((tag, tIdx) => (
                     <span
                       key={tIdx}
-                      className="text-xs px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-zinc-300"
+                      className="text-xs px-3 py-1 rounded-full bg-fill border border-line text-fg-soft"
                     >
                       {tag}
                     </span>
@@ -118,16 +116,9 @@ export function Services() {
                 </div>
 
                 <motion.div
-                  variants={{
-                    hover: {
-                      rotate: 45,
-                      borderColor: "rgba(168, 85, 247, 0.4)",
-                      backgroundColor: "rgba(168, 85, 247, 0.15)",
-                      color: "#ffffff",
-                    },
-                  }}
+                  variants={{ hover: { rotate: 45 } }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="w-11 h-11 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center text-zinc-400 transition-colors shrink-0"
+                  className="w-11 h-11 rounded-full border border-line bg-fill-faint flex items-center justify-center text-fg-secondary group-hover:text-fg group-hover:border-accent-line group-hover:bg-accent-soft transition-colors shrink-0"
                 >
                   <ArrowUpRight size={20} />
                 </motion.div>

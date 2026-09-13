@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="relative min-h-dvh bg-[#09090b]">
+      <main className="relative min-h-dvh bg-canvas">
         {/* HERO SECTION */}
         <Hero />
 

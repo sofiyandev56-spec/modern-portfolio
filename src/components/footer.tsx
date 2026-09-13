@@ -38,19 +38,19 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-[#09090b] border-t border-white/5 mt-20 md:mt-28 py-16 md:py-20 text-white overflow-hidden">
+    <footer className="relative w-full bg-canvas border-t border-line-faint mt-20 md:mt-28 py-16 md:py-20 text-fg overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full">
         
         {/* Main Footer Block */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-12 border-b border-white/5">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-12 border-b border-line-faint">
           
           {/* Signature Branding */}
           <div>
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white mb-2">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-fg mb-2">
               SOFIYAN SHAIKH
             </h1>
-            <p className="text-sm sm:text-base text-zinc-400 font-normal">
-              AI/ML & Edge Systems Engineer • Building Autonomous Intelligence
+            <p className="text-sm sm:text-base text-fg-secondary font-normal">
+              B.Tech CSE (AI &amp; ML) Student • Generative AI with IBM
             </p>
           </div>
 
@@ -77,14 +77,14 @@ export function Footer() {
         </div>
 
         {/* Bottom Utility Bar: Copyright & Back to Top */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-fg-muted">
           <div>
-            © {new Date().getFullYear()} Sofiyan Shaikh. Crafted with modern creative-tech aesthetics.
+            © {new Date().getFullYear()} Sofiyan Shaikh. Built with Next.js, React Three Fiber and Framer Motion.
           </div>
 
           <button
             onClick={scrollToTop}
-            className="pill-btn pill-btn-secondary px-3.5 py-1.5 text-xs text-zinc-400 hover:text-white group"
+            className="pill-btn pill-btn-secondary px-3.5 py-1.5 text-xs text-fg-secondary hover:text-fg group"
           >
             <span>Back to Top</span>
             <ArrowUp size={13} className="group-hover:-translate-y-0.5 transition-transform" />

@@ -16,8 +16,8 @@ export function CanvasFallback() {
     >
       <div className="relative flex items-center justify-center">
         <div className="absolute w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-gradient-to-tr from-purple-600/30 via-fuchsia-500/20 to-blue-500/10 blur-3xl" />
-        <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-sm flex items-center justify-center">
-          <span className="font-display text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-500">
+        <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full border border-line bg-fill backdrop-blur-sm flex items-center justify-center">
+          <span className="font-display text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-heading-from via-heading-via to-heading-to">
             S
           </span>
         </div>
