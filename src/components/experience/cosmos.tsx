@@ -186,7 +186,7 @@ function materialParams(
       uOpacity: { value: 0 },
       uMouse: { value: new THREE.Vector3() },
       uMouseStrength: { value: 0 },
-      uMouseRadius: { value: 1 },
+      uHoleR: { value: 0.1 },
       uVel: { value: new THREE.Vector3() },
       uLag: { value: 0 },
     },
@@ -207,12 +207,12 @@ interface Live {
   explode: number;
   portal: number;
   intro: number;
-  /** Spring-driven drift of the star towards the pointer, and its velocity. */
+  /** Spring-driven chase of the pointer (hero only), and its velocity. */
   pullX: number;
   pullY: number;
   pullVX: number;
   pullVY: number;
-  /** How strongly the pointer is felt (0..1), damped. */
+  /** Whether the pointer is present (0..1), damped. */
   mouse: number;
 }
 
@@ -337,30 +337,34 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
     cam.lookAt(L.starX * 0.25, 0, 0);
     cam.updateMatrixWorld();
 
-    // ── Pointer: the star leans towards a nearby cursor ──
-    // The star's visible radius in world units, for distance falloffs.
+    // ── Pointer ──
+    // Two things happen. Everywhere, the cursor carves a hole in the particles
+    // (see the shader). In the hero the star also chases the cursor, caged
+    // inside the portal frame, on a soft spring — "Follow the star."
     const starR = STAR_R * 1.3 * L.scale;
     const hasCursor = !reduce && !mobile && s.cursorX >= 0 && L.explode < 0.5;
-    let mouseTarget = 0;
     let pullTX = 0;
     let pullTY = 0;
     if (hasCursor) {
       cursorOnStarPlane(cam, s.pointerX, s.pointerY, _cursorWorld);
-      const dx = _cursorWorld.x - L.starX;
-      const dy = _cursorWorld.y - L.starY;
-      const d = Math.hypot(dx, dy);
-      // Felt from ~4.5 radii out, fully inside one radius.
-      mouseTarget = smooth((4.5 * starR - d) / (3.5 * starR));
-      // Drift a fraction of the way, capped so it never chases the cursor.
-      const cap = 0.5 * starR;
-      const f = Math.min(1, cap / Math.max(d * 0.14, 1e-4));
-      pullTX = dx * 0.14 * f * mouseTarget;
-      pullTY = dy * 0.14 * f * mouseTarget;
+      const heroW = 1 - smooth(s.traverse * 2.5);
+      if (heroW > 0.001) {
+        // The portal's frame projected onto the star's plane, minus the
+        // star's own size, is the cage.
+        const ratio = CAM_HERO / (CAM_HERO - PORTAL_Z);
+        const halfW = Math.max(0.05, 0.63 * ratio - STAR_R * 1.05 * L.scale);
+        const halfH = Math.max(0.05, 1.64 * ratio - STAR_R * 1.3 * L.scale);
+        const tx = THREE.MathUtils.clamp(_cursorWorld.x, -halfW, halfW);
+        const ty = THREE.MathUtils.clamp(_cursorWorld.y, -halfH, halfH);
+        pullTX = tx * heroW;
+        pullTY = ty * heroW;
+      }
     }
-    L.mouse = THREE.MathUtils.damp(L.mouse, mouseTarget, 4, dt);
-    // A slightly under-damped spring gives the lean a soft settle.
-    const stiff = 38;
-    const dampF = Math.exp(-7.5 * dt);
+    L.mouse = THREE.MathUtils.damp(L.mouse, hasCursor ? 1 : 0, 6, dt);
+    // A soft, slightly under-damped spring: the star trails the cursor and
+    // settles with a small overshoot.
+    const stiff = 22;
+    const dampF = Math.exp(-5.5 * dt);
     L.pullVX = (L.pullVX + (pullTX - L.pullX) * stiff * dt) * dampF;
     L.pullVY = (L.pullVY + (pullTY - L.pullY) * stiff * dt) * dampF;
     L.pullX += L.pullVX * dt;
@@ -402,7 +406,9 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
       sm.uniforms.uOpacity.value = 0.7 * L.intro * (1 - 0.3 * L.explode);
       sm.uniforms.uMouse.value.copy(_cursorWorld);
       sm.uniforms.uMouseStrength.value = L.mouse;
-      sm.uniforms.uMouseRadius.value = 0.9 * starR;
+      // The hole scales with the star: about a sixth of its half-width, which
+      // with the push band reads as roughly a fifth of the star's width.
+      sm.uniforms.uHoleR.value = 0.17 * STAR_R * 1.05 * L.scale;
       const vel = sm.uniforms.uVel.value as THREE.Vector3;
       vel.lerp(_vel, 1 - Math.exp(-10 * dt));
       sm.uniforms.uLag.value = reduce ? 0 : 0.05;

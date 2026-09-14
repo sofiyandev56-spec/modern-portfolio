@@ -5,9 +5,9 @@
 // The seed drives per-particle twinkle so nothing pulses in unison.
 //
 // Two world-space forces make the star feel soft: particles trail the star's
-// own motion by their distance from its centre (uVel), and particles near the
-// pointer are drawn towards it (uMouse / uMouseStrength), so the arm facing
-// the cursor stretches.
+// own motion by their distance from its centre (uVel), and the pointer pushes
+// particles out of a disc around itself (uMouse / uHoleR), carving a hole with
+// a dense rim wherever it touches the star.
 
 attribute float aSize;
 attribute float aSeed;
@@ -20,7 +20,7 @@ uniform float uScale;
 uniform float uTwinkle;
 uniform vec3 uMouse;
 uniform float uMouseStrength;
-uniform float uMouseRadius;
+uniform float uHoleR;
 uniform vec3 uVel;
 uniform float uLag;
 
@@ -42,11 +42,14 @@ void main() {
   float fromCentre = length(position);
   wp.xyz -= uVel * uLag * (0.25 + 2.2 * fromCentre) * (1.0 - e);
 
-  // Pull: a gaussian well around the pointer, strongest at its centre.
-  vec3 toMouse = uMouse - wp.xyz;
-  float md = length(toMouse.xy);
-  float well = exp(-(md * md) / (2.0 * uMouseRadius * uMouseRadius));
-  wp.xyz += toMouse * well * uMouseStrength * 0.5 * (1.0 - e);
+  // Hole: everything inside the disc is pushed out to a band just past its
+  // rim, so the rim reads brighter than the interior it came from.
+  vec2 away = wp.xy - uMouse.xy;
+  float md = length(away);
+  float k = clamp(1.0 - md / (uHoleR * 1.35), 0.0, 1.0);
+  float push = uHoleR * 0.92 * pow(k, 1.25) * uMouseStrength * (1.0 - e);
+  vec2 dir = md > 1e-5 ? away / md : vec2(1.0, 0.0);
+  wp.xy += dir * push;
 
   vec4 mv = viewMatrix * wp;
   gl_Position = projectionMatrix * mv;
@@ -59,6 +62,6 @@ void main() {
 
   // Dissolved particles thin out; very close ones (passing the camera) fade.
   float near = smoothstep(0.15, 0.9, dist);
-  vAlpha = tw * (1.0 - 0.45 * e) * near * (1.0 + 0.35 * well * uMouseStrength);
+  vAlpha = tw * (1.0 - 0.45 * e) * near * (1.0 + 0.4 * k * uMouseStrength);
   vSeed = aSeed;
 }
