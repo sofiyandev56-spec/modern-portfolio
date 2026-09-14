@@ -43,9 +43,19 @@ export function ScrollScript() {
     const onMove = (e: PointerEvent) => {
       scrollState.pointerX = (e.clientX / window.innerWidth) * 2 - 1;
       scrollState.pointerY = -((e.clientY / window.innerHeight) * 2 - 1);
+      scrollState.cursorX = e.clientX;
+      scrollState.cursorY = e.clientY;
+    };
+    const onLeave = () => {
+      scrollState.cursorX = -1000;
+      scrollState.cursorY = -1000;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
   }, []);
 
   return null;

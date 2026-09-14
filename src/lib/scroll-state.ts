@@ -31,6 +31,13 @@ export const scrollState: Record<Phase, number> & {
   /** Normalised pointer, -1..1, for parallax. */
   pointerX: number;
   pointerY: number;
+  /** Pointer in CSS pixels; negative when it has left the window. */
+  cursorX: number;
+  cursorY: number;
+  /** Where the cosmos drew the star this frame, in CSS pixels, and its radius. */
+  starPx: number;
+  starPy: number;
+  starRadiusPx: number;
   /** True once the loader has finished and the scene may move. */
   ready: boolean;
 } = {
@@ -46,6 +53,11 @@ export const scrollState: Record<Phase, number> & {
   contact: 0,
   pointerX: 0,
   pointerY: 0,
+  cursorX: -1000,
+  cursorY: -1000,
+  starPx: -1000,
+  starPy: -1000,
+  starRadiusPx: 0,
   ready: false,
 };
 

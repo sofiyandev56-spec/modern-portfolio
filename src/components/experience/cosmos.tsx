@@ -184,6 +184,11 @@ function materialParams(
       uTwinkle: { value: twinkle },
       uColor: { value: color },
       uOpacity: { value: 0 },
+      uMouse: { value: new THREE.Vector3() },
+      uMouseStrength: { value: 0 },
+      uMouseRadius: { value: 1 },
+      uVel: { value: new THREE.Vector3() },
+      uLag: { value: 0 },
     },
     transparent: true,
     depthWrite: false,
@@ -202,6 +207,29 @@ interface Live {
   explode: number;
   portal: number;
   intro: number;
+  /** Spring-driven drift of the star towards the pointer, and its velocity. */
+  pullX: number;
+  pullY: number;
+  pullVX: number;
+  pullVY: number;
+  /** How strongly the pointer is felt (0..1), damped. */
+  mouse: number;
+}
+
+const _cursorWorld = new THREE.Vector3();
+const _ray = new THREE.Vector3();
+const _starWorld = new THREE.Vector3();
+const _edgeWorld = new THREE.Vector3();
+const _prevStar = new THREE.Vector3();
+const _vel = new THREE.Vector3();
+const _tmp = new THREE.Vector3();
+
+/** Where a screen point (NDC) lands on the z = 0 plane. */
+function cursorOnStarPlane(camera: THREE.Camera, nx: number, ny: number, out: THREE.Vector3) {
+  _ray.set(nx, ny, 0.5).unproject(camera).sub(camera.position);
+  const t = -camera.position.z / _ray.z;
+  out.copy(camera.position).addScaledVector(_ray, t);
+  return out;
 }
 
 function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
@@ -239,7 +267,13 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
     explode: 0,
     portal: 0,
     intro: 0,
+    pullX: 0,
+    pullY: 0,
+    pullVX: 0,
+    pullVY: 0,
+    mouse: 0,
   });
+  const size = useThree((s) => s.size);
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 1 / 20);
@@ -284,28 +318,78 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
     const intro = s.ready ? 1 : 0;
 
     // ── Damping ──
-    const k = 3.2;
+    const k = 3;
     L.camZ = THREE.MathUtils.damp(L.camZ, camZ, k, dt);
     L.starX = THREE.MathUtils.damp(L.starX, starX, k, dt);
     L.starY = THREE.MathUtils.damp(L.starY, starY, k, dt);
-    L.rotY = THREE.MathUtils.damp(L.rotY, rotY, 2.6, dt);
-    L.rotX = THREE.MathUtils.damp(L.rotX, rotX, 2.6, dt);
-    L.scale = THREE.MathUtils.damp(L.scale, scale * (0.6 + 0.4 * L.intro), 2.4, dt);
-    L.explode = THREE.MathUtils.damp(L.explode, explode, 2.8, dt);
+    L.rotY = THREE.MathUtils.damp(L.rotY, rotY, 2.4, dt);
+    L.rotX = THREE.MathUtils.damp(L.rotX, rotX, 2.4, dt);
+    L.scale = THREE.MathUtils.damp(L.scale, scale * (0.6 + 0.4 * L.intro), 2.2, dt);
+    L.explode = THREE.MathUtils.damp(L.explode, explode, 2.6, dt);
     L.portal = THREE.MathUtils.damp(L.portal, portalTarget, 2, dt);
     L.intro = THREE.MathUtils.damp(L.intro, intro, 1.8, dt);
 
-    // ── Apply ──
+    // ── Camera ──
     const cam = state.camera;
     const px = reduce ? 0 : s.pointerX;
     const py = reduce ? 0 : s.pointerY;
     cam.position.set(px * 0.28, py * 0.18, L.camZ);
     cam.lookAt(L.starX * 0.25, 0, 0);
+    cam.updateMatrixWorld();
 
-    if (starRef.current) {
-      starRef.current.position.set(L.starX, L.starY, 0);
-      starRef.current.rotation.set(L.rotX, L.rotY, 0);
-      starRef.current.scale.setScalar(L.scale);
+    // ── Pointer: the star leans towards a nearby cursor ──
+    // The star's visible radius in world units, for distance falloffs.
+    const starR = STAR_R * 1.3 * L.scale;
+    const hasCursor = !reduce && !mobile && s.cursorX >= 0 && L.explode < 0.5;
+    let mouseTarget = 0;
+    let pullTX = 0;
+    let pullTY = 0;
+    if (hasCursor) {
+      cursorOnStarPlane(cam, s.pointerX, s.pointerY, _cursorWorld);
+      const dx = _cursorWorld.x - L.starX;
+      const dy = _cursorWorld.y - L.starY;
+      const d = Math.hypot(dx, dy);
+      // Felt from ~4.5 radii out, fully inside one radius.
+      mouseTarget = smooth((4.5 * starR - d) / (3.5 * starR));
+      // Drift a fraction of the way, capped so it never chases the cursor.
+      const cap = 0.5 * starR;
+      const f = Math.min(1, cap / Math.max(d * 0.14, 1e-4));
+      pullTX = dx * 0.14 * f * mouseTarget;
+      pullTY = dy * 0.14 * f * mouseTarget;
+    }
+    L.mouse = THREE.MathUtils.damp(L.mouse, mouseTarget, 4, dt);
+    // A slightly under-damped spring gives the lean a soft settle.
+    const stiff = 38;
+    const dampF = Math.exp(-7.5 * dt);
+    L.pullVX = (L.pullVX + (pullTX - L.pullX) * stiff * dt) * dampF;
+    L.pullVY = (L.pullVY + (pullTY - L.pullY) * stiff * dt) * dampF;
+    L.pullX += L.pullVX * dt;
+    L.pullY += L.pullVY * dt;
+
+    // ── Apply ──
+    const star = starRef.current;
+    if (star) {
+      _prevStar.copy(star.position);
+      star.position.set(L.starX + L.pullX, L.starY + L.pullY, 0);
+      star.rotation.set(L.rotX, L.rotY, 0);
+      star.scale.setScalar(L.scale);
+      star.updateMatrixWorld();
+      // World velocity of the star, clamped, for the particle trail. The
+      // first frame can arrive with dt = 0; never let a NaN reach the GPU.
+      if (dt > 1e-4) {
+        _vel.copy(star.position).sub(_prevStar).divideScalar(dt);
+        const vmax = 6;
+        if (!Number.isFinite(_vel.x + _vel.y + _vel.z)) _vel.set(0, 0, 0);
+        else if (_vel.length() > vmax) _vel.setLength(vmax);
+      }
+
+      // Report where the star is on screen for the letter glow.
+      _starWorld.copy(star.position).project(cam);
+      _edgeWorld.copy(star.position).add(_tmp.set(starR, 0, 0)).project(cam);
+      const { width, height } = size;
+      s.starPx = ((_starWorld.x + 1) / 2) * width;
+      s.starPy = ((1 - _starWorld.y) / 2) * height;
+      s.starRadiusPx = Math.abs(_edgeWorld.x - _starWorld.x) * 0.5 * width;
     }
     if (dustRef.current) {
       dustRef.current.rotation.y = time.current * 0.01;
@@ -316,6 +400,12 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
       sm.uniforms.uTime.value = time.current;
       sm.uniforms.uExplode.value = L.explode;
       sm.uniforms.uOpacity.value = 0.7 * L.intro * (1 - 0.3 * L.explode);
+      sm.uniforms.uMouse.value.copy(_cursorWorld);
+      sm.uniforms.uMouseStrength.value = L.mouse;
+      sm.uniforms.uMouseRadius.value = 0.9 * starR;
+      const vel = sm.uniforms.uVel.value as THREE.Vector3;
+      vel.lerp(_vel, 1 - Math.exp(-10 * dt));
+      sm.uniforms.uLag.value = reduce ? 0 : 0.05;
     }
 
     // The portal fades as the camera passes through it, and once the About

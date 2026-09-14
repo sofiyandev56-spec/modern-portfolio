@@ -74,7 +74,7 @@ export function Loader() {
   return (
     <div ref={ref} className={`loader ${done ? "done" : ""}`} aria-hidden={done}>
       <span className="loader-brand">Sofiyan Shaikh</span>
-      <span className="loader-word serif" aria-live="polite">
+      <span key={word} className="loader-word serif" aria-live="polite">
         {WORDS[word]}
       </span>
       <span className="loader-count serif">000</span>

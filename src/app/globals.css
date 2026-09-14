@@ -218,6 +218,7 @@ a {
   pointer-events: none;
   text-align: center;
   white-space: nowrap;
+  will-change: transform, opacity;
 }
 .hero-name {
   top: 50%;
@@ -231,8 +232,13 @@ a {
   text-transform: uppercase;
 }
 .hero-name-glow {
+  z-index: 4;
   color: transparent;
-  text-shadow: 0 0 40px rgba(46, 230, 160, 0.35), 0 0 90px rgba(46, 230, 160, 0.18);
+}
+.hero-name-glow .gl {
+  display: inline-block;
+  text-shadow: 0 0 14px rgba(46, 230, 160, 0.55), 0 0 40px rgba(46, 230, 160, 0.25);
+  will-change: opacity;
 }
 .hero-sub {
   top: calc(50% + clamp(2.2rem, 6.5vw, 5.6rem));
@@ -356,6 +362,9 @@ a {
   visibility: hidden;
   pointer-events: none;
   will-change: transform, opacity, filter;
+}
+.card-mag {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .pcard {
   display: block;
@@ -586,6 +595,11 @@ a {
 .loader-word {
   font-size: clamp(1.9rem, 3.5vw, 3rem);
   color: var(--fg-soft);
+  animation: word-in 0.42s ease both;
+}
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
 }
 .loader-count {
   position: absolute;

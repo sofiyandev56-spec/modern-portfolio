@@ -24,9 +24,11 @@ export function Constellation() {
       const items = constellation;
       let px = 0;
       let py = 0;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const tick = () => {
         const a = scrollState.about;
+        const t = gsap.ticker.time;
         px += (scrollState.pointerX - px) * 0.06;
         py += (scrollState.pointerY - py) * 0.06;
         els.forEach((el, i) => {
@@ -43,14 +45,17 @@ export function Constellation() {
             }
             return;
           }
-          // Drift: from below its rest position to above it across its window.
-          const t = (a - start) / span;
-          const drift = (0.5 - t) * 140 * item.depth;
+          // Drift: from below its rest position to above it across its window,
+          // plus a slow idle sway so the field never sits perfectly still.
+          const u = (a - start) / span;
+          const drift = (0.5 - u) * 140 * item.depth;
+          const sway = reduce ? 0 : Math.sin(t * 0.6 + i * 1.7) * 6 * item.depth;
+          const swayX = reduce ? 0 : Math.cos(t * 0.45 + i * 2.3) * 4 * item.depth;
           const blur = (1 - vis) * 10;
           el.style.visibility = "visible";
           el.style.opacity = String(vis);
           el.style.filter = blur > 0.3 ? `blur(${blur.toFixed(1)}px)` : "none";
-          el.style.transform = `translate(-50%, -50%) translate(${(px * 18 * item.depth).toFixed(1)}px, ${(drift + py * -12 * item.depth).toFixed(1)}px)`;
+          el.style.transform = `translate(-50%, -50%) translate(${(px * 18 * item.depth + swayX).toFixed(1)}px, ${(drift + py * -12 * item.depth + sway).toFixed(1)}px)`;
         });
       };
       gsap.ticker.add(tick);

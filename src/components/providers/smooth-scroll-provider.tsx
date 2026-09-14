@@ -23,9 +23,10 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     if (!reduce && !touch) {
       lenis = new Lenis({
-        duration: 1.3,
+        duration: 1.45,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
+        wheelMultiplier: 0.9,
       });
       lenis.on("scroll", ScrollTrigger.update);
       tick = (time: number) => lenis!.raf(time * 1000);

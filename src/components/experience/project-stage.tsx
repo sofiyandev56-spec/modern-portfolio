@@ -71,7 +71,9 @@ export function ProjectStage() {
       {projects.map((project, i) => (
         <div key={project.id} className={`pcard-slot ${i % 2 === 0 ? "left" : "right"}`}>
           <div className="pcard-anim">
-            <Card project={project} />
+            <div className="card-mag" data-magnetic="10">
+              <Card project={project} />
+            </div>
           </div>
         </div>
       ))}
