@@ -29,7 +29,7 @@ export function Nav() {
       const place = (id: string) => {
         const link = Array.from(links).find((l) => l.dataset.nav === id);
         links.forEach((l) => l.classList.toggle("on", l === link));
-        if (!link) {
+        if (!link || window.innerWidth < 768) {
           gsap.to(dot, { opacity: 0, duration: 0.3 });
           return;
         }

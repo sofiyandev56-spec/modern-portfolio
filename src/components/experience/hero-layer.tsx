@@ -56,6 +56,7 @@ export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag
         dirty = true;
       };
       window.addEventListener("resize", markDirty);
+      window.addEventListener("orientationchange", markDirty);
       document.fonts?.ready.then(markDirty);
       const lastGlow = letters.map(() => -1);
       const falloff = (d: number, r: number) => {
@@ -119,6 +120,7 @@ export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag
       return () => {
         gsap.ticker.remove(tick);
         window.removeEventListener("resize", markDirty);
+        window.removeEventListener("orientationchange", markDirty);
       };
     },
     { scope: ref }

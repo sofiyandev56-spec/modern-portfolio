@@ -53,11 +53,11 @@ export function Contact() {
             {EMAIL}
           </a>
         </span>
-        <div className="mail-hint">click to copy</div>
+        <div className="mail-hint">click or tap to copy</div>
         <div className="socials">
           {socials.map((s, i) => (
             <React.Fragment key={s.name}>
-              {i > 0 && <span aria-hidden="true">·</span>}
+              {i > 0 && <span className="soc-dot" aria-hidden="true">·</span>}
               <a href={s.url} target="_blank" rel="noopener noreferrer" data-magnetic="6">
                 {s.name}
               </a>

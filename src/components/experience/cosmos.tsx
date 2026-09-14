@@ -291,10 +291,18 @@ function Scene({ mobile, reduce }: { mobile: boolean; reduce: boolean }) {
     starX += (projSide(1) - projSide(0)) * window01(s.proj2, 0, 0.35);
     starX += (projSide(2) - projSide(1)) * window01(s.proj3, 0, 0.35);
     starX += (0 - projSide(2)) * window01(s.tail, 0, 1);
-    // Phones centre the cards, so the star stays behind them and shows
-    // above and below instead of swinging aside.
-    const starY = 0;
-    if (mobile) starX *= 0.2;
+    // Phones centre the cards, so the star elevates slightly to radiate
+    // behind the project image frame instead of directly behind the text.
+    let starY = 0;
+    if (mobile) {
+      const inProjects = s.proj1 + s.proj2 + s.proj3;
+      if (inProjects > 0.04) {
+        starY = 0.32;
+        starX = 0;
+      } else {
+        starX *= 0.2;
+      }
+    }
 
     const camZ =
       CAM_HERO -

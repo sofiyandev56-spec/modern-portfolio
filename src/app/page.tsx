@@ -32,23 +32,23 @@ export default function Home() {
       <ScrollScript />
 
       <main>
-        <section id="hero" data-phase="hero" style={{ height: "100vh" }}>
+        <section id="hero" data-phase="hero" className="phase-h-100">
           <h1 className="sr-only">
             Sofiyan Shaikh — B.Tech CSE (AI &amp; ML) student, Generative AI with IBM
           </h1>
         </section>
-        <div data-phase="traverse" style={{ height: "200vh" }} aria-hidden="true" />
-        <section id="about" data-phase="about" style={{ height: "400vh" }}>
+        <div data-phase="traverse" className="phase-h-200" aria-hidden="true" />
+        <section id="about" data-phase="about" className="phase-h-400">
           <p className="sr-only">{ABOUT_TEXT}</p>
         </section>
-        <section id="projects" data-phase="projHeader" style={{ height: "100vh" }}>
+        <section id="projects" data-phase="projHeader" className="phase-h-100">
           <h2 className="sr-only">Projects</h2>
         </section>
-        <div data-phase="proj1" style={{ height: "150vh" }} aria-hidden="true" />
-        <div data-phase="proj2" style={{ height: "150vh" }} aria-hidden="true" />
-        <div data-phase="proj3" style={{ height: "150vh" }} aria-hidden="true" />
-        <div data-phase="tail" style={{ height: "70vh" }} aria-hidden="true" />
-        <div data-phase="outro" style={{ height: "160vh" }} aria-hidden="true" />
+        <div data-phase="proj1" className="phase-h-150" aria-hidden="true" />
+        <div data-phase="proj2" className="phase-h-150" aria-hidden="true" />
+        <div data-phase="proj3" className="phase-h-150" aria-hidden="true" />
+        <div data-phase="tail" className="phase-h-70" aria-hidden="true" />
+        <div data-phase="outro" className="phase-h-160" aria-hidden="true" />
         <Contact />
       </main>
     </>
