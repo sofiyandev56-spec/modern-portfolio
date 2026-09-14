@@ -8,17 +8,23 @@ built.
 
 ## What's in it
 
-A single-page site with a hero built around a custom 3D model, an about section, the
-four areas I study and build in, an expandable list of my projects, and a contact
-form that hands off to your mail client.
+One long scroll. A WebGL "cosmos" of particles sits behind the page: you start
+in front of a dust portal with a mint star at its centre, fly through it, watch
+the star turn while the words that describe how I work drift past, meet the
+three projects one by one, and end in a starfield with my email.
+
+Everything visible lives in fixed layers driven by scroll progress
+(`src/components/experience`); the page itself is mostly spacers that give each
+act its length (`src/app/page.tsx`).
 
 ## Built with
 
 | Area | Tools |
 | --- | --- |
 | Framework | Next.js 16 (App Router), React 19, TypeScript |
-| 3D | Three.js, React Three Fiber, Drei |
-| Motion | Framer Motion, GSAP, Lenis smooth scroll |
+| Particles | Three.js + React Three Fiber, custom GLSL point shaders (`src/shaders`) |
+| Motion | GSAP ScrollTrigger, Lenis smooth scroll |
+| Type | Manrope, Instrument Serif |
 | Styling | Tailwind CSS 4 |
 
 ## Running it locally
@@ -48,13 +54,16 @@ to it in the project's environment variables (see `.env.example`).
 
 ```
 src/
-├── app/                  # App Router entry, layout and global styles
+├── app/                  # App Router entry, layout, global styles, OG image
 ├── components/
-│   ├── 3d/               # Three.js scene
-│   ├── sections/         # Hero, About, Services, Projects, Contact
+│   ├── experience/       # Cosmos canvas, loader, nav, hero, constellation,
+│   │                     # project stage, contact, cursor, scroll script
 │   └── providers/        # Smooth scroll provider
-└── data/
-    └── projects.ts       # Project content, kept out of the components
+├── data/
+│   ├── projects.ts       # The three project cards
+│   └── constellation.ts  # Words and tool logos that orbit the star
+├── lib/                  # GSAP registration, scroll state, Lenis helper
+└── shaders/              # GLSL for the particle points
 ```
 
 ## Contact

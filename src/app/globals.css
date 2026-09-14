@@ -1,258 +1,50 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   THEME SYSTEM
+   STAR PORTFOLIO — design system
 
-   Every theme-dependent colour is a semantic CSS variable defined here and
-   nowhere else. Dark is the default and lives on :root; light overrides live
-   under [data-theme="light"]. Components never reference raw colours — they
-   use the Tailwind utilities generated from @theme inline below (bg-canvas,
-   text-fg, border-line, bg-fill, text-accent, ...).
+   A single dark scene. One fixed WebGL "cosmos" canvas draws the portal, the
+   star and the dust; every piece of text sits in a fixed layer above it and
+   is driven by scroll progress. The only colour is the mint accent.
 
-   Switching: src/lib/theme.ts sets data-theme on <html>, persists the choice
-   to localStorage, and a pre-hydration script in layout.tsx applies the saved
-   value before first paint so there is no flash of the wrong theme.
-
-   Adding a component: use the semantic utilities. If something genuinely needs
-   a different treatment per theme that tokens cannot express (rare — decorative
-   glows), use the `light:` variant declared below.
+   Layers (z-index):  cosmos 2 · grain 2 · hero text 3 · constellation 3 ·
+                      project stage 5 · nav 10 · loader 9999 · cursor 10000
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
   color-scheme: dark;
 
-  /* Surfaces */
-  --bg: #09090b;
-  --surface: #121216;
-  --surface-elevated: #111115;
-  --overlay: rgba(9, 9, 11, 0.95);
-  --nav: rgba(9, 9, 11, 0.8);
+  --bg: #0a0a0a;
+  --fg: #f5f5f5;
+  --fg-soft: #c5c5c5;
+  --fg-muted: #8a8a8a;
+  --fg-ghost: rgba(255, 255, 255, 0.55);
+  --line: rgba(255, 255, 255, 0.12);
+  --accent: #2ee6a0;
+  --accent-dim: rgba(46, 230, 160, 0.35);
 
-  /* Text */
-  --fg: #f4f4f5;
-  --fg-soft: #d4d4d8;
-  --fg-secondary: #a1a1aa;
-  --fg-muted: #85858f; /* was zinc-500; lifted so 11–12px labels clear 4.5:1 */
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
 
-  /* Lines */
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.18);
-  --line-faint: rgba(255, 255, 255, 0.05);
-
-  /* Translucent fills (the "white/[0.04]" family) */
-  --fill-faint: rgba(255, 255, 255, 0.02);
-  --fill: rgba(255, 255, 255, 0.04);
-  --fill-hover: rgba(255, 255, 255, 0.08);
-  --fill-active: rgba(255, 255, 255, 0.15);
-
-  /* Brand accents. Hue is constant across themes; the *text* shade changes so
-     it stays readable on each background. */
-  --accent: #a855f7;
-  --accent-2: #d946ef;
-  --accent-text: #d8b4fe;
-  --accent-text-strong: #c084fc;
-  --accent-soft: rgba(168, 85, 247, 0.1);
-  --accent-line: rgba(168, 85, 247, 0.3);
-  --accent-line-strong: rgba(168, 85, 247, 0.6);
-  --on-accent: #ffffff;
-
-  /* Status accents used in project cards */
-  --success: #34d399;
-  --success-soft: rgba(16, 185, 129, 0.1);
-  --success-line: rgba(16, 185, 129, 0.2);
-  --info: #22d3ee;
-  --info-soft: rgba(6, 182, 212, 0.1);
-  --info-line: rgba(6, 182, 212, 0.2);
-
-  /* Buttons */
-  --btn-primary-bg: #ffffff;
-  --btn-primary-bg-hover: #e4e4e7;
-  --btn-primary-fg: #09090b;
-  --btn-primary-glow: rgba(255, 255, 255, 0.25);
-
-  /* Display-heading gradient */
-  --heading-from: #ffffff;
-  --heading-via: #e4e4e7;
-  --heading-to: #a1a1aa;
-
-  /* Depth */
-  --shadow: rgba(0, 0, 0, 0.8);
-  --shadow-soft: rgba(0, 0, 0, 0.6);
-  --glow: rgba(168, 85, 247, 0.15);
-  --glow-strong: rgba(168, 85, 247, 0.4);
-
-  /* Glass */
-  --glass-bg: rgba(18, 18, 22, 0.65);
-  --glass-line: rgba(255, 255, 255, 0.08);
-  --glass-line-hover: rgba(255, 255, 255, 0.18);
-
-  /* Decorative ambient glows (hero / section backgrounds) */
-  --ambient-1: rgba(147, 51, 234, 0.15);
-  --ambient-2: rgba(37, 99, 235, 0.1);
-  --ambient-3: rgba(88, 28, 135, 0.15);
-
-  /* Chrome */
-  --scrollbar-track: #09090b;
-  --scrollbar-thumb: #27272a;
-  --scrollbar-thumb-hover: #3f3f46;
+  /* Tracking used by every small uppercase label. */
+  --track-wide: 0.28em;
+  --track-mid: 0.15em;
 }
 
-/* Light: an editorial, high-contrast treatment of the same identity — cool
-   off-white paper, near-black type, borders you can actually see, and the
-   brand purple kept but deepened wherever it is used as text. */
-[data-theme="light"] {
-  color-scheme: light;
-
-  --bg: #f3f3f5;
-  --surface: #ffffff;
-  --surface-elevated: #ffffff;
-  --overlay: rgba(243, 243, 245, 0.96);
-  --nav: rgba(255, 255, 255, 0.82);
-
-  --fg: #0b0b0e;
-  --fg-soft: #2e2e36;
-  --fg-secondary: #4b4b57;
-  --fg-muted: #6b6b76;
-
-  --line: rgba(11, 11, 14, 0.1);
-  --line-strong: rgba(11, 11, 14, 0.24);
-  --line-faint: rgba(11, 11, 14, 0.06);
-
-  --fill-faint: rgba(11, 11, 14, 0.025);
-  --fill: rgba(11, 11, 14, 0.04);
-  --fill-hover: rgba(11, 11, 14, 0.07);
-  --fill-active: rgba(11, 11, 14, 0.11);
-
-  --accent: #9333ea;
-  --accent-2: #c026d3;
-  --accent-text: #7e22ce;
-  --accent-text-strong: #6b21a8;
-  --accent-soft: rgba(147, 51, 234, 0.09);
-  --accent-line: rgba(147, 51, 234, 0.35);
-  --accent-line-strong: rgba(147, 51, 234, 0.6);
-  --on-accent: #ffffff;
-
-  --success: #047857;
-  --success-soft: rgba(5, 150, 105, 0.1);
-  --success-line: rgba(5, 150, 105, 0.3);
-  --info: #0e7490;
-  --info-soft: rgba(8, 145, 178, 0.1);
-  --info-line: rgba(8, 145, 178, 0.3);
-
-  --btn-primary-bg: #0b0b0e;
-  --btn-primary-bg-hover: #27272a;
-  --btn-primary-fg: #ffffff;
-  --btn-primary-glow: rgba(11, 11, 14, 0.18);
-
-  --heading-from: #0b0b0e;
-  --heading-via: #27272a;
-  --heading-to: #52525b;
-
-  --shadow: rgba(11, 11, 14, 0.16);
-  --shadow-soft: rgba(11, 11, 14, 0.1);
-  --glow: rgba(147, 51, 234, 0.12);
-  --glow-strong: rgba(147, 51, 234, 0.28);
-
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-line: rgba(11, 11, 14, 0.1);
-  --glass-line-hover: rgba(11, 11, 14, 0.24);
-
-  --ambient-1: rgba(147, 51, 234, 0.1);
-  --ambient-2: rgba(37, 99, 235, 0.07);
-  --ambient-3: rgba(147, 51, 234, 0.08);
-
-  --scrollbar-track: #f3f3f5;
-  --scrollbar-thumb: #c9c9d1;
-  --scrollbar-thumb-hover: #a8a8b3;
-}
-
-/* Expose the tokens to Tailwind so components can write bg-canvas, text-fg,
-   border-line, etc. `inline` makes the utilities reference the variables
-   directly, which is what lets a single attribute flip the whole page. */
 @theme inline {
   --color-canvas: var(--bg);
-  --color-surface: var(--surface);
-  --color-elevated: var(--surface-elevated);
-  --color-overlay: var(--overlay);
-  --color-nav: var(--nav);
-
   --color-fg: var(--fg);
   --color-fg-soft: var(--fg-soft);
-  --color-fg-secondary: var(--fg-secondary);
   --color-fg-muted: var(--fg-muted);
-
+  --color-fg-ghost: var(--fg-ghost);
   --color-line: var(--line);
-  --color-line-strong: var(--line-strong);
-  --color-line-faint: var(--line-faint);
-
-  --color-fill-faint: var(--fill-faint);
-  --color-fill: var(--fill);
-  --color-fill-hover: var(--fill-hover);
-  --color-fill-active: var(--fill-active);
-
   --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --color-accent-text: var(--accent-text);
-  --color-accent-text-strong: var(--accent-text-strong);
-  --color-accent-soft: var(--accent-soft);
-  --color-accent-line: var(--accent-line);
-  --color-accent-line-strong: var(--accent-line-strong);
-  --color-on-accent: var(--on-accent);
-
-  --color-success: var(--success);
-  --color-success-soft: var(--success-soft);
-  --color-success-line: var(--success-line);
-  --color-info: var(--info);
-  --color-info-soft: var(--info-soft);
-  --color-info-line: var(--info-line);
-
-  --color-heading-from: var(--heading-from);
-  --color-heading-via: var(--heading-via);
-  --color-heading-to: var(--heading-to);
-
-  --color-ambient-1: var(--ambient-1);
-  --color-ambient-2: var(--ambient-2);
-  --color-ambient-3: var(--ambient-3);
+  --color-accent-dim: var(--accent-dim);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
 }
 
-/* For the rare decorative case that tokens cannot express. */
-@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
-
-/* ── Motion breakpoints ──
-   These mirror the media queries in src/lib/use-media-query.ts so the CSS
-   layout and the GSAP behaviour always agree on which experience a viewport
-   gets. Change them together.
-
-   hscroll: the pinned horizontal projects scrub (HORIZONTAL_PROJECTS_QUERY).
-   scene:   the fixed, scroll-choreographed 3D scene (FIXED_SCENE_QUERY). */
-@custom-variant hscroll {
-  @media (min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    @slot;
-  }
-}
-@custom-variant scene {
-  @media (min-width: 48rem) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    @slot;
-  }
-}
-
-/* Theme switch: a brief cross-fade on colour properties only, added by
-   src/lib/theme.ts for the duration of the change and skipped under
-   prefers-reduced-motion. */
-html.theme-switching,
-html.theme-switching *,
-html.theme-switching *::before,
-html.theme-switching *::after {
-  transition:
-    background-color 0.28s ease,
-    color 0.28s ease,
-    border-color 0.28s ease,
-    box-shadow 0.28s ease,
-    fill 0.28s ease,
-    stroke 0.28s ease !important;
-}
-
-/* ── Base Reset & Setup ── */
+/* ── Base ── */
 @layer base {
   *, ::before, ::after {
     box-sizing: border-box;
@@ -260,94 +52,655 @@ html.theme-switching *::after {
 }
 
 html {
-  /* No CSS scroll-behavior: in-page navigation is animated by Lenis (or a
-     native smooth scrollTo on touch) from smooth-scroll-provider.tsx, and a
-     CSS smooth rule would fight Lenis's per-frame scroll writes. */
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Lenis owns in-page navigation; a CSS smooth rule would fight it. */
+  scroll-behavior: auto;
 }
 
 body {
-  background-color: var(--bg);
-  /* dvh tracks the shrinking iOS Safari / Chrome Android address bar; 100vh does
-     not, which leaves a gap or clips content as the bar hides. */
+  background: var(--bg);
   min-height: 100dvh;
   overflow-x: hidden;
-  position: relative;
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
-  /* Stop iOS from silently inflating type in landscape. */
+  font-family: var(--font-sans);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
-/* Lenis: the documented reset for the wrapper it drives. */
+/* Scroll is locked while the loader runs. */
+html.is-loading {
+  overflow: hidden;
+}
+
+/* Lenis reset */
 html.lenis,
 html.lenis body {
   height: auto;
 }
-
 .lenis:not(.lenis-autoToggle).lenis-stopped {
   overflow: clip;
 }
 
-.lenis.lenis-smooth iframe {
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.label {
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Fixed full-viewport layers that never take the pointer. */
+.layer {
+  position: fixed;
+  inset: 0;
   pointer-events: none;
 }
 
-/* Anchor links must clear the fixed navbar, or headings land underneath it. */
-section[id] {
-  scroll-margin-top: 6rem;
+/* Film grain: a static noise texture overlaid at 5%. */
+.grain {
+  z-index: 2;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
 }
 
-/* ── Accessibility ── */
-
-/* A visible focus ring on keyboard navigation only, so the design is unchanged
-   for mouse users but the page is actually traversable with a keyboard. */
-:focus-visible {
-  outline: 2px solid var(--accent-text-strong);
-  outline-offset: 3px;
-  border-radius: 4px;
+/* ── Nav ── */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem 2rem;
+  pointer-events: none;
 }
-
-/* Off-screen until focused, then the first thing a keyboard user can activate. */
-.skip-link {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 100;
-  padding: 0.75rem 1.25rem;
-  border-radius: 9999px;
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-fg);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transform: translateY(-200%);
-  transition: transform 0.2s ease;
+.nav > * {
+  pointer-events: auto;
 }
-
-.skip-link:focus,
-.skip-link:focus-visible {
-  transform: translateY(0);
+.nav-brand {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
 }
-
-/* Touch feedback: drop the grey iOS tap flash, keep an explicit active state. */
-a,
-button,
-[role="button"] {
-  -webkit-tap-highlight-color: transparent;
+.nav-links {
+  display: flex;
+  gap: 1.6rem;
+  font-size: 0.9rem;
+  color: var(--fg-soft);
 }
-
-@media (hover: none) and (pointer: coarse) {
-  .pill-btn:active {
-    transform: scale(0.97);
+.nav-links a {
+  position: relative;
+  padding: 0.35rem 0.1rem;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover,
+.nav-links a.on {
+  color: var(--fg);
+}
+.nav-dot {
+  position: fixed;
+  z-index: 10;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.nav-cv {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  transition: color 0.3s ease;
+}
+.nav-cv:hover {
+  color: var(--accent);
+}
+@media (max-width: 767px) {
+  .nav {
+    padding: 1.25rem 1.25rem;
+  }
+  .nav-links,
+  .nav-dot {
+    display: none;
   }
 }
 
-/* Honour the OS "reduce motion" setting: stop the marquee and the drifting
-   cards, which otherwise loop forever and cost battery on phones. */
+/* ── Hero (fixed, pinned over the cosmos) ── */
+.hero-pin {
+  position: fixed;
+  left: 50%;
+  z-index: 3;
+  transform: translateX(-50%);
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+.hero-name {
+  top: 50%;
+  width: min(96vw, 1400px);
+  margin-top: -0.62em;
+  font-size: clamp(2.6rem, 9.4vw, 8.6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0.065em;
+  color: var(--fg-ghost);
+  text-transform: uppercase;
+}
+.hero-name-glow {
+  color: transparent;
+  text-shadow: 0 0 40px rgba(46, 230, 160, 0.35), 0 0 90px rgba(46, 230, 160, 0.18);
+}
+.hero-sub {
+  top: calc(50% + clamp(2.2rem, 6.5vw, 5.6rem));
+  font-size: 0.82rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+.hero-sub .sub-dot {
+  color: var(--fg-muted);
+}
+.hero-tag {
+  top: calc(50% + clamp(4.2rem, 9.5vw, 8.4rem));
+  font-size: 1.4rem;
+  color: var(--fg-soft);
+}
+.hero-arrow {
+  top: auto;
+  bottom: 2rem;
+  width: 22px;
+  color: var(--fg);
+  animation: bob 2.4s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
+}
+@media (max-width: 767px) {
+  .hero-name {
+    white-space: normal;
+    width: 92vw;
+    margin-top: -1.05em;
+    font-size: clamp(2.6rem, 12.5vw, 3.4rem);
+    line-height: 1;
+  }
+  .hero-sub {
+    top: calc(50% + 4.2rem);
+    white-space: normal;
+    width: 80vw;
+    line-height: 1.7;
+  }
+  .hero-sub .sub-dot {
+    display: none;
+  }
+  .hero-sub .sub-line {
+    display: block;
+  }
+  .hero-tag {
+    top: calc(50% + 8.6rem);
+  }
+}
+
+/* ── Constellation (About) ── */
+.constellation {
+  z-index: 3;
+}
+.cword {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  will-change: transform, opacity, filter;
+}
+.cw-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.75rem, 4.7vw, 4.3rem);
+  color: var(--accent);
+}
+.cw-sans {
+  font-size: clamp(1.1rem, 2.4vw, 2.15rem);
+  font-weight: 500;
+  color: var(--fg);
+}
+.cw-logo {
+  width: 38px;
+  height: 38px;
+  color: var(--fg-soft);
+}
+.cw-logo svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+@media (min-width: 768px) {
+  .cword {
+    left: var(--dx);
+    top: var(--dy);
+  }
+}
+
+/* ── Project stage (fixed cards) ── */
+.proj-stage {
+  z-index: 5;
+}
+.proj-title {
+  position: absolute;
+  left: 7vw;
+  top: 12vh;
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  opacity: 0;
+  visibility: hidden;
+}
+.pcard-slot {
+  position: absolute;
+  top: 50%;
+  width: min(85vw, 576px);
+  transform: translateY(-50%);
+}
+.pcard-slot.left {
+  left: 7vw;
+}
+.pcard-slot.right {
+  right: 7vw;
+}
+.pcard-anim {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+}
+.pcard {
+  display: block;
+  color: inherit;
+}
+.pframe {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0f0f0f;
+}
+.pvisual {
+  position: absolute;
+  inset: 0;
+}
+.pvisual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pcard:hover .pvisual img {
+  transform: scale(1.03);
+}
+.pveil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0) 55%, rgba(10, 10, 10, 0.55) 100%);
+  pointer-events: none;
+}
+.pc {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 0 solid var(--accent);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pc.tl { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.pc.tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
+.pc.bl { bottom: -1px; left: -1px; border-bottom-width: 2px; border-left-width: 2px; }
+.pc.br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+.pcard:hover .pc.tl { transform: translate(-4px, -4px); }
+.pcard:hover .pc.tr { transform: translate(4px, -4px); }
+.pcard:hover .pc.bl { transform: translate(-4px, 4px); }
+.pcard:hover .pc.br { transform: translate(4px, 4px); }
+.ptext {
+  padding-top: 1.1rem;
+}
+.psur {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.66rem;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-ghost);
+}
+.ptext h3 {
+  font-size: 2.15rem;
+  line-height: 1.1;
+  margin: 0 0 0.45rem;
+}
+.pdesc {
+  max-width: 34rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--fg-soft);
+}
+@media (max-width: 767px) {
+  .pcard-slot.left,
+  .pcard-slot.right {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+  .proj-title {
+    left: 1.25rem;
+    top: 14vh;
+  }
+  .ptext h3 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Decorative stand-in for a project without a screenshot. */
+.pgraphic {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.4rem 1.6rem;
+  background:
+    radial-gradient(60% 70% at 80% 20%, rgba(46, 230, 160, 0.14), transparent 70%),
+    linear-gradient(160deg, #141414, #0b0b0b);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+.pgraphic strong {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--fg);
+}
+.pgraphic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.pgraphic-grid > div {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+}
+
+/* ── Contact ── */
+.contact {
+  position: relative;
+  z-index: 4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 1.5rem 2rem;
+}
+.contact .line {
+  font-size: clamp(1.7rem, 3vw, 2.75rem);
+  color: var(--fg-soft);
+  margin-bottom: 1.2rem;
+}
+.mail-wrap {
+  position: relative;
+  display: inline-block;
+}
+.mail {
+  font-size: clamp(1.5rem, 4.75vw, 4.3rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  transition: color 0.3s ease;
+  overflow-wrap: anywhere;
+}
+.mail:hover {
+  color: var(--accent);
+}
+.copy-toast {
+  position: absolute;
+  left: 50%;
+  top: -1.6rem;
+  transform: translate(-50%, 6px);
+  font-size: 0.72rem;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.copy-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.mail-hint {
+  margin-top: 0.9rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+}
+.socials {
+  margin-top: 2.2rem;
+  font-size: 0.66rem;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-ghost);
+}
+.socials a {
+  transition: color 0.3s ease;
+}
+.socials a:hover {
+  color: var(--accent);
+}
+.socials span {
+  margin: 0 0.5rem;
+}
+.contact footer {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 0;
+  right: 0;
+  font-size: 0.66rem;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.fade-blur {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(20px);
+  transition: opacity 1.1s ease, filter 1.1s ease, transform 1.1s ease;
+}
+.fade-blur.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* ── Loader ── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+.loader.done {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-word {
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  color: var(--fg-soft);
+}
+.loader-count {
+  position: absolute;
+  right: 2rem;
+  bottom: 1.6rem;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1;
+  color: var(--fg);
+}
+.loader-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.loader-brand {
+  position: absolute;
+  left: 2rem;
+  top: 1.6rem;
+  font-size: 0.72rem;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+
+/* ── Cursor (pointer devices only) ── */
+.cur {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+  pointer-events: none;
+  will-change: transform;
+}
+.cur-ring {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, opacity 0.3s ease;
+}
+.cur-ring.big {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+}
+.cur-ring.hide {
+  opacity: 0;
+}
+.cur-dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+  transition: opacity 0.2s ease;
+}
+.cur-dot.hide {
+  opacity: 0;
+}
+.cur-visit {
+  width: 64px;
+  margin: -7px 0 0 -32px;
+  text-align: center;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-wide);
+  text-indent: var(--track-wide);
+  text-transform: uppercase;
+  color: #fff;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.cur-visit.show {
+  opacity: 1;
+}
+.cur-trail {
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+}
+@media (pointer: coarse) {
+  .cur {
+    display: none;
+  }
+}
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button {
+    cursor: none;
+  }
+}
+
+/* ── Static fallback star when WebGL is unavailable ── */
+.star-fallback {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(60vw, 420px);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 40px rgba(46, 230, 160, 0.35));
+}
+
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -355,163 +708,5 @@ button,
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
-}
-
-/* ── Custom Typography ── */
-.font-display {
-  font-family: var(--font-syne), -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: -0.035em;
-  font-weight: 800;
-}
-
-.font-sans {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.font-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-/* ── Selection ── */
-::selection {
-  background: var(--accent);
-  color: var(--on-accent);
-}
-
-/* ── Modern Creative-Tech Glass & Pill Utilities ── */
-.glass-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-line);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.glass-card:hover {
-  border-color: var(--glass-line-hover);
-  box-shadow: 0 16px 40px -15px var(--shadow), 0 0 30px -10px var(--glow);
-}
-
-.pill-btn {
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.01em;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.pill-btn-primary {
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-fg);
-  padding: 0.875rem 1.75rem;
-  box-shadow: 0 0 20px -5px var(--btn-primary-glow);
-}
-
-.pill-btn-primary:hover {
-  background: var(--btn-primary-bg-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 0 30px -5px var(--glow-strong);
-}
-
-.pill-btn-secondary {
-  background: var(--fill);
-  color: var(--fg);
-  border: 1px solid var(--line);
-  padding: 0.875rem 1.75rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.pill-btn-secondary:hover {
-  background: var(--fill-hover);
-  border-color: var(--line-strong);
-  transform: translateY(-1px);
-}
-
-.pill-btn-accent {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-  color: var(--on-accent);
-  padding: 0.875rem 1.75rem;
-  box-shadow: 0 4px 20px -5px var(--glow-strong);
-}
-
-.pill-btn-accent:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 25px -4px var(--glow-strong);
-}
-
-/* ── Scroll choreography ──
-
-   Masked line reveals. Each line is a clipping box and the text inside it
-   starts below the box, then slides up when the section enters. The hidden
-   start state is CSS so the very first paint already has it — a GSAP-only
-   start state would flash the text visible for a frame before hydration.
-   It only applies once the pre-hydration script has marked <html class="js">
-   (see theme-constants.ts): without JavaScript the text simply shows, and
-   under reduced motion nothing is ever hidden. */
-.reveal-line {
-  display: block;
-  overflow: hidden;
-  /* Room for descenders and the comma in "HI, I'M" that the tight display
-     leading would otherwise clip. The negative margin gives the space back. */
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
-}
-
-.reveal-inner {
-  display: block;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html.js .reveal-inner {
-    transform: translate3d(0, 110%, 0);
-  }
-
-  html.js .reveal-item {
-    opacity: 0;
-    transform: translate3d(0, 28px, 0);
-  }
-}
-
-/* Skill cards stack as they arrive: each one sticks near the top of the
-   viewport, and the one beneath scales down, dims and softens under it. The
-   per-card top offset comes from the inline --stack-index. */
-.stack-card {
-  position: sticky;
-  top: calc(6.5rem + var(--stack-index, 0) * 1.25rem);
-  transform-origin: center top;
-}
-
-/* Project panels inside the pinned horizontal track. Their media gets a
-   counter-parallax on desktop; everywhere else they stack and scroll. */
-.project-track {
-  --panel-width: min(84vw, 1180px);
-}
-
-/* ── Custom Scrollbar ── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
 }

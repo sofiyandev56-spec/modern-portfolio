@@ -19,6 +19,9 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 if (typeof window !== "undefined") {
+  if (process.env.NODE_ENV !== "production") {
+    (window as unknown as { __ScrollTrigger: typeof ScrollTrigger }).__ScrollTrigger = ScrollTrigger;
+  }
   ScrollTrigger.config({
     // The address bar showing and hiding on phones fires resize events; a full
     // ScrollTrigger refresh on each one makes pinned sections jump mid-scroll.

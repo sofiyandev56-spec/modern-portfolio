@@ -1,36 +1,35 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, Inter } from "next/font/google";
+import { Manrope, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
-import { CustomCursor } from "@/components/ui/CustomCursor";
-import { FilmGrain } from "@/components/ui/film-grain";
+import { Cursor } from "@/components/experience/cursor";
 import { PERSON_SCHEMA, siteUrl } from "@/lib/site";
-import { THEME_INIT_SCRIPT } from "@/lib/theme-constants";
 import "./globals.css";
 
-const syne = Syne({
+const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-syne",
-  weight: ["600", "700", "800"],
+  variable: "--font-manrope",
+  weight: ["300", "400", "500", "700", "800"],
 });
 
-const inter = Inter({
+const instrument = Instrument_Serif({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
-  weight: ["300", "400", "500", "600"],
+  variable: "--font-instrument",
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+  title: "Sofiyan Shaikh | AI & ML · Code · Web",
   description:
     "Portfolio of Sofiyan Shaikh, a B.Tech Computer Science (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
   keywords: [
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Sofiyan Shaikh", url: "https://github.com/sofiyandev56-spec" }],
   creator: "Sofiyan Shaikh",
   openGraph: {
-    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+    title: "Sofiyan Shaikh | AI & ML · Code · Web",
     description:
       "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
     type: "website",
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+    title: "Sofiyan Shaikh | AI & ML · Code · Web",
     description:
       "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
   },
@@ -71,26 +70,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${syne.variable} ${inter.variable}`}
-      // data-theme and the "js" class are set by THEME_INIT_SCRIPT before
-      // hydration, so the attributes the client sees differ from the server
-      // markup by design.
-      suppressHydrationWarning
-    >
-      <head>
-        {/* Applies the saved theme and the js marker before first paint — see src/lib/theme-constants.ts */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-      </head>
-      <body className="bg-canvas text-fg antialiased font-sans">
-        <CustomCursor />
-        <FilmGrain />
-        {/* Keyboard users land here first and can jump past the navbar. */}
-        <a href="#hero" className="skip-link">
+    <html lang="en" className={`${manrope.variable} ${instrument.variable}`}>
+      <body>
+        {/* Keyboard users land here first and can jump past the fixed layers. */}
+        <a href="#about" className="skip-link sr-only">
           Skip to content
         </a>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <Cursor />
         <script
           type="application/ld+json"
           // Tells search engines who this page is about, so a search for the
