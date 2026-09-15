@@ -10,8 +10,10 @@ const WORDS = ["Curious", "Rigorous", "Persistent", "Building"];
 /**
  * The opening: a word cycling in the centre, a serif counter running to 100
  * and a mint line filling along the bottom. Scrolling is locked until it is
- * done, then the cosmos and the hero ease in. Under reduced motion it is
- * dismissed at once.
+ * done; then the black dissolves into a grid of shrinking dots (the mask in
+ * globals.css) while the cosmos settles in beneath, and `html.is-ready`
+ * starts the chrome drawing itself in. Under reduced motion it is dismissed
+ * at once.
  */
 export function Loader() {
   const ref = useRef<HTMLDivElement>(null);
@@ -25,13 +27,26 @@ export function Loader() {
     const bar = root?.querySelector<HTMLElement>(".loader-bar");
 
     let finished = false;
+    let dissolve: gsap.core.Tween | null = null;
     const finish = () => {
       if (finished) return;
       finished = true;
       scrollState.ready = true;
-      setDone(true);
       document.documentElement.classList.remove("is-loading");
+      document.documentElement.classList.add("is-ready");
       getLenis()?.start();
+      if (reduce || !root) {
+        setDone(true);
+        return;
+      }
+      const dots = { go: 100 };
+      dissolve = gsap.to(dots, {
+        go: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+        onUpdate: () => root.style.setProperty("--go", `${dots.go.toFixed(1)}%`),
+        onComplete: () => setDone(true),
+      });
     };
 
     if (reduce) {
@@ -65,6 +80,7 @@ export function Loader() {
 
     return () => {
       tl.kill();
+      dissolve?.kill();
       window.clearInterval(cycle);
       window.clearTimeout(safety);
       document.documentElement.classList.remove("is-loading");

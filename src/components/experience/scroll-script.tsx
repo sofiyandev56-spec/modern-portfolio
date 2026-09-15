@@ -14,7 +14,8 @@ import { PHASES, scrollState, type Phase } from "@/lib/scroll-state";
  * and restores its triggers with events suppressed, which would leave
  * callback-fed state stale, while `.progress` is always current.
  *
- * Also tracks the pointer for parallax. Renders nothing.
+ * Also writes the overall page progress (for the chart's progress rule) and
+ * tracks the pointer for parallax. Renders nothing.
  */
 export function ScrollScript() {
   useGSAP(() => {
@@ -28,15 +29,26 @@ export function ScrollScript() {
         end: "bottom top",
       });
     });
+    // The page's scrollable height only changes on refresh; cache it there
+    // rather than reading layout every frame.
+    let maxScroll = 1;
+    const onRefresh = () => {
+      maxScroll = Math.max(1, ScrollTrigger.maxScroll(window));
+    };
+    ScrollTrigger.addEventListener("refresh", onRefresh);
     const tick = () => {
       PHASES.forEach((phase) => {
         const t = triggers[phase];
         if (t) scrollState[phase] = t.progress;
       });
+      scrollState.total = Math.min(1, Math.max(0, window.scrollY / maxScroll));
     };
     gsap.ticker.add(tick);
     ScrollTrigger.refresh();
-    return () => gsap.ticker.remove(tick);
+    return () => {
+      gsap.ticker.remove(tick);
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
+    };
   });
 
   useEffect(() => {

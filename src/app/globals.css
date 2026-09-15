@@ -7,8 +7,13 @@
    star and the dust; every piece of text sits in a fixed layer above it and
    is driven by scroll progress. The only colour is the mint accent.
 
-   Layers (z-index):  cosmos 2 · grain 2 · hero text 3 · constellation 3 ·
-                      project stage 5 · nav 10 · loader 9999 · cursor 10000
+   Layers (z-index):  cosmos 2 · grain 2 · chart 2 · hero text 3 ·
+                      constellation 3 · project stage 5 · nav 10 · rail 10 ·
+                      loader 9999 · cursor 10000
+
+   Chrome choreography (rules drawing in, marks popping, the nav settling)
+   is CSS keyframes gated by `html.is-ready`, which the loader sets when it
+   is done. Scroll-driven motion is written from JS every frame.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -20,11 +25,16 @@
   --fg-muted: #8a8a8a;
   --fg-ghost: rgba(255, 255, 255, 0.55);
   --line: rgba(255, 255, 255, 0.12);
+  --rule: rgba(255, 255, 255, 0.2);
   --accent: #2ee6a0;
   --accent-dim: rgba(46, 230, 160, 0.35);
 
   --font-sans: var(--font-manrope), system-ui, sans-serif;
   --font-serif: var(--font-instrument), Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* The one ease for anything that settles into place. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Tracking used by every small uppercase label. */
   --track-wide: 0.28em;
@@ -149,6 +159,138 @@ a {
   background-size: 256px 256px;
 }
 
+/* ── Chart (drafting grid) ── */
+.chart {
+  z-index: 2;
+  /* Overwritten in px by chart.tsx on resize; these are the fallbacks. */
+  --gx1: 7vw;
+  --gx2: 93vw;
+  --gy1: 4.6rem;
+  --gy2: calc(100% - 4.6rem);
+}
+.chart-rules {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.chart-rules path {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* pathLength="1" on the element: one dash hides the whole rule. */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+html.is-ready .chart-rules path {
+  animation: rule-draw 1.15s var(--ease) forwards;
+  animation-delay: calc(0.15s + var(--i) * 0.1s);
+}
+@keyframes rule-draw {
+  to { stroke-dashoffset: 0; }
+}
+.chart-fill {
+  position: absolute;
+  left: var(--gx1);
+  top: var(--gy2);
+  width: calc(var(--gx2) - var(--gx1));
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.85;
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+.chart-marks {
+  position: absolute;
+  inset: 0;
+}
+.chart-mark {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+}
+.chart-mark.tl { left: var(--gx1); top: var(--gy1); }
+.chart-mark.tr { left: var(--gx2); top: var(--gy1); }
+.chart-mark.bl { left: var(--gx1); top: var(--gy2); }
+.chart-mark.br { left: var(--gx2); top: var(--gy2); }
+.chart-mark span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+html.is-ready .chart-mark span {
+  animation: mark-pop 0.72s var(--ease) forwards;
+  animation-delay: calc(1s + var(--i) * 0.12s);
+}
+.chart-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--accent);
+  opacity: 0.92;
+  animation: mark-twinkle 7s var(--ease) infinite;
+  animation-delay: calc(2.6s + var(--i) * 1.75s);
+}
+@keyframes mark-pop {
+  0% { opacity: 0; transform: scale(2.4); }
+  45% { opacity: 1; transform: scale(0.8); }
+  65% { opacity: 0.2; transform: scale(1.12); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes mark-twinkle {
+  0%, 88%, 100% { opacity: 0.92; transform: scale(1) rotate(0deg); }
+  91% { opacity: 1; transform: scale(1.5) rotate(45deg); }
+  95% { opacity: 0.8; transform: scale(0.92) rotate(70deg); }
+  98% { opacity: 0.96; transform: scale(1.04) rotate(90deg); }
+}
+.chart-ruler {
+  position: absolute;
+  left: var(--gx2);
+  top: var(--gy1);
+  width: 0;
+  height: calc(var(--gy2) - var(--gy1));
+  opacity: 0;
+  visibility: hidden;
+}
+.chart-ruler-ticks {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  background: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 24px);
+}
+.chart-ruler-head {
+  position: absolute;
+  left: -7px;
+  top: 0;
+  width: 15px;
+  height: 1px;
+  background: var(--fg);
+  will-change: transform;
+}
+.chart-ruler-head b {
+  position: absolute;
+  left: 20px;
+  top: -0.4em;
+  font: 400 0.6rem/1 var(--font-mono);
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+  color: var(--fg-muted);
+}
+@media (max-width: 767px) {
+  .chart-rules path[data-rule^="v"],
+  .chart-marks,
+  .chart-ruler {
+    display: none;
+  }
+}
+
 /* ── Nav ── */
 .nav {
   position: fixed;
@@ -171,6 +313,25 @@ a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+/* The chrome settles into place after the loader. `translate` rather than
+   `transform` so the magnetic cursor keeps its own transform. */
+.nav-brand,
+.nav-cv,
+.nav-links {
+  opacity: 0;
+}
+html.is-ready .nav-brand,
+html.is-ready .nav-cv,
+html.is-ready .nav-links {
+  animation: settle 0.8s var(--ease) forwards;
+}
+html.is-ready .nav-brand { animation-delay: 0.5s; }
+html.is-ready .nav-cv { animation-delay: 0.65s; }
+html.is-ready .nav-links { animation-delay: 0.8s; }
+@keyframes settle {
+  from { opacity: 0; translate: 0 10px; }
+  to { opacity: 1; translate: 0 0; }
 }
 .nav-links {
   display: flex;
@@ -702,10 +863,15 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
+  /* Dither dissolve: a 5px dot grid whose dots shrink as --go runs 100% → 0,
+     so the black breaks into grain and the cosmos shows through. */
+  --go: 100%;
+  -webkit-mask-image: radial-gradient(circle, #000 var(--go), transparent calc(var(--go) + 7%));
+  mask-image: radial-gradient(circle, #000 var(--go), transparent calc(var(--go) + 7%));
+  -webkit-mask-size: 5px 5px;
+  mask-size: 5px 5px;
 }
 .loader.done {
-  opacity: 0;
   visibility: hidden;
 }
 .loader-word {
@@ -838,5 +1004,19 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .nav-brand,
+  .nav-cv,
+  .nav-links,
+  .chart-mark span {
+    opacity: 1;
+    animation: none !important;
+  }
+  .chart-rules path {
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+  .chart-mark svg {
+    animation: none !important;
   }
 }

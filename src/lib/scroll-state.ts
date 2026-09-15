@@ -38,6 +38,8 @@ export const scrollState: Record<Phase, number> & {
   starPx: number;
   starPy: number;
   starRadiusPx: number;
+  /** Overall page progress, 0..1, for the chart's progress rule. */
+  total: number;
   /** True once the loader has finished and the scene may move. */
   ready: boolean;
 } = {
@@ -58,6 +60,7 @@ export const scrollState: Record<Phase, number> & {
   starPx: -1000,
   starPy: -1000,
   starRadiusPx: 0,
+  total: 0,
   ready: false,
 };
 
