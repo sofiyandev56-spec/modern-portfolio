@@ -1,5 +1,6 @@
 import { Loader } from "@/components/experience/loader";
 import { Nav } from "@/components/experience/nav";
+import { Rail } from "@/components/experience/rail";
 import { CosmosClient } from "@/components/experience/cosmos-client";
 import { Grain } from "@/components/experience/grain";
 import { Chart } from "@/components/experience/chart";
@@ -25,6 +26,7 @@ export default function Home() {
     <>
       <Loader />
       <Nav />
+      <Rail />
       <CosmosClient />
       <Grain />
       <Chart />

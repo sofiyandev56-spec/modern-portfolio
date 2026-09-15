@@ -36,6 +36,12 @@
   /* The one ease for anything that settles into place. */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* The chart's grid, overwritten in px by chart.tsx on resize. */
+  --gx1: 7vw;
+  --gx2: 93vw;
+  --gy1: 4.6rem;
+  --gy2: calc(100% - 4.6rem);
+
   /* Tracking used by every small uppercase label. */
   --track-wide: 0.28em;
   --track-mid: 0.15em;
@@ -162,11 +168,6 @@ a {
 /* ── Chart (drafting grid) ── */
 .chart {
   z-index: 2;
-  /* Overwritten in px by chart.tsx on resize; these are the fallbacks. */
-  --gx1: 7vw;
-  --gx2: 93vw;
-  --gy1: 4.6rem;
-  --gy2: calc(100% - 4.6rem);
 }
 .chart-rules {
   position: absolute;
@@ -351,18 +352,6 @@ html.is-ready .nav-links { animation-delay: 0.8s; }
 .nav-links a.on {
   color: var(--fg);
 }
-.nav-dot {
-  position: fixed;
-  z-index: 10;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  transform: translate(-50%, 0);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
 .nav-cv {
   font-size: 0.72rem;
   font-weight: 500;
@@ -423,8 +412,84 @@ html.is-ready .nav-links { animation-delay: 0.8s; }
     color: var(--fg);
     background: rgba(46, 230, 160, 0.12);
   }
-  .nav-dot {
-    display: none !important;
+}
+@media (min-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+/* ── Chapter rail (desktop) ── */
+.rail {
+  position: fixed;
+  left: var(--gx1);
+  /* Upper quarter: clear of the hero name and the cards' text. */
+  top: 26%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transform: translateY(-50%);
+  opacity: 0;
+}
+html.is-ready .rail {
+  animation: settle 0.8s var(--ease) 0.9s forwards;
+}
+.rail a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  color: var(--fg);
+  opacity: 0.4;
+  transition: opacity 0.32s linear;
+}
+.rail a i {
+  display: block;
+  width: 9px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.5s var(--ease);
+}
+.rail a em {
+  position: absolute;
+  left: 34px;
+  font-style: normal;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.35s linear, transform 0.5s var(--ease);
+}
+.rail a em b {
+  margin-right: 0.6em;
+  font-weight: 400;
+  color: var(--fg-muted);
+  transition: color 0.3s ease;
+}
+.rail a:hover,
+.rail a:focus-visible,
+.rail a.on {
+  opacity: 1;
+}
+.rail a.on i {
+  width: 22px;
+}
+.rail a:hover em,
+.rail a:focus-visible em,
+.rail a.on em {
+  opacity: 0.9;
+  transform: none;
+}
+.rail a.on em b {
+  color: var(--accent);
+}
+@media (max-width: 767px) {
+  .rail {
+    display: none;
   }
 }
 
@@ -1008,6 +1073,7 @@ html.is-ready .nav-links { animation-delay: 0.8s; }
   .nav-brand,
   .nav-cv,
   .nav-links,
+  .rail,
   .chart-mark span {
     opacity: 1;
     animation: none !important;

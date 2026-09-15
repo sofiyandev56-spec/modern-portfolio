@@ -18,7 +18,8 @@ import { projects } from "@/data/projects";
  * the right rule and a head travels down it, counting the card on stage.
  *
  * Geometry is measured once per resize and pushed to CSS variables on the
- * root, so the marks, fill and ruler share it with the SVG paths.
+ * document root, so the marks, fill, ruler and the chapter rail share it
+ * with the SVG paths.
  */
 
 /** The four-point star from src/app/icon.tsx, in a -1.2..1.2 box. */
@@ -97,10 +98,11 @@ export function Chart() {
         // rule sits above both.
         g.y2 = Math.round(g.h - (mobile ? 6.6 : 4.6) * rem);
         rules.setAttribute("viewBox", `0 0 ${g.w} ${g.h}`);
-        root.style.setProperty("--gx1", `${g.x1}px`);
-        root.style.setProperty("--gx2", `${g.x2}px`);
-        root.style.setProperty("--gy1", `${g.y1}px`);
-        root.style.setProperty("--gy2", `${g.y2}px`);
+        const html = document.documentElement.style;
+        html.setProperty("--gx1", `${g.x1}px`);
+        html.setProperty("--gx2", `${g.x2}px`);
+        html.setProperty("--gy1", `${g.y1}px`);
+        html.setProperty("--gy2", `${g.y2}px`);
         RULES.forEach((r) => setPath(r, 0, 0));
       };
       measure();
