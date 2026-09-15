@@ -17,7 +17,8 @@ import { Line, Words } from "@/components/experience/split";
  * another; it holds; then the whole card dissolves back into dots at the
  * end (the .dither mask and the .w masks in globals.css). While hidden it
  * is also `visibility: hidden` so its link cannot take keyboard focus
- * off-screen. The title rises as one line and leaves the same way.
+ * off-screen. The title rises as one line and leaves the same way. On
+ * pointer devices a card also tilts a few degrees towards the pointer.
  */
 export function ProjectStage() {
   const ref = useRef<HTMLDivElement>(null);
@@ -27,6 +28,7 @@ export function ProjectStage() {
       const root = ref.current;
       if (!root) return;
       const reduce = window.matchMedia(REDUCED_MOTION).matches;
+      const fine = window.matchMedia("(pointer: fine)").matches;
       const title = root.querySelector<HTMLElement>(".proj-title");
       const titleLine = title?.querySelector<HTMLElement>(".ln > i");
       if (!title || !titleLine) return;
@@ -107,7 +109,35 @@ export function ProjectStage() {
         });
       };
       gsap.ticker.add(tick);
-      return () => gsap.ticker.remove(tick);
+
+      // Tilt: up to ±4° towards the pointer, easing back when it leaves.
+      const tilts: (() => void)[] = [];
+      if (fine && !reduce) {
+        root.querySelectorAll<HTMLElement>(".pcard").forEach((card) => {
+          const onMove = (e: PointerEvent) => {
+            const r = card.getBoundingClientRect();
+            const nx = (e.clientX - r.left) / r.width - 0.5;
+            const ny = (e.clientY - r.top) / r.height - 0.5;
+            card.style.setProperty("--rx", `${(-ny * 8).toFixed(2)}deg`);
+            card.style.setProperty("--ry", `${(nx * 8).toFixed(2)}deg`);
+          };
+          const onLeave = () => {
+            card.style.setProperty("--rx", "0deg");
+            card.style.setProperty("--ry", "0deg");
+          };
+          card.addEventListener("pointermove", onMove, { passive: true });
+          card.addEventListener("pointerleave", onLeave);
+          tilts.push(() => {
+            card.removeEventListener("pointermove", onMove);
+            card.removeEventListener("pointerleave", onLeave);
+          });
+        });
+      }
+
+      return () => {
+        gsap.ticker.remove(tick);
+        tilts.forEach((off) => off());
+      };
     },
     { scope: ref }
   );

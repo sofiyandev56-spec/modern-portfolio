@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { scrollState, window01 } from "@/lib/scroll-state";
+import { COARSE_OR_NARROW, REDUCED_MOTION } from "@/lib/use-media-query";
 import { Words } from "@/components/experience/split";
 
 /**
@@ -17,8 +18,10 @@ import { Words } from "@/components/experience/split";
  * The sub line and the tag arrive word by word after the loader (a CSS
  * transition on html.is-ready; see split.tsx). As the reader begins to fly
  * (the traverse phase) the name grows and fades like something passed on the
- * way in; the sub line and tag leave a little earlier, the arrow as soon as
- * scrolling starts. Everything here moves with transform and opacity only.
+ * way in, and on desktop it also breaks up: the `soak` turbulence filter
+ * (defined in chart.tsx) displaces it more and more as it goes. The sub line
+ * and tag leave a little earlier, the arrow as soon as scrolling starts.
+ * Apart from that filter, everything here moves with transform and opacity.
  */
 export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,6 +37,11 @@ export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag
       const arrow = root.querySelector<HTMLElement>(".hero-arrow");
       if (!nameEl || !glowEl || !subEl || !tagEl || !arrow) return;
       const letters = Array.from(glowEl.querySelectorAll<HTMLElement>(".gl"));
+      const soak =
+        !window.matchMedia(REDUCED_MOTION).matches && !window.matchMedia(COARSE_OR_NARROW).matches
+          ? document.querySelector<SVGFEDisplacementMapElement>("#soak feDisplacementMap")
+          : null;
+      let lastSoak = 0;
 
       // Letter centres are measured once (and again on resize or when the
       // fonts finish loading) relative to the name's centre, then placed each
@@ -81,6 +89,14 @@ export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag
         nameEl.style.opacity = String(nameOpacity);
         nameEl.style.transform = nameTransform;
         nameEl.style.visibility = visible ? "visible" : "hidden";
+        if (soak) {
+          const amount = visible ? Math.round(64 * window01(s.traverse, 0.05, 0.45)) : 0;
+          if (amount !== lastSoak) {
+            lastSoak = amount;
+            soak.scale.baseVal = amount;
+            nameEl.style.filter = amount > 0 ? "url(#soak)" : "none";
+          }
+        }
         glowEl.style.transform = nameTransform;
         glowEl.style.visibility = visible ? "visible" : "hidden";
 

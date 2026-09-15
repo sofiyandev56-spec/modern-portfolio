@@ -11,7 +11,10 @@ built.
 One long scroll. A WebGL "cosmos" of particles sits behind the page: you start
 in front of a dust portal with a mint star at its centre, fly through it, watch
 the star turn while the words that describe how I work drift past, meet the
-three projects one by one, and end in a starfield with my email.
+three projects one by one, and end in a starfield with my email. A drafting
+grid frames it all — hairlines that draw themselves in, a star at each corner,
+a progress line along the bottom and a chapter rail on the left — and text
+arrives through masks and dissolves into dots on its way out.
 
 Everything visible lives in fixed layers driven by scroll progress
 (`src/components/experience`); the page itself is mostly spacers that give each

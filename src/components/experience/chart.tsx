@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { scrollState, window01 } from "@/lib/scroll-state";
+import { STAR_PATH } from "@/lib/site";
 import { projects } from "@/data/projects";
 
 /**
@@ -20,11 +21,10 @@ import { projects } from "@/data/projects";
  * Geometry is measured once per resize and pushed to CSS variables on the
  * document root, so the marks, fill, ruler and the chapter rail share it
  * with the SVG paths.
+ *
+ * Also hosts the `soak` filter the hero name breaks up through (see
+ * hero-layer.tsx), since a filter has to live somewhere in the document.
  */
-
-/** The four-point star from src/app/icon.tsx, in a -1.2..1.2 box. */
-export const STAR_PATH =
-  "M0 -1.15 C0.06 -0.5 0.45 -0.07 0.95 0 C0.45 0.07 0.06 0.5 0 1.15 C-0.06 0.5 -0.45 0.07 -0.95 0 C-0.45 -0.07 -0.06 -0.5 0 -1.15 Z";
 
 const RULES = ["v1", "h1", "v2", "h2"] as const;
 type Rule = (typeof RULES)[number];
@@ -222,6 +222,12 @@ export function Chart() {
           <b>01 / 03</b>
         </i>
       </div>
+      <svg width="0" height="0" style={{ position: "absolute" }}>
+        <filter id="soak" x="-10%" y="-40%" width="120%" height="180%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
     </div>
   );
 }

@@ -11,6 +11,10 @@ export const siteUrl =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "http://localhost:3000");
 
+/** The four-point star, the site's mark, in a -1.2..1.2 box (see icon.tsx). */
+export const STAR_PATH =
+  "M0 -1.15 C0.06 -0.5 0.45 -0.07 0.95 0 C0.45 0.07 0.06 0.5 0 1.15 C-0.06 0.5 -0.45 0.07 -0.95 0 C-0.45 -0.07 -0.06 -0.5 0 -1.15 Z";
+
 export const PERSON_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "Person",
