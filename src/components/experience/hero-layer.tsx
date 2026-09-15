@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { scrollState, window01 } from "@/lib/scroll-state";
+import { Words } from "@/components/experience/split";
 
 /**
  * The hero text, pinned over the cosmos.
@@ -13,10 +14,11 @@ import { scrollState, window01 } from "@/lib/scroll-state";
  * (and to the cursor), so the star lights the letters it drifts past and the
  * pointer leaves a soft glow where it hovers.
  *
- * As the reader begins to fly (the traverse phase) the name grows and fades
- * like something passed on the way in; the sub line and tag leave a little
- * earlier, the arrow as soon as scrolling starts. Everything here moves with
- * transform and opacity only.
+ * The sub line and the tag arrive word by word after the loader (a CSS
+ * transition on html.is-ready; see split.tsx). As the reader begins to fly
+ * (the traverse phase) the name grows and fades like something passed on the
+ * way in; the sub line and tag leave a little earlier, the arrow as soon as
+ * scrolling starts. Everything here moves with transform and opacity only.
  */
 export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -142,13 +144,22 @@ export function HeroLayer({ name, sub, tag }: { name: string; sub: string[]; tag
       <div className="hero-pin hero-sub" style={{ opacity: 0 }}>
         {sub.map((line, i) => (
           <React.Fragment key={line}>
-            {i > 0 && <span className="sub-dot"> · </span>}
-            <span className="sub-line">{line}</span>
+            {i > 0 && (
+              <>
+                {" "}
+                <span className="w sub-dot" style={{ "--i": i * 4 - 1 } as React.CSSProperties}>
+                  <i>·</i>
+                </span>{" "}
+              </>
+            )}
+            <span className="sub-line">
+              <Words text={line} from={i * 4} />
+            </span>
           </React.Fragment>
         ))}
       </div>
       <div className="hero-pin hero-tag serif" style={{ opacity: 0 }}>
-        {tag}
+        <Words text={tag} from={sub.length * 4} />
       </div>
       <div className="hero-pin hero-arrow" style={{ opacity: 0 }}>
         <svg viewBox="0 0 22 12" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
