@@ -644,6 +644,22 @@ html.is-ready .hero-tag .w > i {
 .constellation {
   z-index: 3;
 }
+.clines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.clines line {
+  stroke: var(--rule);
+  stroke-width: 1;
+  opacity: 0;
+}
+.clines circle {
+  fill: var(--accent);
+  opacity: 0;
+}
 .cword {
   position: absolute;
   left: var(--mx);
