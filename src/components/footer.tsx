@@ -82,6 +82,9 @@ export function Footer() {
             <span>My other portfolios:</span>
             <a href="https://starportfolio-nu.vercel.app" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">Star Portfolio</a>
             <a href="https://xray-portfolio-five.vercel.app" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">X-Ray Portfolio</a>
+            <span aria-hidden="true">·</span>
+            <a href="/sofiyan-shaikh-cv.pdf" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">CV</a>
+            <a href="/sofiyan-shaikh-resume.pdf" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">Résumé</a>
           </div>
 
           <div>

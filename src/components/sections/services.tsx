@@ -13,7 +13,7 @@ const services = [
     number: "01",
     title: "GENERATIVE AI",
     description:
-      "My honours specialization, studied with IBM. Understanding how foundation models work, and writing the prompts and workflows that get useful output from them.",
+      "My honours specialisation, studied with IBM. Understanding how foundation models work, and writing the prompts and workflows that get useful output from them.",
     tags: ["Generative AI", "Prompt Engineering", "IBM Track"],
   },
   {
@@ -35,7 +35,14 @@ const services = [
     title: "BUILDING FOR THE WEB",
     description:
       "Taking an idea to a working, deployed application — using AI tooling as a build partner while staying responsible for how the code fits together.",
-    tags: ["HTML", "React", "Git & GitHub", "AI-Assisted Builds"],
+    tags: ["React", "TypeScript", "Next.js", "Three.js", "Supabase", "Git & GitHub"],
+  },
+  {
+    number: "05",
+    title: "iOS DEVELOPMENT",
+    description:
+      "Native iOS apps in Swift and SwiftUI, designed with Liquid Glass and built for VoiceOver and Reduce Motion — including an on-device Apple Intelligence coach in Unfold.",
+    tags: ["Swift", "SwiftUI", "Xcode", "FoundationModels"],
   },
 ];
 

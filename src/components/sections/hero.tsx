@@ -212,7 +212,7 @@ export function Hero() {
             <RevealItem trigger="mount" delay={0.1} className="mb-6">
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fill border border-line text-xs font-medium tracking-wide text-fg-soft">
                 <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-fuchsia-400" />
-                <span>B.Tech CSE (AI &amp; ML) Student</span>
+                <span>iOS and web developer</span>
               </span>
             </RevealItem>
 
@@ -241,7 +241,7 @@ export function Hero() {
               delay={0.55}
               className="text-base sm:text-lg md:text-xl text-fg-secondary font-normal leading-relaxed max-w-xl mb-10"
             >
-              B.Tech CSE (AI &amp; ML) Hons. student specializing in Generative AI with IBM. I learn by building — writing C, C++ and Python for the fundamentals, and shipping real web applications on top of them.
+              First-year B.Tech CSE (AI &amp; ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM. I build iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.
             </RevealItem>
 
             {/* Action Buttons with Magnetic Pull */}

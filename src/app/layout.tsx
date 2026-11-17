@@ -30,9 +30,9 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+  title: "Sofiyan Shaikh — iOS and web developer",
   description:
-    "Portfolio of Sofiyan Shaikh, a B.Tech Computer Science (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
+    "Sofiyan Shaikh is a first-year B.Tech CSE (AI & ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM, building iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.",
   keywords: [
     "Sofiyan Shaikh",
     "B.Tech CSE AI ML",
@@ -46,18 +46,18 @@ export const metadata: Metadata = {
   authors: [{ name: "Sofiyan Shaikh", url: "https://github.com/sofiyandev56-spec" }],
   creator: "Sofiyan Shaikh",
   openGraph: {
-    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+    title: "Sofiyan Shaikh — iOS and web developer",
     description:
-      "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
+      "Sofiyan Shaikh is a first-year B.Tech CSE (AI & ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM, building iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.",
     type: "website",
     locale: "en_US",
     siteName: "Sofiyan Shaikh Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sofiyan Shaikh — B.Tech CSE (AI & ML) Student",
+    title: "Sofiyan Shaikh — iOS and web developer",
     description:
-      "B.Tech CSE (AI & ML) Hons. student specializing in Generative AI with IBM. Python, C, C++, MySQL, and web applications built end to end.",
+      "Sofiyan Shaikh is a first-year B.Tech CSE (AI & ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM, building iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.",
   },
   robots: {
     index: true,

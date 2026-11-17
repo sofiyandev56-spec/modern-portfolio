@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { ArrowUpRight, BrainCircuit, Code2, Database, Bike, Trophy, Activity } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, Code2, Bike, Trophy, Activity, Smartphone } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { COARSE_OR_NARROW, REDUCED_MOTION, useMediaQuery } from "@/lib/use-media-query";
 import { RevealItem, RevealText } from "@/components/motion/reveal";
@@ -71,7 +71,7 @@ export function About() {
       title: "Generative AI",
       tag: "SPECIALIZATION",
       description:
-        "My honours track, taken with IBM. Learning how foundation models are built, prompted and applied — and using them daily as a build partner.",
+        "My honours specialisation, taken with IBM. Learning how foundation models are built, prompted and applied — and using them daily as a build partner.",
       floatingAnimation: {
         y: [0, -12, 0],
         rotate: [-1, 1, -1],
@@ -100,11 +100,11 @@ export function About() {
       },
     },
     {
-      icon: Database,
-      title: "Databases & The Web",
+      icon: Smartphone,
+      title: "iPhone & The Web",
       tag: "BUILDING",
       description:
-        "MySQL for structured data, HTML and modern JavaScript frameworks for the interface — put together in the projects below.",
+        "Native iOS apps in Swift and SwiftUI, web interfaces in React, TypeScript and Three.js, and MySQL and Supabase for the data — put together in the projects below.",
       floatingAnimation: {
         y: [0, -8, 0],
         rotate: [-0.5, 1, -0.5],
@@ -116,6 +116,33 @@ export function About() {
         },
       },
     },
+  ];
+
+  const facts: [string, string][] = [
+    ["Based in", "Gandhinagar, Gujarat"],
+    ["Studying", "B.Tech CSE (AI & ML) Hons., Generative AI with IBM, 2026 to 2030"],
+    ["College", "Unitedworld Institute of Technology, Karnavati University"],
+    ["Working with", "Swift, SwiftUI, React, TypeScript, Next.js, Three.js, Python, C, C++, MySQL, Supabase"],
+    ["Open to", "Internships and project work in AI, web and iOS"],
+  ];
+
+  const record: [string, string][] = [
+    [
+      "Team leader, Tech Titans",
+      "Smart India Hackathon 2026. Led six people through a 36-hour build of SkillTrace, owned the architecture and the proposal, and ran task distribution and API design reviews.",
+    ],
+    [
+      "Independent research",
+      "A 47-page self-directed analysis of foundation models, AI inference economics and multimodal architectures.",
+    ],
+    [
+      "DocLens AI",
+      "Concept and pitch for a document-intelligence tool that redacts ID details on the device. Led the design and the pitch.",
+    ],
+    [
+      "iOS Application Development Workshop",
+      "29 to 30 Oct 2026. Two days of Swift, SwiftUI and Xcode with Apple Authorised mentors at UIT's Apple Authorised Training Centre for Education.",
+    ],
   ];
 
   const interests = [
@@ -154,7 +181,10 @@ export function About() {
             delay={0.15}
             className="relative text-base sm:text-lg md:text-xl text-fg-soft font-normal leading-relaxed scene:[text-shadow:0_0_24px_var(--bg),0_0_8px_var(--bg)]"
           >
-            I am a B.Tech Computer Science (AI &amp; ML) Hons. student on a Generative AI track with IBM. I am early in the journey and honest about that — what I have so far is a solid grip on C, C++, Python and MySQL, a habit of solving problems until they give way, and three applications I have shipped — two with a team, including a Smart India Hackathon prototype, and one solo.
+            I’m a first-year B.Tech Computer Science (AI &amp; ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM. I have a solid grip on C, C++, Python and MySQL, and I build iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.
+            <br />
+            <br />
+            So far I’ve shipped three web applications and built two native iOS apps. I led a six-person team at Smart India Hackathon 2026, and I’m looking for internships and project work in AI, web and iOS development.
           </RevealItem>
         </div>
 
@@ -181,7 +211,7 @@ export function About() {
                 <div className="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
                   <div>
                     <div className="text-xs text-zinc-300 font-medium">Sofiyan Shaikh</div>
-                    <div className="text-sm font-semibold text-white">B.Tech CSE (AI &amp; ML) Student</div>
+                    <div className="text-sm font-semibold text-white">iOS and web developer</div>
                   </div>
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
@@ -224,6 +254,31 @@ export function About() {
           </div>
 
         </div>
+
+        {/* Facts and record: the same on all three portfolios */}
+        <RevealItem className="relative max-w-3xl mx-auto mb-12 sm:mb-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-left scene:[text-shadow:0_0_24px_var(--bg),0_0_8px_var(--bg)]">
+          <dl className="space-y-3">
+            {facts.map(([label, value]) => (
+              <div key={label} className="border-b border-line-faint pb-3">
+                <dt className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">{label}</dt>
+                <dd className="text-sm sm:text-base text-fg-soft mt-1">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <div>
+            <span className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">
+              Leadership, Research &amp; Certificate
+            </span>
+            <ul className="mt-3 space-y-3">
+              {record.map(([title, detail]) => (
+                <li key={title} className="border-b border-line-faint pb-3">
+                  <div className="text-sm sm:text-base font-semibold text-fg">{title}</div>
+                  <p className="text-sm text-fg-secondary leading-relaxed mt-1">{detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </RevealItem>
 
         {/* Away From The Keyboard */}
         <RevealItem className="flex flex-col items-center gap-4 mb-10 sm:mb-16">

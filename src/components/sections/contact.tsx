@@ -56,7 +56,7 @@ export function Contact() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-fg-secondary font-normal leading-relaxed max-w-xl mx-auto">
-            Open to internships, junior developer roles, and student projects — or just a conversation about AI and building things. The form below opens your mail app with the message ready to send.
+            Have an internship or a project in mind? I’m looking for internships and project work in AI, web and iOS development — or just a conversation about building things. The form below opens your mail app with the message ready to send.
           </p>
         </div>
 

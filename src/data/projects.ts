@@ -28,13 +28,144 @@ export interface Project {
   images?: ProjectImage[];
   /** A wide detail crop shown beneath the screenshots, with its caption. */
   highlight?: ProjectImage & { caption: string };
-  visualType: "skilltrace" | "happynest" | "portfolio" | "star" | "xray";
+  visualType:
+    | "xray"
+    | "unfold"
+    | "programmer-corner"
+    | "happynest"
+    | "skilltrace"
+    | "star"
+    | "portfolio"
+    | "polaris";
 }
 
 export const projects: Project[] = [
   {
-    id: "skilltrace",
+    id: "xray-portfolio",
     number: "01",
+    title: "X-RAY PORTFOLIO",
+    category: "Main Portfolio / WebGL / Fluid Simulation",
+    tagline: "My main portfolio",
+    overview:
+      "My main portfolio. The cursor stirs a fluid simulation that turns the photo into an x-ray, and the signature writes itself from traced pen strokes.",
+    impact:
+      "It opens as a blueprint and develops into a photo; under the cursor the photo wipes back to the skeleton and the MacBook's M4 chip. Built with Vite and no framework, so the whole site ships as a small static bundle, and it respects Reduce Motion.",
+    facts: [
+      { label: "Role", value: "Solo Build" },
+      { label: "Stack", value: "Vite + Three.js" },
+      { label: "Status", value: "Live" },
+    ],
+    technologies: ["JavaScript", "Vite", "Three.js", "GLSL", "GSAP", "Lenis"],
+    images: [
+      {
+        src: "/images/portfolio/xray-hero.jpg",
+        alt: "The X-Ray Portfolio: Sofiyan Shaikh's photo half wiped back to an x-ray of the skull and a MacBook's insides",
+        width: 1200,
+        height: 630,
+        label: "Hero",
+      },
+    ],
+    demo: "https://xray-portfolio-five.vercel.app",
+    github: "https://github.com/sofiyandev56-spec/xray-portfolio",
+    visualType: "xray",
+  },
+  {
+    id: "unfold",
+    number: "02",
+    title: "UNFOLD",
+    category: "Native iOS App / Apple Intelligence",
+    tagline: "A learning arcade for iPhone Duo",
+    overview:
+      "A learning arcade for Swift and Apple frameworks on iPhone Duo. Its four games use the hinge as the controller, and an on-device Apple Intelligence coach answers from the app's own lessons.",
+    impact:
+      "The games read the hinge through iOS 27.1's onHingeChange and reservedRegions APIs, and the coach runs on device with FoundationModels, grounded in the app's own curriculum.",
+    facts: [
+      { label: "Type", value: "Native iOS app" },
+      { label: "Platform", value: "iPhone Duo" },
+      { label: "Year", value: "2026" },
+    ],
+    technologies: ["Swift", "SwiftUI", "FoundationModels", "Liquid Glass", "Xcode"],
+    images: [
+      {
+        src: "/images/unfold/arcade.webp",
+        alt: "Unfold's Arcade on iPhone Duo's inner display: today's game, Swift Sprint, with a Liquid Glass sidebar",
+        width: 1600,
+        height: 1126,
+        label: "Arcade",
+      },
+    ],
+    github: "https://github.com/sofiyandev56-spec/Unfold",
+    visualType: "unfold",
+  },
+  {
+    id: "programmer-corner",
+    number: "03",
+    title: "PROGRAMMER CORNER",
+    category: "Native iOS App / Learning",
+    tagline: "A SwiftUI app for learning Swift",
+    overview:
+      "A SwiftUI app for learning Swift: 52 lessons across 8 topics, 8 mini-games, and XP, levels and badges. Designed with Liquid Glass, with VoiceOver and Reduce Motion support.",
+    impact:
+      "Every lesson carries code samples, and progress, XP and badges are saved on device. The Liquid Glass interface uses zoom transitions and haptics.",
+    facts: [
+      { label: "Type", value: "Native iOS app" },
+      { label: "Platform", value: "iPhone" },
+      { label: "Year", value: "2026" },
+    ],
+    technologies: ["Swift", "SwiftUI", "Liquid Glass", "Xcode"],
+    images: [
+      {
+        src: "/images/programmer-corner/blueprint.jpg",
+        alt: "Blueprint drawing of Programmer Corner: a phone with a lesson list, an XP bar and a badge",
+        width: 1600,
+        height: 900,
+        label: "Blueprint",
+      },
+    ],
+    github: "https://github.com/sofiyandev56-spec/iOS-Development-Workshop",
+    visualType: "programmer-corner",
+  },
+  {
+    id: "happynest-clinic",
+    number: "04",
+    title: "HAPPYNEST CLINIC",
+    category: "Full-Stack Web App / Healthcare",
+    tagline: "Pediatric Clinic Booking & Patient Management System",
+    overview:
+      "Booking and patient management for a pediatric clinic. Parents book slots and fill in intake forms from their phones; the doctor runs the day from one dashboard and signs off immunizations against the IAP checklist.",
+    impact:
+      "Parents book a slot and submit intake details from their phone instead of calling the clinic. On the other side, the doctor gets a queue of upcoming appointments, an immunization checklist to sign off on, and walk-in handling with tiered consultation fees.",
+    facts: [
+      { label: "Role", value: "Team Project" },
+      { label: "Stack", value: "TanStack + Supabase" },
+      { label: "Status", value: "Deployed" },
+    ],
+    technologies: [
+      "TypeScript",
+      "React",
+      "TanStack Start",
+      "TanStack Router",
+      "Supabase",
+      "Tailwind CSS",
+      "Zod",
+      "Vite",
+    ],
+    demo: "https://happy-nest-clinic.vercel.app",
+    repoPrivate: true,
+    images: [
+      {
+        src: "/images/happynest/dashboard.webp",
+        alt: "HappyNest clinic dashboard: appointment timeline, patient queue, and immunization checklist",
+        width: 1600,
+        height: 900,
+        label: "Dashboard",
+      },
+    ],
+    visualType: "happynest",
+  },
+  {
+    id: "skilltrace",
+    number: "05",
     title: "SKILLTRACE",
     category: "GovTech / Full-Stack / Data Integrity",
     tagline: "Skilling-outcomes tracking for government training programmes",
@@ -53,7 +184,7 @@ export const projects: Project[] = [
     ],
     facts: [
       { label: "Hackathon", value: "SIH 2026 · Internal" },
-      { label: "Role", value: "Team Lead" },
+      { label: "Role", value: "Team Lead of six" },
       { label: "Team", value: "Tech Titans" },
       { label: "Status", value: "Prototype" },
     ],
@@ -95,90 +226,15 @@ export const projects: Project[] = [
     visualType: "skilltrace",
   },
   {
-    id: "happynest-clinic",
-    number: "02",
-    title: "HAPPYNEST CLINIC",
-    category: "Full-Stack Web App / Healthcare",
-    tagline: "Pediatric Clinic Booking & Patient Management System",
-    overview:
-      "A mobile-first web application for a pediatric clinic, covering online appointment scheduling, parent and patient intake, and a dashboard the doctor uses to run the day.",
-    impact:
-      "Parents book a slot and submit intake details from their phone instead of calling the clinic. On the other side, the doctor gets a queue of upcoming appointments, an immunization checklist to sign off on, and walk-in handling with tiered consultation fees.",
-    facts: [
-      { label: "Role", value: "Team Project" },
-      { label: "Stack", value: "TanStack + Supabase" },
-      { label: "Status", value: "Deployed" },
-    ],
-    technologies: [
-      "TypeScript",
-      "React",
-      "TanStack Start",
-      "TanStack Router",
-      "Supabase",
-      "Tailwind CSS",
-      "Zod",
-      "Vite",
-    ],
-    demo: "https://happy-nest-clinic.vercel.app",
-    repoPrivate: true,
-    images: [
-      {
-        src: "/images/happynest/dashboard.webp",
-        alt: "HappyNest clinic dashboard: appointment timeline, patient queue, and immunization checklist",
-        width: 1600,
-        height: 900,
-        label: "Dashboard",
-      },
-    ],
-    visualType: "happynest",
-  },
-  {
-    id: "modern-portfolio",
-    number: "03",
-    title: "MODERN PORTFOLIO",
-    category: "Frontend / 3D Web / Motion Design",
-    tagline: "This Site — An Interactive 3D Developer Portfolio",
-    overview:
-      "The portfolio you are reading right now. Built from scratch to learn how a real 3D scene, scroll-driven motion, and a component-based design system fit together in one Next.js app.",
-    impact:
-      "Renders a custom Three.js model in the browser alongside spring-based motion, smooth scrolling, and an expandable project accordion — all typed end to end and built as a static production bundle.",
-    facts: [
-      { label: "Role", value: "Solo Build" },
-      { label: "Stack", value: "Next.js + Three.js" },
-      { label: "Rendering", value: "React Three Fiber" },
-    ],
-    technologies: [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Three.js",
-      "React Three Fiber",
-      "Framer Motion",
-      "Tailwind CSS",
-      "GSAP",
-    ],
-    images: [
-      {
-        src: "/images/portfolio/showcase.webp",
-        alt: "Modern Portfolio interactive 3D WebGL experience, custom shaders and kinetic motion design",
-        width: 1600,
-        height: 900,
-        label: "Showcase",
-      },
-    ],
-    github: "https://github.com/sofiyandev56-spec/modern-portfolio",
-    visualType: "portfolio",
-  },
-  {
     id: "star-portfolio",
-    number: "04",
+    number: "06",
     title: "STAR PORTFOLIO",
-    category: "Frontend / WebGL / Motion Design",
+    category: "Portfolio / WebGL / Motion Design",
     tagline: "A star-guided scroll portfolio",
     overview:
-      "My current portfolio. A mint star leads the reader through the page: it answers the cursor, draws constellations between words and opens a portal for the name in the hero.",
+      "A scroll portfolio guided by a mint star that answers the cursor, draws constellations between words and opens a portal for the name in the hero.",
     impact:
-      "Built from scratch in Next.js with Three.js, GSAP and Lenis, with a light theme, Swift and iOS work, and the CV and résumé generated from the same source.",
+      "Built from scratch in Next.js with Three.js, GSAP and Lenis, with light and dark themes, and the CV and résumé generated from the same source.",
     facts: [
       { label: "Role", value: "Solo Build" },
       { label: "Stack", value: "Next.js + Three.js" },
@@ -198,32 +254,68 @@ export const projects: Project[] = [
     visualType: "star",
   },
   {
-    id: "xray-portfolio",
-    number: "05",
-    title: "X-RAY PORTFOLIO",
-    category: "Frontend / WebGL / Fluid Simulation",
-    tagline: "A one-page portfolio with an x-ray hero",
+    id: "modern-portfolio",
+    number: "07",
+    title: "3D MODEL PORTFOLIO",
+    category: "Portfolio / 3D Web / Motion Design",
+    tagline: "This site — my first portfolio",
     overview:
-      "A blueprint that develops into a photo while my signature is written across it. Moving the cursor over the photo stirs a fluid simulation that wipes it back to an x-ray of the skeleton and the MacBook's M4 chip.",
+      "My first portfolio, and the site you are on, with a scanned 3D bust in the hero and scroll-driven animation. Simplifying the 1.4-million-triangle scan cut the hero from 39 MB to 2.4 MB.",
     impact:
-      "Built with Vite, Three.js, GSAP and Lenis and no framework, so the whole site ships as a small static bundle.",
+      "Renders the scanned model in the browser alongside spring-based motion, smooth scrolling and an inertial project slider, all typed end to end and built as a static production bundle.",
     facts: [
       { label: "Role", value: "Solo Build" },
-      { label: "Stack", value: "Vite + Three.js" },
-      { label: "Status", value: "Live" },
+      { label: "Stack", value: "Next.js + Three.js" },
+      { label: "Rendering", value: "React Three Fiber" },
     ],
-    technologies: ["JavaScript", "Vite", "Three.js", "GLSL", "GSAP", "Lenis"],
+    technologies: [
+      "TypeScript",
+      "Next.js",
+      "React",
+      "Three.js",
+      "React Three Fiber",
+      "Framer Motion",
+      "Tailwind CSS",
+      "GSAP",
+    ],
     images: [
       {
-        src: "/images/portfolio/xray-hero.jpg",
-        alt: "The X-Ray Portfolio's link preview: Sofiyan Shaikh's photo half wiped back to an x-ray",
-        width: 1200,
-        height: 630,
-        label: "Hero",
+        src: "/images/portfolio/showcase.webp",
+        alt: "The 3D Model Portfolio: interactive WebGL scene, custom shaders and kinetic motion design",
+        width: 1600,
+        height: 900,
+        label: "Showcase",
       },
     ],
-    demo: "https://xray-portfolio-five.vercel.app",
-    github: "https://github.com/sofiyandev56-spec/xray-portfolio",
-    visualType: "xray",
+    demo: "https://sofiyan-shaikh.vercel.app",
+    github: "https://github.com/sofiyandev56-spec/modern-portfolio",
+    visualType: "portfolio",
+  },
+  {
+    id: "polaris",
+    number: "08",
+    title: "POLARIS",
+    category: "IoT / Driver Safety / Team Project",
+    tagline: "Driver drowsiness detection for long hauls",
+    overview:
+      "A cockpit-mounted device that detects micro-sleeps in truck and bus drivers on long hauls and sets off a buzzer and flashing light. In progress, leading a team of six.",
+    impact:
+      "Portable and adaptable to any vehicle. Due December 2026 as a team semester project.",
+    facts: [
+      { label: "Role", value: "Team Lead of six" },
+      { label: "Type", value: "Semester project" },
+      { label: "Status", value: "In progress" },
+    ],
+    technologies: ["Internet of Things", "Embedded hardware"],
+    images: [
+      {
+        src: "/images/polaris/blueprint.jpg",
+        alt: "Blueprint drawing of Polaris: a dashboard-mounted box watching a driver's eye",
+        width: 1600,
+        height: 900,
+        label: "Blueprint",
+      },
+    ],
+    visualType: "polaris",
   },
 ];
