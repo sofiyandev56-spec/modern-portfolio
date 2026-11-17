@@ -19,7 +19,7 @@ export const PERSON_SCHEMA = {
   jobTitle: "B.Tech CSE (AI & ML) Student",
   description:
     "B.Tech Computer Science (AI & ML) Hons. student specializing in Generative AI with IBM.",
-  email: "mailto:sofiyandev56@gmail.com",
+  email: "mailto:sofiyan.dev56@gmail.com",
   nationality: "Indian",
   knowsAbout: [
     "Generative AI",

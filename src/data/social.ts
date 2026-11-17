@@ -30,8 +30,8 @@ export const socialLinks: SocialLink[] = [
   },
   {
     name: "Email",
-    url: "mailto:sofiyandev56@gmail.com",
-    handle: "sofiyandev56@gmail.com",
+    url: "mailto:sofiyan.dev56@gmail.com",
+    handle: "sofiyan.dev56@gmail.com",
     icon: "mail",
     primary: true,
   },

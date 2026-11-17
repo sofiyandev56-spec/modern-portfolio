@@ -28,7 +28,7 @@ export interface Project {
   images?: ProjectImage[];
   /** A wide detail crop shown beneath the screenshots, with its caption. */
   highlight?: ProjectImage & { caption: string };
-  visualType: "skilltrace" | "happynest" | "portfolio";
+  visualType: "skilltrace" | "happynest" | "portfolio" | "star" | "xray";
 }
 
 export const projects: Project[] = [
@@ -119,7 +119,7 @@ export const projects: Project[] = [
       "Zod",
       "Vite",
     ],
-    demo: "https://client-joy-book.lovable.app",
+    demo: "https://happy-nest-clinic.vercel.app",
     repoPrivate: true,
     images: [
       {
@@ -168,5 +168,62 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/sofiyandev56-spec/modern-portfolio",
     visualType: "portfolio",
+  },
+  {
+    id: "star-portfolio",
+    number: "04",
+    title: "STAR PORTFOLIO",
+    category: "Frontend / WebGL / Motion Design",
+    tagline: "A star-guided scroll portfolio",
+    overview:
+      "My current portfolio. A mint star leads the reader through the page: it answers the cursor, draws constellations between words and opens a portal for the name in the hero.",
+    impact:
+      "Built from scratch in Next.js with Three.js, GSAP and Lenis, with a light theme, Swift and iOS work, and the CV and résumé generated from the same source.",
+    facts: [
+      { label: "Role", value: "Solo Build" },
+      { label: "Stack", value: "Next.js + Three.js" },
+      { label: "Status", value: "Live" },
+    ],
+    technologies: ["TypeScript", "Next.js", "React", "Three.js", "GSAP", "Lenis", "Tailwind CSS"],
+    images: [
+      {
+        src: "/images/portfolio/star-hero.jpg",
+        alt: "The Star Portfolio's hero: 'Sofiyan Shaikh' behind a dust portal with a mint star at its centre",
+        width: 1440,
+        height: 900,
+        label: "Hero",
+      },
+    ],
+    demo: "https://starportfolio-nu.vercel.app",
+    visualType: "star",
+  },
+  {
+    id: "xray-portfolio",
+    number: "05",
+    title: "X-RAY PORTFOLIO",
+    category: "Frontend / WebGL / Fluid Simulation",
+    tagline: "A one-page portfolio with an x-ray hero",
+    overview:
+      "A blueprint that develops into a photo while my signature is written across it. Moving the cursor over the photo stirs a fluid simulation that wipes it back to an x-ray of the skeleton and the MacBook's M4 chip.",
+    impact:
+      "Built with Vite, Three.js, GSAP and Lenis and no framework, so the whole site ships as a small static bundle.",
+    facts: [
+      { label: "Role", value: "Solo Build" },
+      { label: "Stack", value: "Vite + Three.js" },
+      { label: "Status", value: "Live" },
+    ],
+    technologies: ["JavaScript", "Vite", "Three.js", "GLSL", "GSAP", "Lenis"],
+    images: [
+      {
+        src: "/images/portfolio/xray-hero.jpg",
+        alt: "The X-Ray Portfolio's link preview: Sofiyan Shaikh's photo half wiped back to an x-ray",
+        width: 1200,
+        height: 630,
+        label: "Hero",
+      },
+    ],
+    demo: "https://xray-portfolio-five.vercel.app",
+    github: "https://github.com/sofiyandev56-spec/xray-portfolio",
+    visualType: "xray",
   },
 ];

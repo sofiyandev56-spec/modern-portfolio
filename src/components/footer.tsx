@@ -32,7 +32,7 @@ export function Footer() {
     },
     {
       name: "Email",
-      url: "mailto:sofiyandev56@gmail.com",
+      url: "mailto:sofiyan.dev56@gmail.com",
       icon: Mail,
     },
   ];
@@ -78,6 +78,12 @@ export function Footer() {
 
         {/* Bottom Utility Bar: Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-fg-muted">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span>My other portfolios:</span>
+            <a href="https://starportfolio-nu.vercel.app" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">Star Portfolio</a>
+            <a href="https://xray-portfolio-five.vercel.app" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-fg">X-Ray Portfolio</a>
+          </div>
+
           <div>
             © {new Date().getFullYear()} Sofiyan Shaikh. Built with Next.js, React Three Fiber and Framer Motion.
           </div>

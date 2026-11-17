@@ -5,7 +5,7 @@ import { ArrowUpRight, Check, Copy, Download, Mail, Send } from "lucide-react";
 import { CVLink } from "@/components/cv-link";
 
 export function Contact() {
-  const emailAddress = "sofiyandev56@gmail.com";
+  const emailAddress = "sofiyan.dev56@gmail.com";
   const [copied, setCopied] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
