@@ -140,6 +140,10 @@ export function About() {
       "Concept and pitch for a document-intelligence tool that redacts ID details on the device. Led the design and the pitch.",
     ],
     [
+      "Smart India Hackathon 2026 certificate",
+      "10 to 11 Sep 2026. Certificate of participation in the preliminary round at Karnavati University, with Team Tech Titans.",
+    ],
+    [
       "iOS Application Development Workshop",
       "29 to 30 Oct 2026. Two days of Swift, SwiftUI and Xcode with Apple Authorised mentors at UIT's Apple Authorised Training Centre for Education.",
     ],
@@ -267,7 +271,7 @@ export function About() {
           </dl>
           <div>
             <span className="text-[11px] uppercase tracking-widest text-fg-muted font-medium">
-              Leadership, Research &amp; Certificate
+              Leadership, Research &amp; Certificates
             </span>
             <ul className="mt-3 space-y-3">
               {record.map(([title, detail]) => (

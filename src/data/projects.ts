@@ -36,7 +36,7 @@ export interface Project {
     | "skilltrace"
     | "star"
     | "portfolio"
-    | "polaris";
+    | "oil-grader";
 }
 
 export const projects: Project[] = [
@@ -292,30 +292,45 @@ export const projects: Project[] = [
     visualType: "portfolio",
   },
   {
-    id: "polaris",
+    id: "oil-grader",
     number: "08",
-    title: "POLARIS",
-    category: "IoT / Driver Safety / Team Project",
-    tagline: "Driver drowsiness detection for long hauls",
+    title: "OIL GRADER",
+    category: "IoT / ESP32 / Team Project",
+    tagline: "Used cooking oil, graded in 30 seconds",
     overview:
-      "A cockpit-mounted device that detects micro-sleeps in truck and bus drivers on long hauls and sets off a buzzer and flashing light. In progress, leading a team of six.",
+      "A collector for used cooking oil. Pour it through the funnel and in about 30 seconds an ESP32 checks its temperature, darkness, water and thickness, then shows a green, yellow or red grade and credits points per litre to an RFID card. In progress, leading a team of six.",
     impact:
-      "Portable and adaptable to any vehicle. Due December 2026 as a team semester project.",
+      "Gives street vendors and households a cheap answer, read by colour alone, to whether oil is safe to use again, and a reason not to pour it down the drain: points for every litre, and graded oil ready for collectors. Built to cost under ₹5,000; due December 2026 as a team semester project.",
     facts: [
       { label: "Role", value: "Team Lead of six" },
       { label: "Type", value: "Semester project" },
       { label: "Status", value: "In progress" },
     ],
-    technologies: ["Internet of Things", "Embedded hardware"],
+    technologies: ["ESP32", "Arduino", "Internet of Things", "Sensors", "RFID"],
+    features: [
+      "Takes only cooled oil, below 40°C, checked by a waterproof temperature probe",
+      "Finds water by conductivity between two steel electrodes",
+      "Scores darkness with a colour sensor, and thickness by timing the flow past two IR sensors",
+      "Shows the grade on green, yellow and red lights and a small screen",
+      "Logs litres and points to an RFID card, and alerts the collector over Wi-Fi",
+    ],
     images: [
       {
-        src: "/images/polaris/blueprint.jpg",
-        alt: "Blueprint drawing of Polaris: a dashboard-mounted box watching a driver's eye",
+        src: "/images/oil-grader/blueprint.jpg",
+        alt: "Blueprint drawing of Oil Grader: a funnel on a collector box with grade lights, a screen and an RFID card",
         width: 1600,
         height: 900,
         label: "Blueprint",
       },
     ],
-    visualType: "polaris",
+    highlight: {
+      src: "/images/oil-grader/how-it-connects.jpg",
+      alt: "Diagram: a temperature probe, colour sensor, steel electrodes, two IR flow sensors, a level sensor and an RFID reader feed an ESP32, which drives an OLED screen, grade lights and a buzzer, a pump relay and a Wi-Fi alert",
+      width: 1600,
+      height: 900,
+      caption:
+        "How it connects: six sensors feed the ESP32, which grades the oil and drives the screen, the grade lights, the pump and a Wi-Fi alert to the collector.",
+    },
+    visualType: "oil-grader",
   },
 ];
