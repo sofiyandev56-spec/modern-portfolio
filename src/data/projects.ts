@@ -30,6 +30,7 @@ export interface Project {
   highlight?: ProjectImage & { caption: string };
   visualType:
     | "xray"
+    | "spendsense"
     | "unfold"
     | "programmer-corner"
     | "happynest"
@@ -47,7 +48,7 @@ export const projects: Project[] = [
     category: "Main Portfolio / WebGL / Fluid Simulation",
     tagline: "My main portfolio",
     overview:
-      "My main portfolio. The cursor stirs a fluid simulation that turns the photo into an x-ray, and the signature writes itself from traced pen strokes.",
+      "My main portfolio. The cursor stirs a fluid simulation that turns the photo into an x-ray, and the autograph signs itself stroke by stroke, at the pace of a real hand.",
     impact:
       "It opens as a blueprint and develops into a photo; under the cursor the photo wipes back to the skeleton and the MacBook's M4 chip. Built with Vite and no framework, so the whole site ships as a small static bundle, and it respects Reduce Motion.",
     facts: [
@@ -70,8 +71,55 @@ export const projects: Project[] = [
     visualType: "xray",
   },
   {
-    id: "unfold",
+    id: "spendsense",
     number: "02",
+    title: "SPENDSENSE",
+    category: "Full-Stack / Personal Finance / AI Assistant",
+    tagline: "Your money. Your language. Your control.",
+    overview:
+      "A personal finance manager for income, expenses, budgets, savings goals and reports, with an assistant you can type or talk to in English, Hindi or Hinglish. It answers only from your own records, and Postgres row-level security keeps each person’s data their own.",
+    impact:
+      "Live on Vercel, with the API on Render and the database on Supabase. Money is kept as exact decimals and periods follow the user’s time zone, every ₹ figure the assistant gives is checked against the records before it is shown, and it works with or without an AI model.",
+    facts: [
+      { label: "Stack", value: "Next.js + FastAPI" },
+      { label: "Database", value: "Supabase Postgres" },
+      { label: "Status", value: "Live" },
+    ],
+    technologies: [
+      "TypeScript",
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "Recharts",
+      "TanStack Query",
+      "Python",
+      "FastAPI",
+      "Supabase",
+      "PostgreSQL",
+    ],
+    features: [
+      "Income and expenses in ₹ with categories, payment methods, search and filters",
+      "Monthly budgets with early warnings, and savings goals that never double-count",
+      "Analytics and reports for any month, year or range, as PDF (₹ and Hindi rendered correctly) or CSV",
+      "An assistant in English, हिंदी or Hinglish, by text or voice, answering only from your own records",
+      "Row Level Security in Postgres, so each person can only ever read their own data",
+    ],
+    images: [
+      {
+        src: "/images/spendsense/landing.jpg",
+        alt: "SpendSense's landing page: “Your money. Your language. Your control.”, with sign-up buttons and four feature cards",
+        width: 1600,
+        height: 900,
+        label: "Landing",
+      },
+    ],
+    demo: "https://spendsense-nine-delta.vercel.app",
+    repoPrivate: true,
+    visualType: "spendsense",
+  },
+  {
+    id: "unfold",
+    number: "03",
     title: "UNFOLD",
     category: "Native iOS App / Apple Intelligence",
     tagline: "A learning arcade for iPhone Duo",
@@ -99,7 +147,7 @@ export const projects: Project[] = [
   },
   {
     id: "programmer-corner",
-    number: "03",
+    number: "04",
     title: "PROGRAMMER CORNER",
     category: "Native iOS App / Learning",
     tagline: "A SwiftUI app for learning Swift",
@@ -127,7 +175,7 @@ export const projects: Project[] = [
   },
   {
     id: "happynest-clinic",
-    number: "04",
+    number: "05",
     title: "HAPPYNEST CLINIC",
     category: "Full-Stack Web App / Healthcare",
     tagline: "Pediatric Clinic Booking & Patient Management System",
@@ -165,7 +213,7 @@ export const projects: Project[] = [
   },
   {
     id: "skilltrace",
-    number: "05",
+    number: "06",
     title: "SKILLTRACE",
     category: "GovTech / Full-Stack / Data Integrity",
     tagline: "Skilling-outcomes tracking for government training programmes",
@@ -227,7 +275,7 @@ export const projects: Project[] = [
   },
   {
     id: "star-portfolio",
-    number: "06",
+    number: "07",
     title: "STAR PORTFOLIO",
     category: "Portfolio / WebGL / Motion Design",
     tagline: "A star-guided scroll portfolio",
@@ -255,7 +303,7 @@ export const projects: Project[] = [
   },
   {
     id: "modern-portfolio",
-    number: "07",
+    number: "08",
     title: "3D MODEL PORTFOLIO",
     category: "Portfolio / 3D Web / Motion Design",
     tagline: "This site — my first portfolio",
@@ -293,7 +341,7 @@ export const projects: Project[] = [
   },
   {
     id: "oil-grader",
-    number: "08",
+    number: "09",
     title: "OIL GRADER",
     category: "IoT / ESP32 / Team Project",
     tagline: "Used cooking oil, graded in 30 seconds",

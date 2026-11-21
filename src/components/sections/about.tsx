@@ -140,12 +140,20 @@ export function About() {
       "Concept and pitch for a document-intelligence tool that redacts ID details on the device. Led the design and the pitch.",
     ],
     [
-      "Smart India Hackathon 2026 certificate",
-      "10 to 11 Sep 2026. Certificate of participation in the preliminary round at Karnavati University, with Team Tech Titans.",
+      "LinkedIn Learning",
+      "19 Nov 2026. Artificial Intelligence Foundations: Thinking Machines; Complete Guide to C Programming Foundations; and Leadership through Feedback.",
     ],
     [
       "iOS Application Development Workshop",
       "29 to 30 Oct 2026. Two days of Swift, SwiftUI and Xcode with Apple Authorised mentors at UIT's Apple Authorised Training Centre for Education.",
+    ],
+    [
+      "Smart India Hackathon 2026 certificate",
+      "10 to 11 Sep 2026. Certificate of participation in the preliminary round at Karnavati University, with Team Tech Titans.",
+    ],
+    [
+      "AI Classroom Foundation Course",
+      "Sep 2026. The foundation course of Jio Institute’s AI Classroom programme, powered by JioPC.",
     ],
   ];
 
@@ -188,7 +196,7 @@ export function About() {
             I’m a first-year B.Tech Computer Science (AI &amp; ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM. I have a solid grip on C, C++, Python and MySQL, and I build iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.
             <br />
             <br />
-            So far I’ve shipped three web applications and built two native iOS apps. I led a six-person team at Smart India Hackathon 2026, and I’m looking for internships and project work in AI, web and iOS development.
+            So far I’ve shipped four web applications and built two native iOS apps. I led a six-person team at Smart India Hackathon 2026, and I’m looking for internships and project work in AI, web and iOS development.
           </RevealItem>
         </div>
 
