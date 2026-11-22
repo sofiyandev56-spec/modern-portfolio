@@ -196,7 +196,7 @@ export function About() {
             I’m a first-year B.Tech Computer Science (AI &amp; ML) Hons. student at UIT, Karnavati University, specialising in Generative AI with IBM. I have a solid grip on C, C++, Python and MySQL, and I build iOS apps in Swift and SwiftUI and web interfaces in React, TypeScript and Three.js.
             <br />
             <br />
-            So far I’ve shipped four web applications and built two native iOS apps. I led a six-person team at Smart India Hackathon 2026, and I’m looking for internships and project work in AI, web and iOS development.
+            So far I’ve shipped five web applications and built two native iOS apps. I led a six-person team at Smart India Hackathon 2026, and I’m looking for internships and project work in AI, web and iOS development.
           </RevealItem>
         </div>
 

@@ -31,6 +31,7 @@ export interface Project {
   visualType:
     | "xray"
     | "spendsense"
+    | "fairfare"
     | "unfold"
     | "programmer-corner"
     | "happynest"
@@ -118,8 +119,43 @@ export const projects: Project[] = [
     visualType: "spendsense",
   },
   {
-    id: "unfold",
+    id: "fairfare",
     number: "03",
+    title: "FAIRFARE",
+    category: "Web App / Flight Metasearch / Collaboration",
+    tagline: "Every fare itemised, every seller ranked twice",
+    overview:
+      "A flight search for India that itemises every fare (base fare, airport taxes and seller fees, with no markup of its own) and ranks sellers twice: cheapest overall and cheapest you can trust. Hari had the idea and the first build; I redesigned it with a liquid-glass interface, wired in live fares, and hardened, tested and shipped it.",
+    impact:
+      "Live fares come from the Travelpayouts (Aviasales) API through server routes, so the key never reaches the browser, and when that source is unavailable the site says so and shows clearly labelled demo data instead of pretending.",
+    facts: [
+      { label: "Role", value: "Redesign & release" },
+      { label: "Team", value: "With Hari" },
+      { label: "Status", value: "Live" },
+    ],
+    technologies: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Vitest", "Python", "FastAPI"],
+    features: [
+      "Every fare itemised: base fare, mandatory airport taxes and seller fees, with zero FairFare markup",
+      "Two rankings for every search: the cheapest offer and the cheapest from trusted sellers",
+      "Live fares and a flexible-date strip from the Travelpayouts (Aviasales) Data API",
+      "Liquid-glass interface with airport autocomplete, price alerts and INR, USD or EUR prices",
+    ],
+    images: [
+      {
+        src: "/images/fairfare/home.jpg",
+        alt: "FairFare's home page: “Pure aviation metasearch.”, a Delhi to Mumbai search, and live fares for each day of the week",
+        width: 1600,
+        height: 900,
+        label: "Home",
+      },
+    ],
+    demo: "https://fairfare-neon.vercel.app",
+    github: "https://github.com/sofiyandev56-spec/fairfare",
+    visualType: "fairfare",
+  },
+  {
+    id: "unfold",
+    number: "04",
     title: "UNFOLD",
     category: "Native iOS App / Apple Intelligence",
     tagline: "A learning arcade for iPhone Duo",
@@ -147,7 +183,7 @@ export const projects: Project[] = [
   },
   {
     id: "programmer-corner",
-    number: "04",
+    number: "05",
     title: "PROGRAMMER CORNER",
     category: "Native iOS App / Learning",
     tagline: "A SwiftUI app for learning Swift",
@@ -175,7 +211,7 @@ export const projects: Project[] = [
   },
   {
     id: "happynest-clinic",
-    number: "05",
+    number: "06",
     title: "HAPPYNEST CLINIC",
     category: "Full-Stack Web App / Healthcare",
     tagline: "Pediatric Clinic Booking & Patient Management System",
@@ -213,7 +249,7 @@ export const projects: Project[] = [
   },
   {
     id: "skilltrace",
-    number: "06",
+    number: "07",
     title: "SKILLTRACE",
     category: "GovTech / Full-Stack / Data Integrity",
     tagline: "Skilling-outcomes tracking for government training programmes",
@@ -275,7 +311,7 @@ export const projects: Project[] = [
   },
   {
     id: "star-portfolio",
-    number: "07",
+    number: "08",
     title: "STAR PORTFOLIO",
     category: "Portfolio / WebGL / Motion Design",
     tagline: "A star-guided scroll portfolio",
@@ -303,7 +339,7 @@ export const projects: Project[] = [
   },
   {
     id: "modern-portfolio",
-    number: "08",
+    number: "09",
     title: "3D MODEL PORTFOLIO",
     category: "Portfolio / 3D Web / Motion Design",
     tagline: "This site — my first portfolio",
@@ -341,7 +377,7 @@ export const projects: Project[] = [
   },
   {
     id: "oil-grader",
-    number: "09",
+    number: "10",
     title: "OIL GRADER",
     category: "IoT / ESP32 / Team Project",
     tagline: "Used cooking oil, graded in 30 seconds",
